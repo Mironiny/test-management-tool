@@ -27,18 +27,26 @@
 
 	Nejvyšší vrstva - definuje projekt či testovaný systém
 	* Jméno projektu
+	* Popis projektu - co se bude testovat
+	* Popis jakým způsobem se bude testovat
+	* HW vybavení
+	* SW vybavení
+	* Další potřebné prostředky pro testování - např. docker či virtuálka
+	* Datum začátku testování
 	* Manažerské informace jako odhadovaná doba testování, skutečná doba testo-
 	  vání atd.
 
 * **Test Requirement**
 
-	Specifikace jednotlivých požadavků na SUT, pravděpodobně v 
-	textové podobě
+	Specifikace jednotlivých požadavků na SUT
+	* Textová forma v podobě jednotlivých odrážek, které budou pokrývat Test Cases
+	* Požadovaná kritéria pokrytí CFG -> možnost generovat Test Cases
 
 * **Test Run**
 
 	Definuje jedno spuštění daného Test Case/Suite
 	* Výsledky běhu - Pass vs. Fail
+	* Kde bude Run spouštěný - např. server, virtuální stroj, vzdalený stroj atd.
 	* Čás spuštění, doba provádění běhu
 	* Člověk, zodpovědný za spuštění
 
