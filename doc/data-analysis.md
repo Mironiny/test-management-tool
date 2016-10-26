@@ -68,10 +68,12 @@
 
 	Definuje jeden testovací příklad
 	* Test fixture
+	* Které requirements pokrývá
 	* Popis 
 	* V případě manuální testu návod na provedení testu
 	* V případě automatizovaého testu - zdrojový kod
 	* Datum vytvoření
 	* Autor
+
 
 
