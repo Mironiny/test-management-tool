@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -33,137 +34,145 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <!-- For better responsity -->
+    <style>
+
+        @media screen and (max-width: 650px) {
+          body {
+            padding-top: 60px;
+          }
+        }
+
+    </style>
 </head>
+
 <body>
 
-<div id="wrapper">
+    <div id="wrapper">
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Testos</a>
-        </div>
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Testos</a>
+            </div>
 
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
 
-        <!-- Top Navigation: Left Menu -->
-        <ul class="nav navbar-nav navbar-left navbar-top-links">
-            <li class="{{ Request::is('/') ? 'active' : '' }}"><a href="#"> @lang('layout.dashboard')</a></li>
-            <li><a href="#"> @lang('layout.requirements')</a></li>
-            <li><a href="#"> @lang('layout.test_runs')</a></li>
-            <li><a href="#"> @lang('layout.test_library')</a></li>
-        </ul>
+            <!-- Top Navigation: Left Menu -->
+            <ul class="nav navbar-nav navbar-left navbar-top-links">
+                <li class="{{ Request::is('dashboard') ? 'active' : '' }}"><a href="{{ url('/dashboard') }}"> @lang('layout.dashboard')</a></li>
+                <li class="{{ Request::is('requirements') ? 'active' : '' }}"><a href="{{ url('/requirements') }}"> @lang('layout.requirements')</a></li>
+                <li><a href="#"> @lang('layout.test_runs')</a></li>
+                <li><a href="#"> @lang('layout.test_library')</a></li>
+            </ul>
 
-        <!-- Top Navigation: Right Menu -->
-        <ul class="nav navbar-right navbar-top-links">
-            {{-- <li class="dropdown navbar-inverse">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell fa-fw"></i> <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu dropdown-alerts">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-comment fa-fw"></i> New Comment
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>See All Alerts</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </li> --}}
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> {{ Auth::user()->name }} <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="{{ url('/user') }}"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                    </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href="{{ url('/logout') }}"
-                      onclick="event.preventDefault();
-                             document.getElementById('logout-form').submit();"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            <!-- Top Navigation: Right Menu -->
+            <ul class="nav navbar-right navbar-top-links">
 
-                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                                 {{ csrf_field() }}
-                    </form>
-                    </li>
-                </ul>
-            </li>
-        </ul>
 
-        <!-- Sidebar -->
-        <div class="navbar-default sidebar" role="navigation">
-            <div class="sidebar-nav navbar-collapse">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-folder fa-fw"></i> Project: Some custom project <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        
+                        @foreach ($projects as $project)
+                            <li><a href="#">{{ $project->Name }}</a></li>
+                        @endforeach
 
-                <ul class="nav" id="side-menu">
-                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
+                      <li class="divider"></li>
+                      <li><a href="#"><i class="fa fa-gear fa-fw"></i> Projects settings</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> {{ Auth::user()->name }} <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="{{ url('/user') }}"><i class="fa fa-user fa-fw"></i> @lang('layout.user_profile')</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> @lang('layout.settings')</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="{{ url('/logout') }}" onclick="event.preventDefault();
+                             document.getElementById('logout-form').submit();"><i class="fa fa-sign-out fa-fw"></i> @lang('layout.logout')</a>
+
+                                <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Sidebar -->
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
                                 <span class="input-group-btn">
                                     <button class="btn btn-primary" type="button">
                                         <i class="fa fa-search"></i>
                                     </button>
                                 </span>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="#">Second Level Item</a>
-                            </li>
-                            <li>
-                                <a href="#">Third Level <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li>
-                                        <a href="#">Third Level Item</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="#">Second Level Item</a>
+                                </li>
+                                <li>
+                                    <a href="#">Third Level <span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="#">Third Level Item</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
 
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    @yield('content')
+        @yield('content')
 
-</div>
+    </div>
 
-<!-- jQuery -->
-<script src="js/jquery.min.js"></script>
+    <!-- jQuery -->
+    <script src="js/jquery.min.js"></script>
 
-<!-- Bootstrap Core JavaScript -->
-<script src="js/bootstrap.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
 
-<!-- Metis Menu Plugin JavaScript -->
-<script src="js/metisMenu.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="js/metisMenu.min.js"></script>
 
-<!-- Custom Theme JavaScript -->
-<script src="js/startmin.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="js/startmin.js"></script>
 
-<script src="../js/raphael.min.js"></script>
-<script src="../js/morris.min.js"></script>
-<script src="../js/morris-data.js"></script>
+    <script src="../js/raphael.min.js"></script>
+    <script src="../js/morris.min.js"></script>
+    <script src="../js/morris-data.js"></script>
 
 </body>
+
 </html>

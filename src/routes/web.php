@@ -11,13 +11,12 @@
 |
 */
 
+Route::get('/', function () {
+    return redirect('dashboard');
+});
+Route::get('dashboard', 'DashboardController@index');
 
-Route::get('/', 'HomeController@index');
-
-// Route::get('/', function () {
-//     //return view('welcome');
-//     return "Hello world";
-// }) -> middleware('auth');
+Route::get('requirements', 'RequirementsController@index');
 
 /**
  * Basic Auth routes.
