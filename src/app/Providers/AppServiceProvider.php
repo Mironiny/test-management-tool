@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use View;
 use App\Project;
+use App\globals;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,10 +15,9 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(Request $request)
     {
-        $projects = Project::all();
-        View::share('projects', $projects);
+        //
     }
 
     /**

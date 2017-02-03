@@ -14,6 +14,7 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('projects');
     }
 
 
@@ -24,7 +25,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        return view('dashboards/dashboard');
     }
 
     /**

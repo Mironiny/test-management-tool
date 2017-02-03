@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Project;
 
-class RequirementsController extends Controller
+class ProjectsController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -19,14 +19,13 @@ class RequirementsController extends Controller
     }
 
     /**
-     * Show the requirements page.
+     * Show the application dashboard.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function changeProject(Request $request)
     {
-        $selectedProject = $request->session()->get('selectedProject');
-        $requirements = Project::find($selectedProject)->requirements->all();
-        return view('requirements/requirements')->with('requirements', $requirements);
+        $request->session()->put('selectedProject', $request->id);
+        return redirect($request->url);
     }
 }

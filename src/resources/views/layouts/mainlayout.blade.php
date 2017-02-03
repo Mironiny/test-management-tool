@@ -37,13 +37,11 @@
 
     <!-- For better responsity -->
     <style>
-
         @media screen and (max-width: 650px) {
-          body {
-            padding-top: 60px;
-          }
+            body {
+                padding-top: 60px;
+            }
         }
-
     </style>
 </head>
 
@@ -78,16 +76,25 @@
 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-folder fa-fw"></i> Project: Some custom project <b class="caret"></b>
+                        <i class="fa fa-folder fa-fw"></i> Project: {{ $selectedProject->Name}} <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        
+
                         @foreach ($projects as $project)
-                            <li><a href="#">{{ $project->Name }}</a></li>
+                        <li>
+                            <a href="{{ url('/projects/changeproject') }}" onclick="event.preventDefault();
+                             document.getElementById('changeForm{{ $project->SUT_id}}').submit();">{{ $project->Name }}</a>
+
+                                <form id="changeForm{{ $project->SUT_id}}" action="{{ url('/projects/changeproject') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                    <input type="number" name="id" value="{{ $project->SUT_id }}">
+                                    <input type="text" name="url" value="{{ Request::url() }}">
+                                </form>
+                        </li>
                         @endforeach
 
-                      <li class="divider"></li>
-                      <li><a href="#"><i class="fa fa-gear fa-fw"></i> Projects settings</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Projects settings</a></li>
                     </ul>
                 </li>
 

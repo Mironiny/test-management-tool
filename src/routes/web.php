@@ -18,6 +18,8 @@ Route::get('dashboard', 'DashboardController@index');
 
 Route::get('requirements', 'RequirementsController@index');
 
+Route::post('projects/changeproject', 'ProjectsController@changeProject');
+
 /**
  * Basic Auth routes.
  */
