@@ -26,7 +26,7 @@ class RequirementsController extends Controller
     public function index(Request $request)
     {
         $selectedProject = $request->session()->get('selectedProject');
-        $requirements = Project::find($selectedProject)->requirements->all();
+        $requirements = Project::find($selectedProject)->requirements->sortBy('ActiveDateFrom')->all();
         return view('requirements/requirements')->with('requirements', $requirements);
     }
 }

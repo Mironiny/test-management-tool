@@ -5,7 +5,7 @@
  */
 
 body {
-    background-color: #f8f8f8;
+    background-color: #fff;
 }
 
 #wrapper {
@@ -21,7 +21,24 @@ body {
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;
-        margin-left: 250px;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 30px 30px 0 30px;
+        border-left: 1px solid #e7e7e7;
+        border-right: 1px solid #e7e7e7;
+    }
+}
+
+#page-wrapper-non-sidemenu {
+    padding: 30px 15px 0 15px;
+    min-height: 568px;
+    background-color: #fff;
+}
+
+@media(min-width:768px) {
+    #page-wrapper-non-sidemenu  {
+        position: inherit;
+        margin-left: 0px;
         padding: 30px 30px 0 30px;
         border-left: 1px solid #e7e7e7;
     }
@@ -117,6 +134,7 @@ body {
 
 .sidebar ul li {
     border-bottom: 1px solid #e7e7e7;
+    background-color: #fff
 }
 
 .sidebar ul li a.active {
@@ -152,7 +170,7 @@ body {
     .sidebar {
         z-index: 1;
         position: absolute;
-        width: 250px;
+        width: 150px;
         margin-top: 51px;
     }
 

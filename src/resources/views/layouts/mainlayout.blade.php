@@ -19,6 +19,12 @@
     <!-- Timeline CSS -->
     <link href="css/timeline.css" rel="stylesheet">
 
+    <!-- DataTables CSS -->
+    <link href="../css/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- DataTables Responsive CSS -->
+    <link href="../css/dataTables/dataTables.responsive.css" rel="stylesheet">
+
     <!-- Custom CSS -->
     <link href="css/startmin.css" rel="stylesheet">
 
@@ -27,6 +33,7 @@
 
     <!-- Custom Fonts -->
     <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -120,49 +127,14 @@
                 </li>
             </ul>
 
-            <!-- Sidebar -->
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
+            @yield('sidemenu')
 
-                    <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="#" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-
-                </div>
-            </div>
         </nav>
 
         @yield('content')
 
     </div>
+
 
     <!-- jQuery -->
     <script src="js/jquery.min.js"></script>
@@ -173,12 +145,25 @@
     <!-- Metis Menu Plugin JavaScript -->
     <script src="js/metisMenu.min.js"></script>
 
+    <!-- DataTables JavaScript -->
+    <script src="../js/dataTables/jquery.dataTables.min.js"></script>
+    <script src="../js/dataTables/dataTables.bootstrap.min.js"></script>
+
     <!-- Custom Theme JavaScript -->
     <script src="js/startmin.js"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function(){
+        $('#myTable').DataTable();
+    });
+    </script>
 
     <script src="../js/raphael.min.js"></script>
     <script src="../js/morris.min.js"></script>
     <script src="../js/morris-data.js"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 
 </body>
 
