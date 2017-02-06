@@ -264,8 +264,8 @@ body {
 }
 
 .dataTables_wrapper {
-    position: relative;
-    clear: both;
+    /*position: relative;*/
+    /*clear: both;*/
 }
 
 table.dataTable thead .sorting,

@@ -20,6 +20,7 @@ class CreateTestrequirementTable extends Migration
             $table->string('Name', 45);
             $table->dateTime('ActiveDateFrom');
             $table->dateTime('ActiveDateTo')->nullable();
+            $table->dateTime('LastUpdate')->nullable();
             $table->string('CoverageCriteria', 45)->nullable();
             $table->string('RequirementDescription')->nullable();
 

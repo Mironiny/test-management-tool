@@ -20,6 +20,7 @@ class CreateTestcaseTable extends Migration
             $table->string('Name', 45);
             $table->dateTime('ActiveDateFrom');
             $table->dateTime('ActiveDateTo')->nullable();
+            $table->dateTime('LastUpdate')->nullable();
             $table->tinyInteger('IsManual')->nullable();
             $table->string('TestCaseFixtures')->nullable();
             $table->string('SourceCode')->nullable();

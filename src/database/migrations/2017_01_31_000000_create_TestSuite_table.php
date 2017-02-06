@@ -19,6 +19,7 @@ class CreateTestsuiteTable extends Migration
             $table->string('Name', 45);
             $table->dateTime('ActiveDateFrom');
             $table->dateTime('ActiveDateTo')->nullable();
+            $table->dateTime('LastUpdate')->nullable();
             $table->string('TestSuiteGoals')->nullable();
             $table->string('TestSuiteVersion', 45)->nullable();
             $table->string('TestSuiteDocumentation')->nullable();

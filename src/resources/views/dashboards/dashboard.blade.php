@@ -1,64 +1,19 @@
-@extends('layouts.mainlayout')
+@extends('layouts.mainLayout')
+
+@section('title') Dashboard @endsection
 
 @section('sidemenu')
-
-    <div class="navbar-default sidebar" role="navigation">
-        
-        <div class="sidebar-nav navbar-collapse">
-
-            <ul class="nav" id="side-menu">
-                {{-- <li class="sidebar-search">
-                    <div class="input-group custom-search-form">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                </li> --}}
-                <li>
-                    <a href="#" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a href="#">Second Level Item</a>
-                        </li>
-                        <li>
-                            <a href="#">Third Level <span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level">
-                                <li>
-                                    <a href="#">Third Level Item</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-
-        </div>
-    </div>
+    <a href="#">Project progress</a>
+    <a href="#">Test results</a>
+    <a href="#">Proggress bar</a>
 @endsection
 
 @section('content')
-
-<div id="page-wrapper">
+    <div class="col-xs-12" style="height:40px;"></div>
+    <span style="font-size:25px;cursor:pointer" onclick="openNav()">&#9776;</span>
     <div class="container">
 
-        {{-- <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header"></h1>
-            </div>
-        </div> --}}
-
-        <div class="col-xs-12" style="height:85px;"></div>
-
-        <!-- ... Your content goes here ... -->
-
         <div class="row">
-            <div class="col-lg-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
@@ -91,11 +46,6 @@
                 <!-- /.panel -->
 
                 <!-- /.panel -->
-            </div>
 
         </div>
-    </div>
-</div>
-
-
 @endsection

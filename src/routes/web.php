@@ -11,18 +11,34 @@
 |
 */
 
-Route::get('/', function () {
-    return redirect('dashboard');
-});
-Route::get('dashboard', 'DashboardController@index');
-
-Route::get('requirements', 'RequirementsController@index');
-
-Route::post('projects/changeproject', 'ProjectsController@changeProject');
-
 /**
  * Basic Auth routes.
  */
 Auth::routes();
 
-Route::get('/home', 'HomeController@indexDefault');
+/**
+ * Main application route.
+ */
+Route::get('/', function () {
+    return redirect('dashboard');
+});
+
+/**
+ * Dashboard routes.
+ */
+Route::get('dashboard', 'DashboardController@index');
+
+/**
+ * Requirements routes.
+ */
+Route::get('requirements', 'RequirementsController@index');
+Route::get('requirements/create', 'RequirementsController@createRequirementForm');
+Route::post('requirements/create', 'RequirementsController@storeRequirement');
+
+/**
+ * Projects routes.
+ */
+Route::get('projects', 'ProjectsController@index');
+Route::get('projects/create', 'ProjectsController@createProjectForm');
+Route::post('projects/create', 'ProjectsController@storeProject');
+Route::post('projects/changeproject', 'ProjectsController@changeProject');

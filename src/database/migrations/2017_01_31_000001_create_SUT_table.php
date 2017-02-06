@@ -19,6 +19,7 @@ class CreateSutTable extends Migration
             $table->string('Name', 45);
             $table->dateTime('ActiveDateFrom');
             $table->dateTime('ActiveDateTo')->nullable();
+            $table->dateTime('LastUpdate')->nullable();
             $table->string('ProjectDescription')->nullable();
             $table->string('TestingDescription')->nullable();
             $table->string('HwRequirements', 45)->nullable();

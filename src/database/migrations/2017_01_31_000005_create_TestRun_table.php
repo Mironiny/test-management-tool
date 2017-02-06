@@ -21,6 +21,7 @@ class CreateTestrunTable extends Migration
             $table->string('Name', 45);
             $table->dateTime('ActiveDateFrom');
             $table->dateTime('ActiveDateTo')->nullable();
+            $table->dateTime('LastUpdate')->nullable();
             $table->string('Author', 45)->nullable();
             $table->string('TestRunDescription')->nullable();
 

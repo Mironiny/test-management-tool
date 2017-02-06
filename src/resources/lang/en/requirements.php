@@ -4,7 +4,7 @@ return [
 
   /*
   |--------------------------------------------------------------------------
-  | Basic layout lang file
+  | Project lang file
   |--------------------------------------------------------------------------
   |
   | The following language lines are used by the paginator library to build
@@ -13,16 +13,8 @@ return [
   |
   */
 
-    'dashboard' => 'Dashboard',
-    'requirements' => 'Requirements',
-    'test_runs' => 'Test runs',
-    'test_library' => 'Test library',
-    'user_profile' => 'User Profile',
-    'settings' => 'Settings',
-    'logout' => 'Logout',
-    'project' => 'Project',
-    'projects_management' => 'Projects management',
-    'success' => 'Success',
-    'failure' => 'Failure'
+    'successCreateRequirement' => 'Requirement was create',
+    'newRequirement' => 'New requirement',
+    'failureCreateRequirementNotSelectedProject' => 'You need to create project'
 
 ];

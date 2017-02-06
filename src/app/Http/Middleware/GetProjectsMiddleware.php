@@ -25,7 +25,7 @@ class GetProjectsMiddleware
         View::share('projects', $projects);
 
         // Set and serve actually selected project and initialize session
-        if (!$request->session()->has('selectedProject')) {
+        if (!$request->session()->has('selectedProject') || $request->session()->get('selectedProject') === 0) {
             if (Project::all()->count() < 1) {
                 $request->session()->put('selectedProject', 0);
             }
