@@ -14,16 +14,7 @@
     <span style="font-size:25px;cursor:pointer" onclick="openNav()">&#9776;</span>
     <div class="container">
 
-    @if (session('statusSuccess'))
-        <div class="row">
-            <div class="col-md-12">
-                <div class="alert alert-success alert-dismissable">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                    <strong>@lang('layout.success')!</strong> {{ session('statusSuccess') }}.
-                </div>
-            </div>
-        </div>
-    @endif
+    @include('layouts.status')
 
     <div class="row">
         <div class="col-md-9"></div>

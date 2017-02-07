@@ -54,16 +54,20 @@ class RequirementsController extends Controller
      */
     public function storeRequirement(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required|max:45',
+            'RequirementDescription' => 'max:255'
+        ]);
+
         $requirement = new Requirement;
         $requirement->Name = $request->name;
         if ($request->session()->get('selectedProject') == 0) {
-            return redirect('requirements')->with('statusFailure', trans('requirements.successCreateRequirement'));
+            return redirect('requirements')->with('statusFailure', trans('requirements.failureCreateRequirementNotSelectedProject'));
         }
         $requirement->SUT_id = $request->session()->get('selectedProject');
-        $requirement->ActiveDateFrom = date("Y-m-d H:i:s");
         $requirement->RequirementDescription = $request->description;
         $requirement->save();
 
-        return redirect('requirements')->with('statusSuccess', trans('requirements.failureCreateRequirementNotSelectedProject'));
+        return redirect('requirements')->with('statusSuccess', trans('requirements.successCreateRequirement'));
     }
 }

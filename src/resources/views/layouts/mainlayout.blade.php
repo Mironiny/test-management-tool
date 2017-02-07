@@ -39,6 +39,52 @@
     <!-- Custom Fonts -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!-- jQuery -->
+    <script src="/js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="/js/metisMenu.min.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="/js/dataTables/jquery.dataTables.min.js"></script>
+    <script src="/js/dataTables/dataTables.bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="/js/startmin.js"></script>
+
+    <script>
+
+    var sidenNavWidth = "225px";
+    $(document).ready(function(){
+        $('#myTable').DataTable();
+    });
+
+    function openNav() {
+        if (document.getElementById("mySidenav").style.width == sidenNavWidth) {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main").style.marginLeft= "0";
+        }
+        else {
+            document.getElementById("mySidenav").style.width = sidenNavWidth;
+            document.getElementById("main").style.marginLeft = sidenNavWidth;
+        }
+
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft= "0";
+    }
+
+    </script>
+
+    <script src="../js/raphael.min.js"></script>
+    <script src="../js/morris.min.js"></script>
+    <script src="../js/morris-data.js"></script>
+
 </head>
 
 <body>
@@ -132,51 +178,7 @@
 
     </div>
 
-    <!-- jQuery -->
-    <script src="/js/jquery.min.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="/js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="/js/metisMenu.min.js"></script>
-
-    <!-- DataTables JavaScript -->
-    <script src="/js/dataTables/jquery.dataTables.min.js"></script>
-    <script src="/js/dataTables/dataTables.bootstrap.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="/js/startmin.js"></script>
-
-    <script>
-
-    var sidenNavWidth = "225px";
-    $(document).ready(function(){
-        $('#myTable').DataTable();
-    });
-
-    function openNav() {
-        if (document.getElementById("mySidenav").style.width == sidenNavWidth) {
-            document.getElementById("mySidenav").style.width = "0";
-            document.getElementById("main").style.marginLeft= "0";
-        }
-        else {
-            document.getElementById("mySidenav").style.width = sidenNavWidth;
-            document.getElementById("main").style.marginLeft = sidenNavWidth;
-        }
-
-    }
-
-    function closeNav() {
-        document.getElementById("mySidenav").style.width = "0";
-        document.getElementById("main").style.marginLeft= "0";
-    }
-
-    </script>
-
-    <script src="../js/raphael.min.js"></script>
-    <script src="../js/morris.min.js"></script>
-    <script src="../js/morris-data.js"></script>
 
 
 </body>

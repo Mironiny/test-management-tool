@@ -45,9 +45,16 @@ class ProjectsController extends Controller
      */
     public function storeProject(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required|max:45',
+            'description' => 'max:255',
+            'testDescription' => 'max:255'
+        ]);
+
         $project = new Project;
         $project->Name = $request->name;
         $project->ProjectDescription = $request->description;
+        $project->TestingDescription = $request->testDescription;
 
         $project->save();
         return redirect('projects')->with('statusSuccess', trans('projects.successCreateProject'));

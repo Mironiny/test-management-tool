@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Requirement extends Model
 {
-    public $timestamps = false;
+    /**
+     * Define a table colum ActiveDateFrom and LastUpdate for automatic handle..
+     */
+    const CREATED_AT = 'ActiveDateFrom';
+    const UPDATED_AT = 'LastUpdate';
+
     /**
      * Define a table to map a model.
      */
