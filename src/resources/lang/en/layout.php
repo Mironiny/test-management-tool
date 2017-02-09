@@ -23,6 +23,7 @@ return [
     'project' => 'Project',
     'projects_management' => 'Projects management',
     'success' => 'Success',
-    'failure' => 'Failure'
+    'failure' => 'Failure',
+    'back' => 'Back'
 
 ];

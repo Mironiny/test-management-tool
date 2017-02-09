@@ -23,9 +23,9 @@ class ProjectsController extends Controller
      *
      * @return view
      */
-    public function index(Request $request)
+    public function index()
     {
-        return view('projects/projects');
+        return view('projects/projectsIndex');
     }
 
     /**
@@ -33,7 +33,7 @@ class ProjectsController extends Controller
      *
      * @return view
      */
-    public function createProjectForm(Request $request)
+    public function createProjectForm()
     {
         return view('projects/createProject');
     }
@@ -61,6 +61,49 @@ class ProjectsController extends Controller
     }
 
     /**
+     * Edit project in DB.
+     *
+     * @return view
+     */
+    public function updateProject(Request $request, $id)
+    {
+        $this->validate($request, [
+            // 'name' => 'required|max:45',
+            'description' => 'max:255',
+            'testDescription' => 'max:255'
+        ]);
+
+        $projectDetail = Project::find($id);
+        if ($projectDetail == null) {
+            abort(404);
+        }
+
+        $projectDetail->ProjectDescription = $request->description;
+        $projectDetail->TestingDescription = $request->testDescription;
+
+        $projectDetail->save();
+        return redirect('projects')->with('statusSuccess', trans('projects.successEditedProject'));
+    }
+
+    /**
+     * Terminate project in DB.
+     *
+     * @return view
+     */
+    public function terminateProject(Request $request, $id)
+    {
+        $projectDetail = Project::find($id);
+        if ($projectDetail == null) {
+            abort(404);
+        }
+
+        $projectDetail->ActiveDateTo = date("Y-m-d H:i:s");
+
+        $projectDetail->save();
+        return redirect('projects')->with('statusSuccess', trans('projects.successTerminatedProject'));
+    }
+
+    /**
      * Change actually selected project.
      *
      * @return void
@@ -69,5 +112,19 @@ class ProjectsController extends Controller
     {
         $request->session()->put('selectedProject', $request->id);
         return redirect($request->url);
+    }
+
+    /**
+     * Show (render) the project detail page.
+     *
+     * @return view
+     */
+    public function renderProjectDetail($id)
+    {
+        $projectDetail = Project::find($id);
+        if ($projectDetail == null) {
+            abort(404);
+        }
+        return view('projects/ProjectsDetail')->with('projectDetail', $projectDetail);
     }
 }

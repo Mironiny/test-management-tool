@@ -21,7 +21,8 @@ class GetProjectsMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $projects = Project::all();
+        $projects = Project::whereNull('ActiveDateTo')->get();
+
         View::share('projects', $projects);
 
         // Set and serve actually selected project and initialize session

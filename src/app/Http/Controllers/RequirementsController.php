@@ -20,6 +20,14 @@ class RequirementsController extends Controller
         $this->middleware('projects');
     }
 
+    private function getActiveRequirementsBySelectedProject($selectedProject)
+    {
+        return Requirement::where('SUT_id', $selectedProject)
+                                    ->whereNull('ActiveDateTo')
+                                    ->orderBy('ActiveDateFrom', 'desc')
+                                    ->get();
+    }
+
     /**
      * Show (render) the requirements page.
      *
@@ -29,7 +37,10 @@ class RequirementsController extends Controller
     {
         $selectedProject = $request->session()->get('selectedProject');
         if (Project::all()->count() > 1) {
-            $requirements = Project::find($selectedProject)->requirements->sortBy('ActiveDateFrom')->all();
+            $requirements = Requirement::where('SUT_id', $selectedProject)
+                                        ->whereNull('ActiveDateTo')
+                                        ->orderBy('ActiveDateFrom', 'desc')
+                                        ->get();
             return view('requirements/requirements')->with('requirements', $requirements);
         }
         else {
@@ -70,4 +81,60 @@ class RequirementsController extends Controller
 
         return redirect('requirements')->with('statusSuccess', trans('requirements.successCreateRequirement'));
     }
+
+    /**
+     * Show (render) the requirements detail page.
+     *
+     * @return view
+     */
+    public function renderRequirementDetail(Request $request, $id)
+    {
+        // $requirementDetail = Requirement::find($id);
+        $selectedProject = $request->session()->get('selectedProject');
+        $requirements = $this->getActiveRequirementsBySelectedProject($selectedProject);
+        if (sizeof($requirements) < $id) {
+            return redirect('requirements')->with('statusFailure', trans('requirements.requirementNotExists'));
+        }
+        $requirementDetail = $requirements[$id - 1];
+
+        return view('requirements/requirementDetail')->with('requirementDetail', $requirementDetail);
+    }
+
+    /**
+     * Edit requirement in DB.
+     *
+     * @return view
+     */
+    public function updateRequirement(Request $request, $id)
+    {
+        $this->validate($request, [
+            // 'name' => 'required|max:45',
+            'description' => 'max:255'
+        ]);
+
+        $requirementDetail = Requirement::find($id);
+        $requirementDetail->RequirementDescription = $request->description;
+
+        $requirementDetail->save();
+        return redirect('requirements')->with('statusSuccess', trans('requirements.successEditedRequirement'));
+    }
+
+    /**
+     * Edit project in DB.
+     *
+     * @return view
+     */
+    public function deleteRequirement(Request $request, $id)
+    {
+        $requirementDetail = Requirement::find($id);
+        if ($requirementDetail == null) {
+            return redirect('requirements')->with('statusFailure', trans('requirements.requirementNotExists'));
+        }
+        $requirementDetail->ActiveDateTo = date("Y-m-d H:i:s");
+
+        $requirementDetail->save();
+        return redirect('requirements')->with('statusSuccess', trans('requirements.deleteRequirement'));
+    }
+
+
 }

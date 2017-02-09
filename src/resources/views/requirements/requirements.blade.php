@@ -34,10 +34,11 @@
                     <?php $id = 1; ?>
                     @foreach ($requirements as $requirement)
                     <tr>
-                        <td>{{ $id++ }}</td>
-                        <td><a href="#">{{ $requirement->Name }}</a></td>
+                        <td>{{ $id }}</td>
+                        <td><a href="{{ url("requirements/detail/$id")}}">{{ $requirement->Name }}</a></td>
                         <td>Not covered</td>
                     </tr>
+                    <?php $id++; ?>
                     @endforeach
                 @endif
             </tbody>

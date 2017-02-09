@@ -15,6 +15,9 @@ return [
 
     'successCreateRequirement' => 'Requirement was create',
     'newRequirement' => 'New requirement',
-    'failureCreateRequirementNotSelectedProject' => 'You need to create project'
+    'failureCreateRequirementNotSelectedProject' => 'You need to create project',
+    'successEditedRequirement' => 'Requirement was edited',
+    'requirementNotExists' => 'Requirements does not exists in this project',
+    'deleteRequirement' => 'Requirement was deleted'
 
 ];

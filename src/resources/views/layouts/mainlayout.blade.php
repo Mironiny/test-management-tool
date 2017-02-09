@@ -33,6 +33,8 @@
     <!-- Custom CSS -->
     <link href="/css/startmin.css" rel="stylesheet">
 
+    <link href="/css/trumbowyg.min.css" rel="stylesheet">
+
     <!-- Morris Charts CSS -->
     <link href="/css/morris.css" rel="stylesheet">
 
@@ -52,6 +54,7 @@
     <script src="/js/dataTables/jquery.dataTables.min.js"></script>
     <script src="/js/dataTables/dataTables.bootstrap.min.js"></script>
 
+
     <!-- Custom Theme JavaScript -->
     <script src="/js/startmin.js"></script>
 
@@ -60,6 +63,9 @@
     var sidenNavWidth = "225px";
     $(document).ready(function(){
         $('#myTable').DataTable();
+
+        // $('textarea').trumbowyg();
+        // $.trumbowyg.svgPath = '/css/icons.svg';
     });
 
     function openNav() {
@@ -179,8 +185,13 @@
     </div>
 
 
+<script src="/js/trumbowyg.min.js"></script>
 
+@yield('javascript')
 
 </body>
+
+
+
 
 </html>

@@ -14,6 +14,8 @@ return [
   */
 
     'newProject' => 'New project',
-    'successCreateProject' => 'Project was create'
+    'successCreateProject' => 'Project was created',
+    'successEditedProject' => 'Project was edited',
+    'successTerminatedProject' => 'Project was terminated'
 
 ];

@@ -10,7 +10,17 @@
 
     @include('layouts.formErrors')
 
-    <a href="{{ url('projects') }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
+    <div class="row">
+        <div class="col-md-5">
+            <a href="{{ url('projects') }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
+        </div>
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+            <div class="pull-right">
+            <a href="" class="btn btn-default disabled" style="cursor:default;" role="button">Projecs <span class="glyphicon glyphicon-chevron-right"></span> create</a>
+            </div>
+        </div>
+    </div>
     <div class="col-md-12" style="height:10px;"></div>
     <form action="{{ url('projects/create')}}" method="POST">
         {{ csrf_field() }}
@@ -45,6 +55,11 @@
         </div>
     </form>
 </div>
+
+
+@endsection
+
+@section('javascript')
 
 
 @endsection
