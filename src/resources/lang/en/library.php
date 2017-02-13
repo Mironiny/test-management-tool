@@ -13,10 +13,9 @@ return [
   |
   */
 
-    'newProject' => 'New project',
-    'successCreateProject' => 'Project was created',
-    'successEditedProject' => 'Project was edited',
-    'successTerminatedProject' => 'Project was terminated',
-    'projectNotExists' => 'Project not exists'
+    'successCreateTestCase' => 'Test case was create',
+    'successEditedTestCase' => 'Test case was edited',
+    'testCaseNotExists' => 'Test does not exists',
+    'deleteTestCase' => 'Test case was deleted'
 
 ];

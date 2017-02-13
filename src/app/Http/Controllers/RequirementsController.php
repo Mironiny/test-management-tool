@@ -20,14 +20,6 @@ class RequirementsController extends Controller
         $this->middleware('projects');
     }
 
-    private function getActiveRequirementsBySelectedProject($selectedProject)
-    {
-        return Requirement::where('SUT_id', $selectedProject)
-                                    ->whereNull('ActiveDateTo')
-                                    ->orderBy('ActiveDateFrom', 'desc')
-                                    ->get();
-    }
-
     /**
      * Show (render) the requirements page.
      *
@@ -67,7 +59,7 @@ class RequirementsController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|max:45',
-            'RequirementDescription' => 'max:255'
+            'RequirementDescription' => 'max:1023'
         ]);
 
         $requirement = new Requirement;
@@ -109,7 +101,7 @@ class RequirementsController extends Controller
     {
         $this->validate($request, [
             // 'name' => 'required|max:45',
-            'description' => 'max:255'
+            'description' => 'max:1023'
         ]);
 
         $requirementDetail = Requirement::find($id);
@@ -134,6 +126,14 @@ class RequirementsController extends Controller
 
         $requirementDetail->save();
         return redirect('requirements')->with('statusSuccess', trans('requirements.deleteRequirement'));
+    }
+
+    private function getActiveRequirementsBySelectedProject($selectedProject)
+    {
+        return Requirement::where('SUT_id', $selectedProject)
+                                    ->whereNull('ActiveDateTo')
+                                    ->orderBy('ActiveDateFrom', 'desc')
+                                    ->get();
     }
 
 

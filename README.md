@@ -11,7 +11,7 @@ Viz doc/Dokument specifikace požadavků.pdf
 Pro implementaci byla zvolená platforma php a aplikační framework Laravel 5.3.
 
 ### Live demo
-http://tmttest.herokuapp.com (změny přenešeny cca 1x týdně)
+http://tmtttest.herokuapp.com (změny přenešeny cca 1x týdně)
 
 Vstup do systému:
 

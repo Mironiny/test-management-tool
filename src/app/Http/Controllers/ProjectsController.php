@@ -47,8 +47,8 @@ class ProjectsController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|max:45',
-            'description' => 'max:255',
-            'testDescription' => 'max:255'
+            'description' => 'max:1023',
+            'testDescription' => 'max:1023'
         ]);
 
         $project = new Project;
@@ -121,10 +121,11 @@ class ProjectsController extends Controller
      */
     public function renderProjectDetail($id)
     {
-        $projectDetail = Project::find($id);
-        if ($projectDetail == null) {
-            abort(404);
+        $projects = Project::whereNull('ActiveDateTo')->get();
+        if (sizeof($projects) < $id) {
+            return redirect('projects')->with('statusFailure', trans('projects.projectNotExists'));
         }
+        $projectDetail = $projects[$id - 1];
         return view('projects/ProjectsDetail')->with('projectDetail', $projectDetail);
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.mainLayout')
 
 @section('sidemenu')
-    <a href="#"><strong>Active projects</strong></a>
+    <a href="#" style="color:white">Active projects</a>
     <a href="#">Completed projects</a>
 @endsection
 
@@ -36,17 +36,28 @@
                 </tr>
             </thead>
             <tbody>
+                <?php $id = 1; ?>
                 @foreach ($projects as $project)
                 <tr>
-                    <td>{{ $project->SUT_id }}</td>
-                    <td><a href="{{ url("projects/detail/$project->SUT_id")}}">{{ $project->Name }}</a></td>
+                    <td>{{ $id }}</td>
+                    <td><a href="{{ url("projects/detail/$id")}}">{{ $project->Name }}</a></td>
                     <td>{{ $project->ActiveDateFrom }}</td>
                 </tr>
+                <?php $id++; ?>
                 @endforeach
             </tbody>
         </table>
     </div>
     </div>
 </div>
+
+@endsection
+
+@section('javascript')
+    <script>
+    $(document).ready(function(){
+        $('#myTable').DataTable();
+    });
+    </script>
 
 @endsection

@@ -42,6 +42,22 @@ Route::post('requirements/update/{id}', 'RequirementsController@updateRequiremen
 Route::get('requirements/terminate/{id}', 'RequirementsController@deleteRequirement');
 
 /**
+ * Test run routes.
+ */
+Route::get('runs', 'TestRunController@index');
+
+ /**
+  * Test library routes.
+  */
+ Route::get('library', 'TestLibraryController@index');
+ Route::get('library/filter/{id}', 'TestLibraryController@filterByTestSuite');
+ Route::get('library/testcase/create', 'TestLibraryController@createTestCaseForm');
+ Route::get('library/testcase/detail/{id}', 'TestLibraryController@renderTestCaseDetail');
+ Route::post('library/testcase/create', 'TestLibraryController@storeTestCase');
+ Route::post('library/testcase/update/{id}', 'TestLibraryController@updateTestCase');
+ Route::get('library/testcase/terminate/{id}', 'TestLibraryController@deleteTestCase');
+
+/**
  * Projects routes.
  */
 Route::get('projects', 'ProjectsController@index');

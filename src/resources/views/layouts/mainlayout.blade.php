@@ -33,8 +33,6 @@
     <!-- Custom CSS -->
     <link href="/css/startmin.css" rel="stylesheet">
 
-    <link href="/css/trumbowyg.min.css" rel="stylesheet">
-
     <!-- Morris Charts CSS -->
     <link href="/css/morris.css" rel="stylesheet">
 
@@ -54,19 +52,17 @@
     <script src="/js/dataTables/jquery.dataTables.min.js"></script>
     <script src="/js/dataTables/dataTables.bootstrap.min.js"></script>
 
+    <script src="/js/stretchy.js"></script>
+
 
     <!-- Custom Theme JavaScript -->
     <script src="/js/startmin.js"></script>
 
+    @yield('javascript')
+
     <script>
 
     var sidenNavWidth = "225px";
-    $(document).ready(function(){
-        $('#myTable').DataTable();
-
-        // $('textarea').trumbowyg();
-        // $.trumbowyg.svgPath = '/css/icons.svg';
-    });
 
     function openNav() {
         if (document.getElementById("mySidenav").style.width == sidenNavWidth) {
@@ -103,19 +99,12 @@
                 <a class="navbar-brand" href="#">Testos</a>
             </div>
 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-
             <!-- Top Navigation: Left Menu -->
             <ul class="nav navbar-nav navbar-left navbar-top-links">
                 <li class="{{ Request::is('dashboard*') ? 'active' : '' }}"><a href="{{ url('/dashboard') }}"> @lang('layout.dashboard')</a></li>
                 <li class="{{ Request::is('requirements*') ? 'active' : '' }}"><a href="{{ url('/requirements') }}"> @lang('layout.requirements')</a></li>
-                <li><a href="#"> @lang('layout.test_runs')</a></li>
-                <li><a href="#"> @lang('layout.test_library')</a></li>
+                <li class="{{ Request::is('runs*') ? 'active' : '' }}"><a href="{{ url('/runs') }}"> @lang('layout.test_runs')</a></li>
+                <li class="{{ Request::is('library*') ? 'active' : '' }}"><a href="{{ url('/library') }}"> @lang('layout.test_library')</a></li>
             </ul>
 
             <!-- Top Navigation: Right Menu -->
@@ -172,26 +161,21 @@
             </ul>
         </nav>
 
-        <div id="mySidenav" class="sidenav">
+        {{-- Standart nav --}}
+        <div id="mySidenav" class="sidenav" style="{{ isset($sidemenuToogle) ? 'width:225px' : 'width:0px' }}">
             @yield('sidemenu')
         </div>
 
-        <div id="main">
+        <div id="main" style="{{ isset($sidemenuToogle) ? 'margin-left:225px' : 'margin-left:0px' }}">
             <div id="page-wrapper">
                 @yield('content')
-            <div>
+            </div>
         </div>
+
 
     </div>
 
-
-<script src="/js/trumbowyg.min.js"></script>
-
-@yield('javascript')
-
 </body>
-
-
 
 
 </html>
