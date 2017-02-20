@@ -122,7 +122,7 @@
                             @foreach ($projects as $project)
                             <li>
                                 <a href="{{ url('/projects/changeproject') }}" onclick="event.preventDefault();
-                                 document.getElementById('changeForm{{ $project->SUT_id}}').submit();">{{ $project->Name }}</a>
+                                 document.getElementById('changeForm{{ $project->SUT_id}}').submit();"><i class="{{ isset($selectedProject->Name) &&  $selectedProject->SUT_id == $project->SUT_id ? 'fa fa-hand-o-right fa-fw' : ''}}"></i> {{ $project->Name }}</a>
 
                                     <form id="changeForm{{ $project->SUT_id}}" action="{{ url('/projects/changeproject') }}" method="POST" style="display: none;">
                                         {{ csrf_field() }}

@@ -33,9 +33,9 @@
     <form class="form-horizontal" action="{{ url('library/testcase/create')}}" method="POST">
         {{ csrf_field() }}
         <div class="form-group">
-            <label class="control-label col-sm-2" for="name"><span class="text-danger">*</span>Project name:</label>
+            <label class="control-label col-sm-2" for="name"><span class="text-danger">*</span>Test case name:</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" id="name" name='name' maxlength="45" value="{{ old('name') }}" placeholder="Enter project name" required autofocus>
+                <input type="text" class="form-control" id="name" name='name' maxlength="45" value="{{ old('name') }}" placeholder="Enter test case name" required autofocus>
             </div>
         </div>
         <div class="form-group">

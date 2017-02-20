@@ -126,6 +126,6 @@ class ProjectsController extends Controller
             return redirect('projects')->with('statusFailure', trans('projects.projectNotExists'));
         }
         $projectDetail = $projects[$id - 1];
-        return view('projects/ProjectsDetail')->with('projectDetail', $projectDetail);
+        return view('projects/projectsDetail')->with('projectDetail', $projectDetail);
     }
 }

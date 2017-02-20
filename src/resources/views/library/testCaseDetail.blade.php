@@ -32,7 +32,7 @@
 
     <form class="form-horizontal" action="{{ url("library/testcase/update/$testCase->TestCase_id")}}" method="POST"> {{ csrf_field() }}
         <div class="form-group">
-            <label class="control-label col-sm-2" for="name"><span class="text-danger">*</span>Project name:</label>
+            <label class="control-label col-sm-2" for="name"><span class="text-danger">*</span>Test case name:</label>
             <div class="col-sm-6">
                 <input type="text" class="form-control" id="name" name='name' disabled="disabled" maxlength="45" value="{{ $testCase->Name }}" required autofocus>
             </div>

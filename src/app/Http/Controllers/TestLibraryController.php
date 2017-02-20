@@ -47,14 +47,17 @@ class TestLibraryController extends Controller
                                 ->whereNull('ActiveDateTo')
                                 ->get();
 
+        $selectedSuite = TestSuite::find($id);
+
         return view('library/libraryIndex')
                 ->with('testSuites', $testSuites)
                 ->with('testCases', $testCases)
+                ->with('selectedSuite', $selectedSuite)
                 ->with('sidemenuToogle', true);
     }
 
     /**
-     * Show (render) the all test case page.
+     * Show (render) test case create form.
      *
      * @return view
      */
@@ -75,7 +78,7 @@ class TestLibraryController extends Controller
     public function renderTestCaseDetail(Request $request, $id)
     {
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        $testCase = TestCase::find( $id);
+        $testCase = TestCase::find($id);
         // if (sizeof($testCases) < $id) {
         //     return redirect('library')->with('statusFailure', trans('library.testCaseNotExists'));
         // }
@@ -151,6 +154,43 @@ class TestLibraryController extends Controller
         $testCase->save();
 
         return redirect('library')->with('statusSuccess', trans('library.deleteTestCase'));
+    }
+
+    /**
+     * Show (render) test case create form.
+     *
+     * @return view
+     */
+    public function createTestSuiteForm()
+    {
+        $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
+
+        return view('library/createTestSuite')
+                ->with('testSuites', $testSuites);
+
+    }
+
+    /**
+     * Store test case to DB.
+     *
+     * @return view
+     */
+    public function storeTestSuite(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:45',
+            'description' => 'max:1023',
+            'goals' => 'max:1023',
+        ]);
+
+        $testSuite = new TestSuite;
+        $testSuite->Name = $request->name;
+        $testSuite->TestSuiteDocumentation = $request->decription;
+        $testSuite->TestSuiteGoals = $request->goals;
+
+        $testSuite->save();
+
+        return redirect('library')->with('statusSuccess', trans('library.successCreateTestSuite'));
     }
 
 

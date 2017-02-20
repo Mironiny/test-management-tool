@@ -57,6 +57,9 @@ Route::get('runs', 'TestRunController@index');
  Route::post('library/testcase/update/{id}', 'TestLibraryController@updateTestCase');
  Route::get('library/testcase/terminate/{id}', 'TestLibraryController@deleteTestCase');
 
+ Route::get('library/testsuite/create', 'TestLibraryController@createTestSuiteForm');
+ Route::post('library/testsuite/create', 'TestLibraryController@storeTestSuite');
+
 /**
  * Projects routes.
  */
