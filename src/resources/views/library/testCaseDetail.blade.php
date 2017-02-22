@@ -30,7 +30,8 @@
     <br/>
     <br/>
 
-    <form class="form-horizontal" action="{{ url("library/testcase/update/$testCase->TestCase_id")}}" method="POST"> {{ csrf_field() }}
+    <form class="form-horizontal" action="{{ url("library/testcase/update/$testCase->TestCase_id")}}" method="POST">
+        {{ csrf_field() }}
         <div class="form-group">
             <label class="control-label col-sm-2" for="name"><span class="text-danger">*</span>Test case name:</label>
             <div class="col-sm-6">

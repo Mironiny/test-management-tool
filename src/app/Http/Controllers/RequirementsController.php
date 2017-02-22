@@ -31,7 +31,7 @@ class RequirementsController extends Controller
         if (Project::all()->count() > 1) {
             $requirements = Requirement::where('SUT_id', $selectedProject)
                                         ->whereNull('ActiveDateTo')
-                                        ->orderBy('ActiveDateFrom', 'desc')
+                                        ->orderBy('ActiveDateFrom', 'asc')
                                         ->get();
             return view('requirements/requirements')->with('requirements', $requirements);
         }

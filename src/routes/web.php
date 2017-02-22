@@ -51,7 +51,7 @@ Route::get('runs', 'TestRunController@index');
   */
  Route::get('library', 'TestLibraryController@index');
  Route::get('library/filter/{id}', 'TestLibraryController@filterByTestSuite');
- Route::get('library/testcase/create', 'TestLibraryController@createTestCaseForm');
+ Route::get('library/testcase/create/{selectedSuite?}', 'TestLibraryController@createTestCaseForm');
  Route::get('library/testcase/detail/{id}', 'TestLibraryController@renderTestCaseDetail');
  Route::post('library/testcase/create', 'TestLibraryController@storeTestCase');
  Route::post('library/testcase/update/{id}', 'TestLibraryController@updateTestCase');
@@ -59,6 +59,8 @@ Route::get('runs', 'TestRunController@index');
 
  Route::get('library/testsuite/create', 'TestLibraryController@createTestSuiteForm');
  Route::post('library/testsuite/create', 'TestLibraryController@storeTestSuite');
+ Route::post('library/testsuite/update/{id}', 'TestLibraryController@updateTestSuite');
+  Route::get('library/testsuite/terminate/{id}', 'TestLibraryController@deleteTestSuite');
 
 /**
  * Projects routes.

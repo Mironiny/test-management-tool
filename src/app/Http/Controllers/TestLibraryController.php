@@ -28,7 +28,12 @@ class TestLibraryController extends Controller
     public function index(Request $request)
     {
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        $testCases = TestCase::whereNull('ActiveDateTo')->get();
+        $testCases = collect();
+        foreach ($testSuites as $testSuite) {
+            $colection = $testSuite->testCases()->whereNull('ActiveDateTo')->get();
+            $testCases = $testCases->merge($colection);
+        }
+
         return view('library/libraryIndex')
                 ->with('testSuites', $testSuites)
                 ->with('testCases', $testCases)
@@ -61,12 +66,19 @@ class TestLibraryController extends Controller
      *
      * @return view
      */
-    public function createTestCaseForm()
+    public function createTestCaseForm($selectedSuite = null)
     {
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
 
-        return view('library/createTestCase')
-                ->with('testSuites', $testSuites);
+        if ($selectedSuite == null) {
+            return view('library/createTestCase')
+                    ->with('testSuites', $testSuites);
+        }
+        else {
+            return view('library/createTestCase')
+                    ->with('testSuites', $testSuites)
+                    ->with('selectedSuite', $selectedSuite);            
+        }
 
     }
 
@@ -193,6 +205,34 @@ class TestLibraryController extends Controller
         return redirect('library')->with('statusSuccess', trans('library.successCreateTestSuite'));
     }
 
+    /**
+     * Store test case to DB.
+     *
+     * @return view
+     */
+    public function updateTestSuite(Request $request, $id)
+    {
+        $testSuite = TestSuite::find($id);
+        $testSuite->TestSuiteDocumentation = $request->description;
+        $testSuite->TestSuiteGoals = $request->goals;
 
+        $testSuite->save();
+
+        return redirect("library/filter/$id")->with('statusSuccess', trans('library.successEditedTestSuite'));
+    }
+
+    /**
+     * Delete test case to DB.
+     *
+     * @return view
+     */
+    public function deleteTestSuite(Request $request, $id)
+    {
+        $testSuite= TestSuite::find($id);
+        $testSuite->ActiveDateTo = date("Y-m-d H:i:s");
+        $testSuite->save();
+
+        return redirect('library')->with('statusSuccess', trans('library.deleteTestSuite'));
+    }
 
 }

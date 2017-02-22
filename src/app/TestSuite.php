@@ -24,7 +24,7 @@ class TestSuite extends Model
 
     public function testCases()
     {
-    return $this->hasMany('App\TestCase');
+        return $this->hasMany('App\TestCase', 'TestSuite_id');
     }
 
 }

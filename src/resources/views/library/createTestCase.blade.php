@@ -44,7 +44,7 @@
                 <select class="form-control" id="suite" name="testSuite">
                    @if (isset($testSuites))
                        @foreach ($testSuites as $testSuite)
-                           <option value="{{ $testSuite->TestSuite_id }}">{{ $testSuite->Name }} </option>
+                           <option value="{{ $testSuite->TestSuite_id }}" {{ isset($selectedSuite) && $selectedSuite == $testSuite->TestSuite_id ? 'selected=\"selected\"' : ''}}>{{ $testSuite->Name }} </option>
                        @endforeach
                    @endif
                </select>

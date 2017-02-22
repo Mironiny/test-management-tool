@@ -16,7 +16,9 @@ return [
     'successCreateTestCase' => 'Test case was create',
     'successCreateTestSuite' => 'Test suite was create',
     'successEditedTestCase' => 'Test case was edited',
+    'successEditedTestSuite' => 'Test suite was edited',
     'testCaseNotExists' => 'Test does not exists',
-    'deleteTestCase' => 'Test case was deleted'
+    'deleteTestCase' => 'Test case was deleted',
+    'deleteTestSuite' => 'Test suite was deleted'
 
 ];
