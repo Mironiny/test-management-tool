@@ -40,11 +40,15 @@ Route::post('requirements/create', 'RequirementsController@storeRequirement');
 Route::get('requirements/detail/{id}', 'RequirementsController@renderRequirementDetail');
 Route::post('requirements/update/{id}', 'RequirementsController@updateRequirement');
 Route::get('requirements/terminate/{id}', 'RequirementsController@deleteRequirement');
+Route::post('requirements/cover/{id}', 'RequirementsController@coverRequirement');
 
 /**
- * Test run routes.
+ * Test sets and runs routes.
  */
-Route::get('runs', 'TestRunController@index');
+Route::get('sets_runs', 'TestRunController@index');
+Route::get('sets_runs/set/create', 'TestRunController@createSetForm');
+Route::post('sets_runs/set/create', 'TestRunController@storeSet');
+Route::get('sets_runs/set/detail/{id}', 'TestRunController@renderSetDetail');
 
  /**
   * Test library routes.

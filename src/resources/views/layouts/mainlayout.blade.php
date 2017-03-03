@@ -18,14 +18,13 @@
     <!-- MetisMenu CSS -->
     <link href="/css/metisMenu.min.css" rel="stylesheet">
 
-    <!-- Timeline CSS -->
-    <link href="/css/timeline.css" rel="stylesheet">
-
     <!-- DataTables CSS -->
     <link href="/css/dataTables/dataTables.bootstrap.css" rel="stylesheet">
 
     <!-- Sidebar and others -->
     <link href="/css/tmt.css" rel="stylesheet">
+
+    <link href="/css/multi-select.css" rel="stylesheet">
 
     <!-- DataTables Responsive CSS -->
     <link href="/css/dataTables/dataTables.responsive.css" rel="stylesheet">
@@ -42,6 +41,8 @@
     <!-- jQuery -->
     <script src="/js/jquery.min.js"></script>
 
+    @yield('javascript')
+
     <!-- Bootstrap Core JavaScript -->
     <script src="/js/bootstrap.min.js"></script>
 
@@ -57,8 +58,6 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="/js/startmin.js"></script>
-
-    @yield('javascript')
 
     <script>
 
@@ -103,7 +102,7 @@
             <ul class="nav navbar-nav navbar-left navbar-top-links">
                 <li class="{{ Request::is('dashboard*') ? 'active' : '' }}"><a href="{{ url('/dashboard') }}"> @lang('layout.dashboard')</a></li>
                 <li class="{{ Request::is('requirements*') ? 'active' : '' }}"><a href="{{ url('/requirements') }}"> @lang('layout.requirements')</a></li>
-                <li class="{{ Request::is('runs*') ? 'active' : '' }}"><a href="{{ url('/runs') }}"> @lang('layout.test_runs')</a></li>
+                <li class="{{ Request::is('sets_runs*') ? 'active' : '' }}"><a href="{{ url('/sets_runs') }}"> @lang('layout.test_runs')</a></li>
                 <li class="{{ Request::is('library*') ? 'active' : '' }}"><a href="{{ url('/library') }}"> @lang('layout.test_library')</a></li>
             </ul>
 

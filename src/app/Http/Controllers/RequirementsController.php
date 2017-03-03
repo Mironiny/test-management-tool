@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Project;
+use App\TestSuite;
 use App\Requirement;
 use Lang;
 
@@ -81,15 +82,23 @@ class RequirementsController extends Controller
      */
     public function renderRequirementDetail(Request $request, $id)
     {
+
         // $requirementDetail = Requirement::find($id);
         $selectedProject = $request->session()->get('selectedProject');
-        $requirements = $this->getActiveRequirementsBySelectedProject($selectedProject);
-        if (sizeof($requirements) < $id) {
-            return redirect('requirements')->with('statusFailure', trans('requirements.requirementNotExists'));
-        }
-        $requirementDetail = $requirements[$id - 1];
+        $requirementDetail = Requirement::find($id);
+        $coverTestCases = Requirement::find($id)->testCases()->get();
+        $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
+        // $requirements = $this->getActiveRequirementsBySelectedProject($selectedProject);
+        // if (sizeof($requirements) < $id) {
+        //     return redirect('requirements')->with('statusFailure', trans('requirements.requirementNotExists'));
+        // }
+        // $requirementDetail = $requirements[$id - 1];
 
-        return view('requirements/requirementDetail')->with('requirementDetail', $requirementDetail);
+
+        return view('requirements/requirementDetail')
+            ->with('requirementDetail', $requirementDetail)
+            ->with('testSuites', $testSuites)
+            ->with('coverTestCases', $coverTestCases);
     }
 
     /**
@@ -134,6 +143,31 @@ class RequirementsController extends Controller
                                     ->whereNull('ActiveDateTo')
                                     ->orderBy('ActiveDateFrom', 'desc')
                                     ->get();
+    }
+
+    /**
+     * Cover test requiremets by test cases.
+     *
+     * @return view
+     */
+    public function coverRequirement(Request $request, $id)
+    {
+        $coveredTestCases = Requirement::find($id)->TestCases()->get();
+        $selectedTestcases = $request->testcases;
+
+        // Adding to database
+        foreach ($selectedTestcases as $selectedTestCase ) {
+            if (!$coveredTestCases->contains('TestCase_id', $selectedTestCase)) {
+                Requirement::find($id)->TestCases()->attach($selectedTestCase);
+            }
+        }
+        // Deleting from db
+        foreach ($coveredTestCases as $coveredTestCase) {
+            if (!in_array($coveredTestCase->TestCase_id, $selectedTestcases)) {
+                Requirement::find($id)->TestCases()->detach($coveredTestCase->TestCase_id);
+            }
+        }
+        return redirect("requirements/detail/$id")->with('statusSuccess', trans('requirements.successEditedRequirement'));
     }
 
 

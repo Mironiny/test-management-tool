@@ -52,7 +52,9 @@
 
 </div>
 
-@endsection @section('javascript')
+@endsection
+
+@section('javascript')
 <script src="/js/jquery.are-you-sure.js"></script>
 
 <script>

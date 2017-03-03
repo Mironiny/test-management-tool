@@ -15,7 +15,7 @@ return [
 
     'dashboard' => 'Dashboard',
     'requirements' => 'Requirements',
-    'test_runs' => 'Test runs',
+    'test_runs' => 'Test sets & runs',
     'test_library' => 'Test library',
     'user_profile' => 'User Profile',
     'settings' => 'Settings',

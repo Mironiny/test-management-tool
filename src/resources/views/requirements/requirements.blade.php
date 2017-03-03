@@ -35,8 +35,9 @@
                     @foreach ($requirements as $requirement)
                     <tr>
                         <td>{{ $id }}</td>
-                        <td><a href="{{ url("requirements/detail/$id")}}">{{ $requirement->Name }}</a></td>
-                        <td>Not covered</td>
+                        <td><a href="{{ url("requirements/detail/$requirement->TestRequirement_id")}}">{{ $requirement->Name }}</a></td>
+                        <td> <i class="{{ App\Requirement::find($requirement->TestRequirement_id)->testCases()->count() < 1 ? 'fa fa-close fa-fw' : 'fa fa-check fa-fw'}}"></i>
+                        {{ ($count = App\Requirement::find($requirement->TestRequirement_id)->testCases()->count()) < 1 ? "Not covered" : "Covered by $count test(s)" }}</td>
                     </tr>
                     <?php $id++; ?>
                     @endforeach
