@@ -52,7 +52,8 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="test">Test case description:</label>
+            <label class="control-label col-sm-2" for="description"><span data-toggle="tooltip" data-placement="top" title="What is the purpose of this test? Give tester test overview." class="glyphicon glyphicon-info-sign"></span> Test case description:
+            </label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="description" name='description' placeholder="Enter test case description">{{ old('description') }}</textarea>
                 <div class="pull-right">
@@ -62,7 +63,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="test">Test case prefixes:</label>
+            <label class="control-label col-sm-2" for="test"><span data-toggle="tooltip" data-placement="top" title="What should tester do before test execution?" class="glyphicon glyphicon-info-sign"></span> Test case prefixes:</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="prefixes" name='prefixes' placeholder="Enter test case prefixes">{{ old('prefixes') }}</textarea>
                 <div class="pull-right">
@@ -72,7 +73,27 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="test">Test case suffixes:</label>
+            <label class="control-label col-sm-2" for="steps"><span data-toggle="tooltip" data-placement="top" title="What should tester do exactly?" class="glyphicon glyphicon-info-sign"></span> Test case steps:</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="steps" name='steps' placeholder="Enter ordered steps of test case">{{ old('steps') }}</textarea>
+                <div class="pull-right">
+                    <div id="feedback4"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="steps"><span data-toggle="tooltip" data-placement="top" title="What should tester check? What should be done?" class="glyphicon glyphicon-info-sign"></span> Test case expected result:</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="expectedResult" name='expectedResult' placeholder="Enter expected result">{{ old('expectedResult') }}</textarea>
+                <div class="pull-right">
+                    <div id="feedback5"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="test"><span data-toggle="tooltip" data-placement="top" title="What should tester do after test execution?" class="glyphicon glyphicon-info-sign"></span> Test case suffixes:</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="suffixes" name='suffixes' placeholder="Enter test case suffixes">{{ old('suffixes') }}</textarea>
                 <div class="pull-right">
@@ -98,6 +119,7 @@
 <script>
     $(document).ready(function() {
         Stretchy.resize('select');
+        $('[data-toggle="tooltip"]').tooltip();
         $('form').areYouSure();
         var text_max = 1023;
 
@@ -115,6 +137,20 @@
             $('#feedback2').html(text_remaining + ' characters remaining');
         });
 
+        $('#steps').keyup(function() {
+            var text_length = $('#steps').val().length;
+            var text_remaining = text_max - text_length;
+
+            $('#feedback4').html(text_remaining + ' characters remaining');
+        });
+
+        $('#expectedResult').keyup(function() {
+            var text_length = $('#expectedResult').val().length;
+            var text_remaining = text_max - text_length;
+
+            $('#feedback5').html(text_remaining + ' characters remaining');
+        });
+
         $('#suffixes').keyup(function() {
             var text_length = $('#suffixes').val().length;
             var text_remaining = text_max - text_length;
@@ -125,6 +161,8 @@
 
         $('#prefixes').keyup();
         $('#description').keyup();
+        $('#steps').keyup();
+        $('#expectedResult').keyup();
         $('#suffixes').keyup();
     });
 </script>

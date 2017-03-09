@@ -17,7 +17,7 @@ class CreateTestsetTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('TestSet_id');
             $table->unsignedInteger('SUT_id');
-            $table->unsignedInteger('TestExecutor_id');
+            $table->unsignedInteger('TestExecutor_id')->nullable();
             $table->string('Name', 45);
             $table->dateTime('ActiveDateFrom');
             $table->dateTime('ActiveDateTo')->nullable();

@@ -1,12 +1,4 @@
 
-
-@media screen and (max-width: 650px) {
-    body {
-        padding-top: 60px;
-    }
-}
-
-
 /*body {
 font-family: "Lato", sans-serif;
 }*/
@@ -25,6 +17,9 @@ font-family: "Lato", sans-serif;
     padding-top: 60px;
 }
 
+#sidemenu {
+    padding: 8px 8px 8px 15px;
+}
 .sidenav a {
     padding: 8px 8px 8px 15px;
     text-decoration: none;
@@ -33,6 +28,14 @@ font-family: "Lato", sans-serif;
     display: block;
     transition: 0.3s
 }
+/*.sidenav ul {
+    padding: 8px 8px 8px 15px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #9d9d9d;
+    display: block;
+    transition: 0.3s
+}*/
 
 .sidenav a:hover, .offcanvas a:focus {
     color: #f1f1f1;
@@ -52,11 +55,47 @@ font-family: "Lato", sans-serif;
     /*padding: 16px;*/
 }
 
+#insideExecution {
+    list-style-type: none;
+}
+
 @media screen and (max-height: 450px) {
     .sidenav {
-        padding-top: 15px;
+        padding-top: 500px;
     }
     .sidenav a {
         font-size: 18px;
     }
+
+}
+
+@media screen and (max-width: 890px) {
+    #main {
+        padding-top: 60px;
+    }
+    .sidenav {
+        padding-top: 120px;
+    }
+
+@media screen and (max-width: 890px) {
+    #main {
+        padding-top: 90px;
+    }
+    .sidenav {
+        padding-top: 150px;
+    }
+
+/*@media screen and (max-width: 650px) {
+    body {
+        padding-top: 60px;
+    }
+
+    #main {
+        padding-top: 200px;
+    }
+
+    .sidenav {
+        padding-top: 500px;
+    }*/
+
 }

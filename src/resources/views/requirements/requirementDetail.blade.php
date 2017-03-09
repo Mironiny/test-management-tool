@@ -50,7 +50,7 @@
                 <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
             <div class="col-sm-2">
-                <button type="button" data-toggle="modal" data-target="#cover" class="btn btn-default">Cover by test case</button>
+                <button type="button" data-toggle="modal" data-target="#cover" class="btn btn-default">{{ ($count = App\Requirement::find($requirementDetail->TestRequirement_id)->testCases()->count()) < 1 ? "Cover by test case" : "Edit coverage" }} </button>
             </div>
         </div>
 

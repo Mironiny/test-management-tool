@@ -21,9 +21,6 @@
     <!-- DataTables CSS -->
     <link href="/css/dataTables/dataTables.bootstrap.css" rel="stylesheet">
 
-    <!-- Sidebar and others -->
-    <link href="/css/tmt.css" rel="stylesheet">
-
     <link href="/css/multi-select.css" rel="stylesheet">
 
     <!-- DataTables Responsive CSS -->
@@ -31,6 +28,9 @@
 
     <!-- Custom CSS -->
     <link href="/css/startmin.css" rel="stylesheet">
+
+    <!-- Sidebar and others -->
+    <link href="/css/tmt.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="/css/morris.css" rel="stylesheet">
@@ -108,7 +108,6 @@
 
             <!-- Top Navigation: Right Menu -->
             <ul class="nav navbar-right navbar-top-links">
-
 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">

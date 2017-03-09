@@ -29,6 +29,18 @@ class ProjectsController extends Controller
     }
 
     /**
+     * Show (render) the project page - only finished projects.
+     *
+     * @return view
+     */
+    public function filterFinished()
+    {
+        $projectsFilter = Project::whereNotNull('ActiveDateTo')->get();
+        return view('projects/projectsIndex')
+            ->with('projectsFilter', $projectsFilter);
+    }
+
+    /**
      * Show (render) the project creation page.
      *
      * @return view

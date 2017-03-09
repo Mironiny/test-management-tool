@@ -50,7 +50,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="test">Test suite goals:</label>
+            <label class="control-label col-sm-2" for="test"><span data-toggle="tooltip" data-placement="top" title="What test suite test?" class="glyphicon glyphicon-info-sign"></span> Test suite goals:</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="goals" name='goals' placeholder="Enter test suite goals">{{ old('goals') }}</textarea>
                 <div class="pull-right">
@@ -74,6 +74,7 @@
 
     <script>
         $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
             Stretchy.resize('select');
             $('form').areYouSure();
             var text_max = 1023;

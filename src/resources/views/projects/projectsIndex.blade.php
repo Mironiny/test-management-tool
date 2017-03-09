@@ -1,8 +1,8 @@
 @extends('layouts.mainLayout')
 
 @section('sidemenu')
-    <a href="#" style="color:white">Active projects</a>
-    <a href="#">Completed projects</a>
+    <a href="{{ url('projects')}}" style="{{ Request::is('projects') ? 'color:white' : '' }}">Active projects</a>
+    <a href="{{ url('projects/filter/finished')}}" style="{{ Request::is('projects/filter/finished') ? 'color:white' : '' }}">Completed projects</a>
 @endsection
 
 @section('title')
@@ -37,14 +37,25 @@
             </thead>
             <tbody>
                 <?php $id = 1; ?>
-                @foreach ($projects as $project)
-                <tr>
-                    <td>{{ $id }}</td>
-                    <td><a href="{{ url("projects/detail/$id")}}">{{ $project->Name }}</a></td>
-                    <td>{{ $project->ActiveDateFrom }}</td>
-                </tr>
-                <?php $id++; ?>
-                @endforeach
+                @if (isset($projectsFilter))
+                    @foreach ($projectsFilter as $project)
+                    <tr>
+                        <td>{{ $id }}</td>
+                        <td><a href="{{ url("projects/detail/$id")}}">{{ $project->Name }}</a></td>
+                        <td>{{ $project->ActiveDateFrom }}</td>
+                    </tr>
+                    <?php $id++; ?>
+                    @endforeach
+                @else
+                    @foreach ($projects as $project)
+                    <tr>
+                        <td>{{ $id }}</td>
+                        <td><a href="{{ url("projects/detail/$id")}}">{{ $project->Name }}</a></td>
+                        <td>{{ $project->ActiveDateFrom }}</td>
+                    </tr>
+                    <?php $id++; ?>
+                    @endforeach
+                @endif
             </tbody>
         </table>
     </div>

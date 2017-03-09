@@ -4,9 +4,15 @@
     Test run
 @endsection
 
+@section('sidemenu')
+    <a href="{{ url('sets_runs')}}" style="{{ Request::is('sets_runs') ? 'color:white' : '' }}">Active test set</a>
+    <a href="{{ url('sets_runs/filter/finished') }}" style="{{ Request::is('sets_runs/filter/finished') ? 'color:white' : '' }}">Finished test set</a>
+@endsection
+
 @section('content')
+    <div class="col-xs-12" style="height:40px;"></div>
+    <span style="font-size:25px;cursor:pointer" onclick="openNav()">&#9776;</span>
     <div class="container">
-        <div class="col-md-12" style="height:65px;"></div>
 
         @include('layouts.status')
 
@@ -29,6 +35,7 @@
                         <th>id</th>
                         <th>Test Set name</th>
                         <th>Test runs</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,9 +43,10 @@
                         <?php $id = 1; ?>
                         @foreach ($testSets as $testSet)
                         <tr>
-                            <td>{{ $id }}</td>
-                            <td><a href="{{ url("sets_runs/set/detail/$testSet->TestSet_id")}}">{{ $testSet->Name }}</a></td>
-                            <td>{{ App\TestSet::find($testSet->TestSet_id)->testRuns()->count() }}</td>
+                            <td class="col-md-1"><a href="{{ url("sets_runs/set/detail/$testSet->TestSet_id")}}">{{ $id }}</a></td>
+                            <td class="col-md-5"><a href="{{ url("sets_runs/set/detail/$testSet->TestSet_id")}}">{{ $testSet->Name }}</a></td>
+                            <td class="col-md-2">{{ App\TestSet::find($testSet->TestSet_id)->testRuns()->count() }}</td>
+                            <td class="col-md-4">{{ $testSet->ActiveDateTo == null ? 'Active' : 'Finished' }}</td>
                         </tr>
                         <?php $id++; ?>
                         @endforeach

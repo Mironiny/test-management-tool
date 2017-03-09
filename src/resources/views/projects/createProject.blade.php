@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-2" for="test">Testing description:</label>
+            <label class="control-label col-sm-2" for="test"><span data-toggle="tooltip" data-placement="top" title="How project will be tested? Describe test aproach." class="glyphicon glyphicon-info-sign"></span> Testing description:</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="testDescription" name='testDescription' placeholder="Enter testing description">{{ old('testDescription') }}</textarea>
                 <div class="pull-right">
@@ -67,6 +67,7 @@
 <script>
     $(document).ready(function() {
         $('form').areYouSure();
+        $('[data-toggle="tooltip"]').tooltip();
         var text_max = 1023;
         $('#description_feedback').html(text_max + ' characters remaining');
         $('#testDescription_feedback').html(text_max + ' characters remaining');

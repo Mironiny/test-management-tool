@@ -15,13 +15,15 @@ class CreateTestrunHasTestcaseTable extends Migration
     {
         Schema::create('TestRun_has_TestCase', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('TestRun_id');
+            $table->unsignedInteger('TestRun_id');
             $table->unsignedInteger('TestCase_id');
             $table->dateTime('LastUpdate')->nullable();
-            $table->tinyInteger('Pass')->nullable();
+            $table->string('Status', 45)->nullable();
             $table->string('Author', 45)->nullable();
+            $table->double('ExecutionDuration', 5, 2)->nullable();
             $table->string('Note')->nullable();
 
+            $table->primary(['TestRun_id', 'TestCase_id'], 'primarykey');
 
             $table->foreign('TestRun_id', 'fk_TestRun_has_TestCase_TestRun1_idx')
                 ->references('TestRun_id')->on('TestRun')

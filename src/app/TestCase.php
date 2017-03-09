@@ -27,6 +27,6 @@ class TestCase extends Model
      */
     public function testSuite()
     {
-        return $this->belongsTo('App\TestSuite');
+        return $this->belongsTo('App\TestSuite', 'TestSuite_id');
     }
 }

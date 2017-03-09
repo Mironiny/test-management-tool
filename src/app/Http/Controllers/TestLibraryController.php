@@ -77,7 +77,7 @@ class TestLibraryController extends Controller
         else {
             return view('library/createTestCase')
                     ->with('testSuites', $testSuites)
-                    ->with('selectedSuite', $selectedSuite);            
+                    ->with('selectedSuite', $selectedSuite);
         }
 
     }
@@ -122,6 +122,8 @@ class TestLibraryController extends Controller
         $testCase->TestSuite_id = $request->testSuite;
         $testCase->TestCaseDescription = $request->description;
         $testCase->TestCasePrefixes = $request->prefixes;
+        $testCase->TestSteps = $request->steps;
+        $testCase->ExpectedResult = $request->expectedResult;
         $testCase->TestCaseSuffixes = $request->suffixes;
         $testCase->Author = Auth::user()->name;
 
@@ -147,11 +149,13 @@ class TestLibraryController extends Controller
         $testCase->TestSuite_id = $request->testSuite;
         $testCase->TestCaseDescription = $request->description;
         $testCase->TestCasePrefixes = $request->prefixes;
+        $testCase->TestSteps = $request->steps;
+        $testCase->ExpectedResult = $request->expectedResult;
         $testCase->TestCaseSuffixes = $request->suffixes;
 
         $testCase->save();
 
-        return redirect('library')->with('statusSuccess', trans('library.successEditedTestCase'));
+        return redirect("library/testcase/detail/$id")->with('statusSuccess', trans('library.successEditedTestCase'));
     }
 
     /**

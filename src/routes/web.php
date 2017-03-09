@@ -46,9 +46,14 @@ Route::post('requirements/cover/{id}', 'RequirementsController@coverRequirement'
  * Test sets and runs routes.
  */
 Route::get('sets_runs', 'TestRunController@index');
+Route::get('sets_runs/filter/finished', 'TestRunController@filterNotActive');
 Route::get('sets_runs/set/create', 'TestRunController@createSetForm');
 Route::post('sets_runs/set/create', 'TestRunController@storeSet');
+Route::post('sets_runs/set/update/{id}', 'TestRunController@updateSet');
+Route::post('sets_runs/set/updateTestCases/{id}', 'TestRunController@updateTestCasesSet');
 Route::get('sets_runs/set/detail/{id}', 'TestRunController@renderSetDetail');
+Route::post('sets_runs/run/create', 'TestRunController@createRun');
+Route::get('sets_runs/testRunExecution/{id}', 'TestRunController@renderTestRunDetail');
 
  /**
   * Test library routes.
@@ -64,12 +69,13 @@ Route::get('sets_runs/set/detail/{id}', 'TestRunController@renderSetDetail');
  Route::get('library/testsuite/create', 'TestLibraryController@createTestSuiteForm');
  Route::post('library/testsuite/create', 'TestLibraryController@storeTestSuite');
  Route::post('library/testsuite/update/{id}', 'TestLibraryController@updateTestSuite');
-  Route::get('library/testsuite/terminate/{id}', 'TestLibraryController@deleteTestSuite');
+ Route::get('library/testsuite/terminate/{id}', 'TestLibraryController@deleteTestSuite');
 
 /**
  * Projects routes.
  */
 Route::get('projects', 'ProjectsController@index');
+Route::get('projects/filter/finished', 'ProjectsController@filterFinished');
 Route::get('projects/create', 'ProjectsController@createProjectForm');
 Route::post('projects/create', 'ProjectsController@storeProject');
 Route::post('projects/changeproject', 'ProjectsController@changeProject');

@@ -73,7 +73,7 @@ var _ = self.Stretchy = {
 			// huge number, and read that back to see what it was clipped to
 			element.scrollLeft = 1e+10;
 
-			var width = Math.max(element.scrollLeft + offset, element.scrollWidth - element.clientWidth);
+			var width = Math.max(element.scrollLeft + offset+50, element.scrollWidth - element.clientWidth);
 
 			element.style.width = width + "px";
 		}

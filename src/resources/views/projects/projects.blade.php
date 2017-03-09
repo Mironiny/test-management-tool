@@ -1,8 +1,8 @@
 @extends('layouts.mainLayout')
 
 @section('sidemenu')
-    <a href="#"><strong>Active projects</strong></a>
-    <a href="#">Completed projects</a>
+    <a href="#" style="color:white">Active projects</a>
+    <a href="#">Finished projects</a>
 @endsection
 
 @section('title')

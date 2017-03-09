@@ -13,11 +13,12 @@
 <span style="font-size:25px;cursor:pointer" onclick="openNav()">&#9776;</span>
 <div class="container">
 
+    @include('layouts.status')
     @include('layouts.formErrors')
 
     <div class="row">
         <div class="col-md-5">
-            <a href="{{ URL::previous() }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
+            <a href="{{ url("library") }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
         </div>
         <div class="col-md-5"></div>
         <div class="col-md-2">
@@ -52,7 +53,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="test">Test case description:</label>
+            <label class="control-label col-sm-2" for="test"><span data-toggle="tooltip" data-placement="top" title="What is the purpose of this test? Give tester test overview." class="glyphicon glyphicon-info-sign"></span> Test case description:</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="description" name='description'>{{ $testCase->TestCaseDescription }}</textarea>
                 <div class="pull-right">
@@ -62,7 +63,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="test">Test case prefixes:</label>
+            <label class="control-label col-sm-2" for="test"><span data-toggle="tooltip" data-placement="top" title="What should tester do before test execution?" class="glyphicon glyphicon-info-sign"></span> Test case prefixes:</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="prefixes" name='prefixes'>{{ $testCase->TestCasePrefixes }}</textarea>
                 <div class="pull-right">
@@ -72,7 +73,27 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2" for="test">Test case suffixes:</label>
+            <label class="control-label col-sm-2" for="steps"><span data-toggle="tooltip" data-placement="top" title="What should tester do exactly?" class="glyphicon glyphicon-info-sign"></span> Test case steps:</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="steps" name='steps' >{{ $testCase->TestSteps }}</textarea>
+                <div class="pull-right">
+                    <div id="feedback4"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="steps"><span data-toggle="tooltip" data-placement="top" title="What should tester check? What should be done?" class="glyphicon glyphicon-info-sign"></span> Test case expected result:</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="expectedResult" name='expectedResult'>{{ $testCase->ExpectedResult }}</textarea>
+                <div class="pull-right">
+                    <div id="feedback5"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="test"><span data-toggle="tooltip" data-placement="top" title="What should tester do after test execution?" class="glyphicon glyphicon-info-sign"></span> Test case suffixes:</label>
             <div class="col-sm-10">
                 <textarea class="form-control" id="suffixes" name='suffixes'>{{ $testCase->TestCaseSuffixes }}</textarea>
                 <div class="pull-right">
@@ -116,12 +137,15 @@
 </div>
 
 
-@endsection @section('javascript')
+@endsection
+
+@section('javascript')
 <script src="/js/jquery.are-you-sure.js"></script>
 
 <script>
     $(document).ready(function() {
         Stretchy.resize('select');
+        $('[data-toggle="tooltip"]').tooltip();
         $('form').areYouSure();
         var text_max = 1023;
 
@@ -139,6 +163,20 @@
             $('#feedback2').html(text_remaining + ' characters remaining');
         });
 
+        $('#expectedResult').keyup(function() {
+            var text_length = $('#expectedResult').val().length;
+            var text_remaining = text_max - text_length;
+
+            $('#feedback5').html(text_remaining + ' characters remaining');
+        });
+
+        $('#steps').keyup(function() {
+            var text_length = $('#steps').val().length;
+            var text_remaining = text_max - text_length;
+
+            $('#feedback4').html(text_remaining + ' characters remaining');
+        });
+
         $('#suffixes').keyup(function() {
             var text_length = $('#suffixes').val().length;
             var text_remaining = text_max - text_length;
@@ -150,6 +188,8 @@
         $('#prefixes').keyup();
         $('#description').keyup();
         $('#suffixes').keyup();
+        $('#expectedResult').keyup();
+        $('#steps').keyup();
     });
 </script>
 

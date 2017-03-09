@@ -24,7 +24,15 @@ class TestRun extends Model
 
     public function testSet()
     {
-        return $this->belongsTo('App\TestSet');
+        return $this->belongsTo('App\TestSet', 'TestSet_id');
+    }
+
+    /**
+     * Return assigned testCases.
+     */
+    public function testCases()
+    {
+        return $this->belongsToMany('App\TestCase', 'TestRun_has_TestCase', 'TestRun_id', 'TestCase_id');
     }
 
 }

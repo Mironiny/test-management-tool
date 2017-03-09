@@ -23,11 +23,13 @@ class CreateTestcaseTable extends Migration
             $table->dateTime('LastUpdate')->nullable();
             $table->tinyInteger('IsManual')->nullable();
             $table->string('TestCasePrefixes')->nullable();
+            $table->string('TestSteps')->nullable();
+            $table->string('ExpectedResult')->nullable();
             $table->string('TestCaseSuffixes')->nullable();
             $table->string('SourceCode')->nullable();
             $table->string('Author', 45)->nullable();
             $table->string('TestCaseDescription')->nullable();
-
+            $table->string('Note', 255)->nullable();
 
             $table->foreign('TestSuite_id', 'fk_TestCase_TestSuite1_idx')
                 ->references('TestSuite_id')->on('TestSuite')

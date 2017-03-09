@@ -60,7 +60,7 @@ class RequirementsController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|max:45',
-            'RequirementDescription' => 'max:1023'
+            'description' => 'max:1023'
         ]);
 
         $requirement = new Requirement;
@@ -137,6 +137,11 @@ class RequirementsController extends Controller
         return redirect('requirements')->with('statusSuccess', trans('requirements.deleteRequirement'));
     }
 
+    /**
+     * Get active requirements
+     *
+     * @return view
+     */
     private function getActiveRequirementsBySelectedProject($selectedProject)
     {
         return Requirement::where('SUT_id', $selectedProject)
@@ -146,19 +151,21 @@ class RequirementsController extends Controller
     }
 
     /**
-     * Cover test requiremets by test cases.
+     * Cover test requiremet by test cases.
      *
      * @return view
      */
     public function coverRequirement(Request $request, $id)
     {
         $coveredTestCases = Requirement::find($id)->TestCases()->get();
-        $selectedTestcases = $request->testcases;
+        $selectedTestcases = ($request->testcases != null) ? $request->testcases : array();
 
         // Adding to database
-        foreach ($selectedTestcases as $selectedTestCase ) {
-            if (!$coveredTestCases->contains('TestCase_id', $selectedTestCase)) {
-                Requirement::find($id)->TestCases()->attach($selectedTestCase);
+        if (!empty($selectedTestcases)) {
+            foreach ($selectedTestcases as $selectedTestCase ) {
+                if (!$coveredTestCases->contains('TestCase_id', $selectedTestCase)) {
+                    Requirement::find($id)->TestCases()->attach($selectedTestCase);
+                }
             }
         }
         // Deleting from db
@@ -169,6 +176,5 @@ class RequirementsController extends Controller
         }
         return redirect("requirements/detail/$id")->with('statusSuccess', trans('requirements.successEditedRequirement'));
     }
-
 
 }

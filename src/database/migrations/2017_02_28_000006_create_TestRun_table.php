@@ -21,7 +21,7 @@ class CreateTestrunTable extends Migration
             $table->dateTime('ActiveDateFrom');
             $table->dateTime('ActiveDateTo')->nullable();
             $table->dateTime('LastUpdate')->nullable();
-
+            $table->string('Status', 45);
 
             $table->foreign('TestSet_id', 'fk_TestRun_TestSet1_idx')
                 ->references('TestSet_id')->on('TestSet')
