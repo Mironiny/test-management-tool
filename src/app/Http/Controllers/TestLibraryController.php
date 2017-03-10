@@ -128,8 +128,9 @@ class TestLibraryController extends Controller
         $testCase->Author = Auth::user()->name;
 
         $testCase->save();
+        $testSuiteId = $testCase->testSuite->TestSuite_id;
 
-        return redirect('library')->with('statusSuccess', trans('library.successCreateTestCase'));
+        return redirect("library/filter/$testSuiteId")->with('statusSuccess', trans('library.successCreateTestCase'));
     }
 
     /**
@@ -201,7 +202,7 @@ class TestLibraryController extends Controller
 
         $testSuite = new TestSuite;
         $testSuite->Name = $request->name;
-        $testSuite->TestSuiteDocumentation = $request->decription;
+        $testSuite->TestSuiteDocumentation = $request->description;
         $testSuite->TestSuiteGoals = $request->goals;
 
         $testSuite->save();

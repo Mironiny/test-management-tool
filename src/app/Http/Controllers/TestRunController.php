@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Project;
 use App\TestSet;
 use App\TestRun;
 use App\TestSuite;
+use App\TestCase;
 use App\Enums\TestRunStatus;
 use App\Enums\TestCaseStatus;
+
 
 class TestRunController extends Controller
 {
@@ -164,7 +167,7 @@ class TestRunController extends Controller
     {
         $set = TestSet::find($id);
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        $runs = $set->testRuns;
+        $runs = $set->testRuns->sortByDesc('ActiveDateFrom');
         return view('runs/testSetDetail')
             ->with('set', $set)
             ->with('testSuites', $testSuites)
@@ -195,7 +198,7 @@ class TestRunController extends Controller
         $selectedTestCase = $testCases->first();
 
         $runs = $set->testRuns;
-        return redirect("sets_runs/testRunExecution/$run->TestRun_id");
+        return redirect("sets_runs/run/execution/$run->TestRun_id/testcase");
 
     }
 
@@ -204,9 +207,9 @@ class TestRunController extends Controller
      *
      * @return view
      */
-    public function renderTestRunDetail(Request $request, $id)
+    public function renderTestRunDetail(Request $request, $testRunId, $testCaseId = null)
     {
-        $run = TestRun::find($id);
+        $run = TestRun::find($testRunId);
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
         $testCases = $run->testCases()->get();
 
@@ -216,13 +219,92 @@ class TestRunController extends Controller
                 $collection->push($testCase->testSuite);
             }
         }
-        $selectedTestCase = $testCases->first();
+        if ($testCaseId == null) {
+            $selectedTestCase = $testCases->first();
+        }
+        else {
+            $selectedTestCase = $run->testCases->where('TestCase_id', $testCaseId)->first();
+        }
 
         return view('runs/testRunExecution')
+            ->with('testRun', $run)
             ->with('testSuites', $collection)
             ->with('selectedTestCase', $selectedTestCase)
             ->with('testCases', $testCases)
             ->with('sidemenuToogle', true);
 
     }
+
+    /**
+     * Update test case of test run
+     *
+     * @return view
+     */
+    public function updateTestRunTestCase(Request $request, $testRunId, $testCaseId)
+    {
+        $this->validate($request, [
+            'duration' => 'numeric',
+            'note' => 'max:1023'
+        ]);
+        $run = TestRun::find($testRunId);
+
+        // Save data
+        $run->testCases()->updateExistingPivot($testCaseId, ['Status' => $request->status]);
+
+        if ($request->duration != null) {
+            $run->testCases()->updateExistingPivot($testCaseId, ['ExecutionDuration' => $request->duration]);
+        }
+
+        if ($request->note != null) {
+            $run->testCases()->updateExistingPivot($testCaseId, ['Note' => $request->note]);
+        }
+
+        $run->testCases()->updateExistingPivot($testCaseId, ['Author' => Auth::user()->name]);
+
+        $run->testCases()->updateExistingPivot($testCaseId, ['LastUpdate' => date("Y-m-d H:i:s")]);
+
+        if (isset($request->dontMove)) {
+            return redirect("sets_runs/run/execution/$testRunId/testcase/$testCaseId")->with('statusSuccess', "Editing was successful");
+        }
+        // Move to the the next test
+        if (isset($request->move)) {
+            $testCases = $run->testCases()->get();
+            $currentCases = TestCase::find($testCaseId);
+
+            $currentPosition = 0;
+            foreach ($testCases as $testCase) {
+                if ($testCase->TestCase_id === $currentCases->TestCase_id) {
+                    break;
+                }
+                else {
+                    $currentPosition++;
+                }
+            }
+            if ($testCases->count() == $currentPosition + 1) {
+                // Don't move
+                return redirect("sets_runs/run/execution/$testRunId/testcase/$testCaseId")->with('statusSuccess', "Editing was successful");
+            }
+            else {
+                $nextCase = $testCases[$currentPosition + 1];
+                return redirect("sets_runs/run/execution/$testRunId/testcase/$nextCase->TestCase_id")->with('statusSuccess', "Editing was successful");
+            }
+        }
+
+    }
+
+    /**
+     * Close test run
+     *
+     * @return view
+     */
+    public function closeTestRun(Request $request, $testRunId)
+    {
+        $run = TestRun::find($testRunId);
+        $run->Status = TestRunStatus::FINISHED;
+        $run->save();
+        $testSetId = $run->testSet->TestSet_id;
+
+        return redirect("sets_runs/set/detail/$testSetId")->with('statusSuccess', "Test run finished");
+    }
+
 }

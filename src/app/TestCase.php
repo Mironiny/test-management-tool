@@ -29,4 +29,12 @@ class TestCase extends Model
     {
         return $this->belongsTo('App\TestSuite', 'TestSuite_id');
     }
+
+    /**
+     * Return assigned testCases.
+     */
+    public function testRuns()
+    {
+        return $this->belongsToMany('App\TestRun', 'TestRun_has_TestCase', 'TestCase_id', 'TestRun_id')->withPivot('Author', 'Status', 'Note', 'LastUpdate');
+    }
 }

@@ -53,7 +53,9 @@ Route::post('sets_runs/set/update/{id}', 'TestRunController@updateSet');
 Route::post('sets_runs/set/updateTestCases/{id}', 'TestRunController@updateTestCasesSet');
 Route::get('sets_runs/set/detail/{id}', 'TestRunController@renderSetDetail');
 Route::post('sets_runs/run/create', 'TestRunController@createRun');
-Route::get('sets_runs/testRunExecution/{id}', 'TestRunController@renderTestRunDetail');
+Route::get('sets_runs/run/execution/{runId}/testcase/{testcaseId?}', 'TestRunController@renderTestRunDetail');
+Route::post('sets_runs/run/execution/{runId}/testcase/{testcaseId}', 'TestRunController@updateTestRunTestCase');
+Route::post('sets_runs/run/execution/{runId}/close', 'TestRunController@closeTestRun');
 
  /**
   * Test library routes.

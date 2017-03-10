@@ -132,10 +132,10 @@
     <table class="table table-striped table-bordered table-hover" id="myTable">
         <thead>
             <tr>
-                <th>Test run id</th>
+                <th></th>
                 <th>Status</th>
                 <th>Run date</th>
-                <th>Succes</th>
+                <th>Results</th>
             </tr>
         </thead>
         <tbody>
@@ -143,16 +143,22 @@
             <?php $id = 1; ?>
                 @foreach ($runs as $run)
                     <tr>
-                        <td class="col-md-2"><a href="{{ url("sets_runs/testRunExecution/$run->TestRun_id")}}">{{ $id }}</a></td>
+                        <td class="col-md-2"><a href="{{ url("sets_runs/run/execution/$run->TestRun_id/testcase")}}">{{ $id }}</a></td>
                         <td class="col-md-3">{{ $run->Status }}</td>
                         <td class="col-md-3">{{ $run->ActiveDateFrom }}</td>
                         <td class="col-md-4">
                             <div class="progress">
-                             <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" style="width:40%">
-                              40% Pass
+                            <?php $succes = round($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::PASS)->count() / $run->testCases()->count() * 100) ; ?>
+                             <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" style="width:{{ $succes }}%">
+                              {{ $succes }}% Pass
                              </div>
-                             <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" style="width:20%">
-                               20% Fail
+                             <?php $fail = round($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::FAIL)->count() / $run->testCases()->count() * 100) ; ?>
+                             <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" style="width:{{ $fail }}%">
+                               {{ $fail }}% Fail
+                             </div>
+                             <?php $blocked = round($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::BLOCKED)->count() / $run->testCases()->count() * 100) ; ?>
+                             <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" style="width:{{ $blocked }}%">
+                               {{ $blocked }}% Blocked
                              </div>
                            </div>
                         </td>

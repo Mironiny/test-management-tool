@@ -17,9 +17,9 @@ Pro implementaci byla zvolená platforma php a aplikační framework Laravel 5.3
 * 6.3. - 12.3. -> Dokončení test run, přidání mapování požadavků (requirements) na test case
 * 13.3. - 19.3. -> Přidání zakladnich grafů do dashboard + user account management + přidání základních automatizovaných testů
 * 20.3. - 26.3. -> Dotáhnutí zakladních funcionalit do konce + refaktorizace + nová funkcionalita (automatizace, mail, autentizace, týmy a role a práva, překlad aplikace do více jazyků atd.)
-* 27.3. - 2.3. -> Nová funkcionalita + dokončení více testů na pokrytí základní funkcionality
-* 3.3 - 9.3 -> Testování frontendu
-* 10.3. - ∞ -> Psaní, psaní, psaní ...
+* 27.3. - 2.4. -> Nová funkcionalita + dokončení více testů na pokrytí základní funkcionality
+* 3.4 - 9.4 -> Testování frontendu
+* 10.4. - ∞ -> Psaní, psaní, psaní ...
 
 ### Live demo
 http://t-m-tt.herokuapp.com (změny přenešeny cca 1x týdně)
