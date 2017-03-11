@@ -62,15 +62,14 @@
         <div class="form-group">
 
             <div class="col-sm-offset-2 col-sm-2">
-                <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-default" role="button">Finish test set</button>
+                <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-default">Close test set</button>
             </div>
         </div>
 
     </form>
 
-        <!--DIV for confirmation dialog-->
         <div id="cover" class="modal fade" role="dialog">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
@@ -105,6 +104,32 @@
             </div>
         </div>
 
+                <!--DIV for confirmation dialog-->
+                <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Confirmation</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>Do you really want finish test run?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{{ url("/sets_runs/set/finish/$set->TestSet_id") }}" class="btn btn-default" onclick="event.preventDefault();
+                                 document.getElementById('close-form').submit();"> Yes</a>
+
+                                <form id="close-form" action="{{ url("/sets_runs/set/finish/$set->TestSet_id") }}" method="POST" style="display: none;">
+                                        {{ csrf_field() }}
+                                </form>
+                                {{-- <a href="{{ url("projects/terminate/$projectDetail->SUT_id")}}" class="btn btn-default" role="button">Yes</a> --}}
+                                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
     <br/>
 
     <div class="row">
@@ -134,7 +159,7 @@
             <tr>
                 <th></th>
                 <th>Status</th>
-                <th>Run date</th>
+                <th>Last update</th>
                 <th>Results</th>
             </tr>
         </thead>
@@ -145,7 +170,7 @@
                     <tr>
                         <td class="col-md-2"><a href="{{ url("sets_runs/run/execution/$run->TestRun_id/testcase")}}">{{ $id }}</a></td>
                         <td class="col-md-3">{{ $run->Status }}</td>
-                        <td class="col-md-3">{{ $run->ActiveDateFrom }}</td>
+                        <td class="col-md-3">{{ $run->LastUpdate }}</td>
                         <td class="col-md-4">
                             <div class="progress">
                             <?php $succes = round($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::PASS)->count() / $run->testCases()->count() * 100) ; ?>
@@ -191,7 +216,7 @@
     $('#optgroup').multiSelect({
         selectableOptgroup: true,
         selectableHeader: "<div class='custom-header'>Test cases to select</div>",
-        selectionHeader: "<div class='custom-header'>Selected test cases</div>"
+        selectionHeader: "<div class='custom-header'><span class=\"text-danger\">*</span>Selected test cases</div>"
     });
 
         $('#description').keyup(function() {

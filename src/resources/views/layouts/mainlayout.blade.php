@@ -32,11 +32,10 @@
     <!-- Sidebar and others -->
     <link href="/css/tmt.css" rel="stylesheet">
 
-    <!-- Morris Charts CSS -->
-    <link href="/css/morris.css" rel="stylesheet">
-
     <!-- Custom Fonts -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    {!! Charts::assets() !!}
 
     <!-- jQuery -->
     <script src="/js/jquery.min.js"></script>
@@ -81,10 +80,6 @@
     }
 
     </script>
-
-    <script src="../js/raphael.min.js"></script>
-    <script src="../js/morris.min.js"></script>
-    <script src="../js/morris-data.js"></script>
 
 </head>
 

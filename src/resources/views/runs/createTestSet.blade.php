@@ -88,7 +88,7 @@
         $('#optgroup').multiSelect({
             selectableOptgroup: true,
             selectableHeader: "<div class='custom-header'>Test cases to select</div>",
-            selectionHeader: "<div class='custom-header'>Selected test cases</div>"
+            selectionHeader: "<div class='custom-header'><span class=\"text-danger\">*</span>Selected test cases</div>"
         });
 
         $('#description').keyup(function() {

@@ -12,7 +12,7 @@ use App\TestSuite;
 use App\TestCase;
 use App\Enums\TestRunStatus;
 use App\Enums\TestCaseStatus;
-
+use Charts;
 
 class TestRunController extends Controller
 {
@@ -92,6 +92,7 @@ class TestRunController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|max:45',
+            'testcases' => 'required'
         ]);
 
         $set = new TestSet;
@@ -133,19 +134,39 @@ class TestRunController extends Controller
     }
 
     /**
+     * Terminate test set.
+     *
+     * @return view
+     */
+    public function terminateSet(Request $request, $id)
+    {
+        $set = TestSet::find($id);
+        $set->ActiveDateTo = date("Y-m-d H:i:s");
+        $set->save();
+
+        return redirect("sets_runs")->with('statusSuccess', "Test set finished");
+    }
+
+    /**
      * Update test cases of test set.
      *
      * @return view
      */
-    public function updateTestCasesSet(Request $request, $id)
+    public function updateSetTestCases(Request $request, $id)
     {
+        $this->validate($request, [
+            'testcases' => 'required',
+        ]);
+
         $coveredTestCases = TestSet::find($id)->TestCases()->get();
-        $selectedTestcases = $request->testcases;
+        $selectedTestcases = ($request->testcases != null) ? $request->testcases : array();
 
         // Adding to database
-        foreach ($selectedTestcases as $selectedTestCase ) {
-            if (!$coveredTestCases->contains('TestCase_id', $selectedTestCase)) {
-                TestSet::find($id)->TestCases()->attach($selectedTestCase);
+        if (!empty($selectedTestcases)) {
+            foreach ($selectedTestcases as $selectedTestCase ) {
+                if (!$coveredTestCases->contains('TestCase_id', $selectedTestCase)) {
+                    TestSet::find($id)->TestCases()->attach($selectedTestCase);
+                }
             }
         }
         // Deleting from db
@@ -154,6 +175,7 @@ class TestRunController extends Controller
                 TestSet::find($id)->TestCases()->detach($coveredTestCase->TestCase_id);
             }
         }
+
         return redirect("sets_runs/set/detail/$id")->with('statusSuccess', "Test set was edited");
     }
 
@@ -168,6 +190,7 @@ class TestRunController extends Controller
         $set = TestSet::find($id);
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
         $runs = $set->testRuns->sortByDesc('ActiveDateFrom');
+
         return view('runs/testSetDetail')
             ->with('set', $set)
             ->with('testSuites', $testSuites)
