@@ -6,7 +6,7 @@
 
 @section('sidemenu')
     <a href="{{ url('sets_runs')}}" style="{{ Request::is('sets_runs') ? 'color:white' : '' }}">Active test set</a>
-    <a href="{{ url('sets_runs/filter/finished') }}" style="{{ Request::is('sets_runs/filter/finished') ? 'color:white' : '' }}">Finished test set</a>
+    <a href="{{ url('sets_runs/filter/finished') }}" style="{{ Request::is('sets_runs/filter/finished') ? 'color:white' : '' }}">Closed test set</a>
 @endsection
 
 @section('content')

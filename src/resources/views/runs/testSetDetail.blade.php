@@ -114,7 +114,7 @@
                                 <h4 class="modal-title">Confirmation</h4>
                             </div>
                             <div class="modal-body">
-                                <p>Do you really want finish test run?</p>
+                                <p>Do you really want close test set?</p>
                             </div>
                             <div class="modal-footer">
                                 <a href="{{ url("/sets_runs/set/finish/$set->TestSet_id") }}" class="btn btn-default" onclick="event.preventDefault();

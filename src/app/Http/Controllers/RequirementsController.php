@@ -82,23 +82,22 @@ class RequirementsController extends Controller
      */
     public function renderRequirementDetail(Request $request, $id)
     {
-
         // $requirementDetail = Requirement::find($id);
         $selectedProject = $request->session()->get('selectedProject');
         $requirementDetail = Requirement::find($id);
-        $coverTestCases = Requirement::find($id)->testCases()->get();
-        $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        // $requirements = $this->getActiveRequirementsBySelectedProject($selectedProject);
-        // if (sizeof($requirements) < $id) {
-        //     return redirect('requirements')->with('statusFailure', trans('requirements.requirementNotExists'));
-        // }
-        // $requirementDetail = $requirements[$id - 1];
 
+        if ($requirementDetail->SUT_id != $selectedProject) {
+             return redirect('requirements')->with('statusFailure', trans('requirements.requirementNotExists'));
+        }
+        else {
+            $coverTestCases = Requirement::find($id)->testCases()->get();
+            $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
 
-        return view('requirements/requirementDetail')
-            ->with('requirementDetail', $requirementDetail)
-            ->with('testSuites', $testSuites)
-            ->with('coverTestCases', $coverTestCases);
+            return view('requirements/requirementDetail')
+                ->with('requirementDetail', $requirementDetail)
+                ->with('testSuites', $testSuites)
+                ->with('coverTestCases', $coverTestCases);
+        }
     }
 
     /**

@@ -32,6 +32,11 @@ Route::get('/', function () {
 Route::get('dashboard', 'DashboardController@index');
 
 /**
+ * User and settings routes.
+ */
+Route::get('user', 'UserController@index');
+
+/**
  * Requirements routes.
  */
 Route::get('requirements', 'RequirementsController@index');

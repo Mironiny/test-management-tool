@@ -185,9 +185,13 @@ class TestRunController extends Controller
      *
      * @return view
      */
-    public function renderSetDetail($id)
+    public function renderSetDetail(Request $request, $id)
     {
+        $selectedProject = $request->session()->get('selectedProject');
         $set = TestSet::find($id);
+        if ($set->SUT_id != $selectedProject) {
+            return redirect('sets_runs')->with('statusFailure', "Test set doesn't exist");
+        }
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
         $runs = $set->testRuns->sortByDesc('ActiveDateFrom');
 
@@ -232,7 +236,11 @@ class TestRunController extends Controller
      */
     public function renderTestRunDetail(Request $request, $testRunId, $testCaseId = null)
     {
+        $selectedProject = $request->session()->get('selectedProject');
         $run = TestRun::find($testRunId);
+        if ($run->testSet->SUT_id != $selectedProject) {
+            return redirect('sets_runs')->with('statusFailure', "Test set doesn't exist");
+        }
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
         $testCases = $run->testCases()->get();
 

@@ -35,8 +35,6 @@
     <!-- Custom Fonts -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-    {!! Charts::assets() !!}
-
     <!-- jQuery -->
     <script src="/js/jquery.min.js"></script>
 
