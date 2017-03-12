@@ -31,4 +31,4 @@ phpunit:php5.6:mysql5.7:
   services:
     - mysql:5.7
   script:
-- php vendor/bin/phpunit --colors
+    - php vendor/bin/phpunit --colors
