@@ -56,9 +56,9 @@
                                     $blocked = 0;
                                     if ($testRuns != null && $testRuns->count() > 0) {
                                                 $testRun = $testRuns[$testRuns->count() - 1];
-                                                $succes = round($testRun->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::PASS)->count() / $testRun->testCases()->count() * 100);
-                                                $fail = round($testRun->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::FAIL)->count() / $testRun->testCases()->count() * 100);
-                                                $blocked = round($testRun->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::BLOCKED)->count() / $testRun->testCases()->count() * 100);
+                                                $succes = round(($testRun->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::PASS)->count() / $testRun->testCases()->count() * 100), 1);
+                                                $fail = round(($testRun->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::FAIL)->count() / $testRun->testCases()->count() * 100), 1);
+                                                $blocked = round(($testRun->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::BLOCKED)->count() / $testRun->testCases()->count() * 100), 1);
                                     }
                                 ?>
                                  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" style="width:{{ $succes }}%">

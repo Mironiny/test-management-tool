@@ -173,15 +173,15 @@
                         <td class="col-md-3">{{ $run->LastUpdate }}</td>
                         <td class="col-md-4">
                             <div class="progress">
-                            <?php $succes = round($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::PASS)->count() / $run->testCases()->count() * 100) ; ?>
+                            <?php $succes = round(($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::PASS)->count() / $run->testCases()->count() * 100), 1) ; ?>
                              <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" style="width:{{ $succes }}%">
                               {{ $succes }}% Pass
                              </div>
-                             <?php $fail = round($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::FAIL)->count() / $run->testCases()->count() * 100) ; ?>
+                             <?php $fail = round(($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::FAIL)->count() / $run->testCases()->count() * 100), 1) ; ?>
                              <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" style="width:{{ $fail }}%">
                                {{ $fail }}% Fail
                              </div>
-                             <?php $blocked = round($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::BLOCKED)->count() / $run->testCases()->count() * 100) ; ?>
+                             <?php $blocked = round(($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::BLOCKED)->count() / $run->testCases()->count() * 100), 1) ; ?>
                              <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" style="width:{{ $blocked }}%">
                                {{ $blocked }}% Blocked
                              </div>

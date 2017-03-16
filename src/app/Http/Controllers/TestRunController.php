@@ -242,7 +242,7 @@ class TestRunController extends Controller
             return redirect('sets_runs')->with('statusFailure', "Test set doesn't exist");
         }
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        $testCases = $run->testCases()->get();
+        $testCases = $run->testCases()->orderBy('TestSuite_id')->orderBy('TestCase_id')->get();
 
         $collection = collect();
         foreach ($testCases as $testCase) {
@@ -299,7 +299,7 @@ class TestRunController extends Controller
         }
         // Move to the the next test
         if (isset($request->move)) {
-            $testCases = $run->testCases()->get();
+            $testCases = $run->testCases()->orderBy('TestSuite_id')->orderBy('TestCase_id')->get();
             $currentCases = TestCase::find($testCaseId);
 
             $currentPosition = 0;

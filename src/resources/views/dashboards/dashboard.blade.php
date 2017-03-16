@@ -17,17 +17,23 @@
 
         <div class="row">
             <div class="col-sm-5">
-                {!! $pieRequirementsChart->render() !!}
+                @if (isset($pieRequirementsChart))
+                    {!! $pieRequirementsChart->render() !!}
+                @endif
             </div>
             <div class="col-sm-1"></div>
             <div class="col-sm-6">
-                {!! $barRequirementsChart->render() !!}
+                @if (isset($barRequirementsChart))
+                    {!! $barRequirementsChart->render() !!}
+                @endif
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-12">
-                {!! $testRunChart->render() !!}
+                @if (isset($testRunChart))
+                    {!! $testRunChart->render() !!}
+                @endif
             </div>
         </div>
 

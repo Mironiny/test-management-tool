@@ -24,6 +24,27 @@ class loginTest extends TestCase
      *
      * @return void
      */
+    public function testLogInSystem1()
+    {
+            $user = factory(App\User::class)->create();
+
+            $this->seeInDatabase('users', [
+                'email' => $user->email
+            ]);
+
+            $this->seeInDatabase('users', [
+                'password' => $user->password
+            ]);
+
+            $response = $this->call('POST', url('/login'), ['email' => $user->email, 'password' => $user->password]);
+
+    }
+
+    /**
+     * Log in system in classic way.
+     *
+     * @return void
+     */
     public function testLogInSystem()
     {
         $user = factory(App\User::class)->create();
@@ -33,6 +54,10 @@ class loginTest extends TestCase
             ->seePageIs('/dashboard');
 
     }
+
+
+
+
 
 
 }

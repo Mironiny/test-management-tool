@@ -36,7 +36,7 @@ class DashboardController extends Controller
                   ->labels(['Covered', 'Not covered'])
                   ->values([$covered, $notCovered])
                   ->colors(['#00ff00', '#ff0000'])
-                  ->dimensions(600,300)
+                //   ->dimensions(600, 300)
                   ->responsive(true);
     }
 
@@ -64,12 +64,15 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $selectedProject = $request->session()->get('selectedProject');
-        if (Project::all()->count() > 1) {
-            $requirements = Requirement::where('SUT_id', $selectedProject)
-                                        ->whereNull('ActiveDateTo')
-                                        ->orderBy('ActiveDateFrom', 'asc')
-                                        ->get();
+        if (Project::all()->count() < 1) {
+            return view('dashboards/dashboard');
         }
+
+        $requirements = Requirement::where('SUT_id', $selectedProject)
+                                    ->whereNull('ActiveDateTo')
+                                    ->orderBy('ActiveDateFrom', 'asc')
+                                    ->get();
+
         $covered = 0;
         $notCovered = 0;
         $names = array();
