@@ -35,6 +35,9 @@
     <!-- Custom Fonts -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!-- Sidebar and others -->
+    <link href="/css/tmt.css" rel="stylesheet">
+
     <!-- jQuery -->
     <script src="/js/jquery.min.js"></script>
 

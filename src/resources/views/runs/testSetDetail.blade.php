@@ -4,9 +4,16 @@
     Test set detail
 @endsection
 
+@section('sidemenu')
+    <a href="{{ url("sets_runs/set/detail/$set->TestSet_id")}}" style="{{ Request::is("sets_runs/set/detail/$set->TestSet_id") ? 'color:white' : '' }}">Test runs</a>
+    <a href="{{ url("sets_runs/set/detail/$set->TestSet_id/filter/archived") }}" style="{{ Request::is("sets_runs/set/detail/$set->TestSet_id/filter/archived") ? 'color:white' : '' }}">Archived test runs</a>
+@endsection
+
 @section('content')
-<div class="container">
-    <div class="col-md-12" style="height:65px;"></div>
+    <div class="col-xs-12" style="height:40px;"></div>
+    <span style="font-size:25px;cursor:pointer" onclick="openNav()">&#9776;</span>
+    <div class="container">
+
 
     @include('layouts.formErrors')
     @include('layouts.status')
@@ -62,7 +69,7 @@
         <div class="form-group">
 
             <div class="col-sm-offset-2 col-sm-2">
-                <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-default">Close test set</button>
+                <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-default">Archived test set</button>
             </div>
         </div>
 
@@ -94,11 +101,11 @@
                         </select>
 
                     </div>
-                    <div class="modal-footer">
-                        {{-- <div class="col-sm-2"> --}}
+                    {{-- <div class="modal-footer">
+                        <div class="col-sm-2">
                             <button type="submit" class="btn btn-primary">Save changes</button>
-                        {{-- </div> --}}
-                    </div>
+                        </div>
+                    </div> --}}
                 </form>
                 </div>
             </div>
@@ -114,7 +121,7 @@
                                 <h4 class="modal-title">Confirmation</h4>
                             </div>
                             <div class="modal-body">
-                                <p>Do you really want close test set?</p>
+                                <p>Do you really want archived test set?</p>
                             </div>
                             <div class="modal-footer">
                                 <a href="{{ url("/sets_runs/set/finish/$set->TestSet_id") }}" class="btn btn-default" onclick="event.preventDefault();
@@ -161,6 +168,7 @@
                 <th>Status</th>
                 <th>Last update</th>
                 <th>Results</th>
+                <th>Change status</th>
             </tr>
         </thead>
         <tbody>
@@ -168,11 +176,15 @@
             <?php $id = 1; ?>
                 @foreach ($runs as $run)
                     <tr>
-                        <td class="col-md-2"><a href="{{ url("sets_runs/run/execution/$run->TestRun_id/testcase")}}">{{ $id }}</a></td>
+                        <td class="col-md-2"><a href="{{ url("sets_runs/run/execution/$run->TestRun_id/overview")}}">{{ $id }}</a></td>
                         <td class="col-md-3">{{ $run->Status }}</td>
                         <td class="col-md-3">{{ $run->LastUpdate }}</td>
-                        <td class="col-md-4">
-                            <div class="progress">
+                        <td class="col-md-3">
+                            <div class="progress progress-striped">
+                            <?php $notTested = round(($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::NOT_TESTED)->count() / $run->testCases()->count() * 100), 1) ; ?>
+                            <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" style="width:{{ $notTested }}%">
+                                  {{ $notTested }}% Not tested
+                            </div>
                             <?php $succes = round(($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::PASS)->count() / $run->testCases()->count() * 100), 1) ; ?>
                              <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" style="width:{{ $succes }}%">
                               {{ $succes }}% Pass
@@ -181,18 +193,58 @@
                              <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" style="width:{{ $fail }}%">
                                {{ $fail }}% Fail
                              </div>
+                            {{-- </div> --}}
                              <?php $blocked = round(($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::BLOCKED)->count() / $run->testCases()->count() * 100), 1) ; ?>
-                             <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" style="width:{{ $blocked }}%">
+                             <div class="progress-bar progress-bar-blocked" role="progressbar" style="width:{{ $blocked }}%">
                                {{ $blocked }}% Blocked
                              </div>
                            </div>
                         </td>
+                        <td class="col-md-1"><button class="btn btn-default" onclick="showDialog('{{ $run->TestRun_id }}', '{{ $run->Status }}')">Change</button></td>
                     </tr>
                     <?php $id++; ?>
                 @endforeach
             @endif
         </tbody>
     </table>
+
+
+        <!--DIV for change status dialog-->
+        <div class="modal fade" id="changeStatusModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Change status</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form name="submitForm" id="submitStatusForm" action="{{ url("sets_runs/run/changestatus") }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                            <input type="hidden" id="testRunId" name="testRunId" value="">
+                            <input type="hidden" id="status" name="status" value="">
+                    </form>
+
+                    <a href="#" class="btn btn-default" onclick="event.preventDefault();
+                      document.getElementById('status').value = ('{{ App\Enums\TestRunStatus::RUNNING }}'); document.getElementById('submitStatusForm').submit();">
+                      <i id="running"></i> {{ App\Enums\TestRunStatus::RUNNING }}
+                    </a>
+                    <a href="#" class="btn btn-default" onclick="event.preventDefault();
+                      document.getElementById('status').value = ('{{ App\Enums\TestRunStatus::FINISHED }}'); document.getElementById('submitStatusForm').submit();">
+                      <i id="finished"></i> {{ App\Enums\TestRunStatus::FINISHED }}
+                    </a>
+                    <a href="#" class="btn btn-default" onclick="event.preventDefault();
+                      document.getElementById('status').value = ('{{ App\Enums\TestRunStatus::ARCHIVED }}'); document.getElementById('submitStatusForm').submit();">
+                      <i id="archived"></i> {{ App\Enums\TestRunStatus::ARCHIVED }}
+                    </a>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 
@@ -228,6 +280,27 @@
 
         $('#description').keyup();
     });
+
+    function showDialog(id, status) {
+        var mymodal = $('#changeStatusModal');
+        mymodal.modal('show');
+
+        $("#running").removeClass();
+        $("#finished").removeClass();
+        $("#archived").removeClass();
+        switch (status) {
+            case "Running":
+                $("#running").addClass("fa fa-hand-o-right fa-fw");
+                break;
+            case "Finished":
+                 $("#finished").addClass("fa fa-hand-o-right fa-fw");
+                break;
+            case "Archived":
+                 $("#archived").addClass("fa fa-hand-o-right fa-fw");
+                break;
+        }
+        document.getElementById('testRunId').value = id;
+    }
 </script>
 
 @endsection

@@ -51,16 +51,22 @@ Route::post('requirements/cover/{id}', 'RequirementsController@coverRequirement'
  * Test sets and runs routes.
  */
 Route::get('sets_runs', 'TestRunController@index');
-Route::get('sets_runs/filter/finished', 'TestRunController@filterNotActive');
+Route::get('sets_runs/filter/archived', 'TestRunController@filterNotActive');
+
 Route::get('sets_runs/set/create', 'TestRunController@createSetForm');
 Route::post('sets_runs/set/create', 'TestRunController@storeSet');
 Route::post('sets_runs/set/finish/{id}', 'TestRunController@terminateSet');
 Route::post('sets_runs/set/update/{id}', 'TestRunController@updateSet');
 Route::post('sets_runs/set/updateTestCases/{id}', 'TestRunController@updateSetTestCases');
 Route::get('sets_runs/set/detail/{id}', 'TestRunController@renderSetDetail');
+Route::get('sets_runs/set/detail/{id}/filter/archived', 'TestRunController@renderSetDetailFiltered');
+
+Route::post('sets_runs/run/changestatus', 'TestRunController@testRunChangeStatus');
 Route::post('sets_runs/run/create', 'TestRunController@createRun');
+Route::get('sets_runs/run/execution/{runId}/overview', 'TestRunController@renderTestRunDetail');
 Route::get('sets_runs/run/execution/{runId}/testcase/{testcaseId?}', 'TestRunController@renderTestRunDetail');
 Route::post('sets_runs/run/execution/{runId}/testcase/{testcaseId}', 'TestRunController@updateTestRunTestCase');
+Route::post('sets_runs/run/execution/{runId}/changestatus', 'TestRunController@changeStatusTestRunTestCase');
 Route::post('sets_runs/run/execution/{runId}/close', 'TestRunController@closeTestRun');
 
  /**

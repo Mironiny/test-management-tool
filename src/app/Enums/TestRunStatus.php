@@ -10,5 +10,5 @@ abstract class TestRunStatus
 {
     const RUNNING = "Running";
     const FINISHED = "Finished";
-    const CLOSED = "Closed";
+    const ARCHIVED = "Archived";
 }

@@ -193,12 +193,49 @@ class TestRunController extends Controller
             return redirect('sets_runs')->with('statusFailure', "Test set doesn't exist");
         }
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        $runs = $set->testRuns->sortByDesc('ActiveDateFrom');
+        $runs = $set->testRuns->where('Status', '!=', TestRunStatus::ARCHIVED)->sortByDesc('Status')->sortByDesc('LastUpdate');
 
         return view('runs/testSetDetail')
             ->with('set', $set)
             ->with('testSuites', $testSuites)
             ->with('runs', $runs);
+    }
+
+    /**
+     * Show (render) the test run page.
+     *
+     * @return view
+     */
+    public function renderSetDetailFiltered(Request $request, $id)
+    {
+        {
+            $selectedProject = $request->session()->get('selectedProject');
+            $set = TestSet::find($id);
+            if ($set->SUT_id != $selectedProject) {
+                return redirect('sets_runs')->with('statusFailure', "Test set doesn't exist");
+            }
+            $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
+            $runs = $set->testRuns->sortByDesc('ActiveDateFrom')->where('Status', TestRunStatus::ARCHIVED);
+
+            return view('runs/testSetDetail')
+                ->with('set', $set)
+                ->with('testSuites', $testSuites)
+                ->with('runs', $runs);
+        }
+    }
+
+    /**
+     *
+     *
+     * @return view
+     */
+    public function testRunChangeStatus(Request $request)
+    {
+        $run = TestRun::find($request->testRunId);
+        $run->Status = $request->status;
+        $run->LastUpdate = date("Y-m-d H:i:s");
+        $run->save();
+        return redirect("sets_runs/set/detail/$run->TestSet_id")->with('statusSuccess', "Status edited");;
     }
 
     /**
@@ -225,7 +262,7 @@ class TestRunController extends Controller
         $selectedTestCase = $testCases->first();
 
         $runs = $set->testRuns;
-        return redirect("sets_runs/run/execution/$run->TestRun_id/testcase");
+        return redirect("sets_runs/run/execution/$run->TestRun_id/overview");
 
     }
 
@@ -251,7 +288,11 @@ class TestRunController extends Controller
             }
         }
         if ($testCaseId == null) {
-            $selectedTestCase = $testCases->first();
+            return view('runs/testRunExecutionOverview')
+                ->with('testRun', $run)
+                ->with('testSuites', $collection)
+                ->with('testCases', $testCases)
+                ->with('sidemenuToogle', true);
         }
         else {
             $selectedTestCase = $run->testCases->where('TestCase_id', $testCaseId)->first();
@@ -321,6 +362,20 @@ class TestRunController extends Controller
             }
         }
 
+    }
+
+    /**
+     * Change status of test case in test run
+     *
+     * @return view
+     */
+    public function changeStatusTestRunTestCase(Request $request, $testRunId)
+    {
+        $run = TestRun::find($testRunId);
+        $run->testCases()->updateExistingPivot($request->testCaseId, ['Status' => $request->testStatus]);
+        $run->testCases()->updateExistingPivot($request->testCaseId, ['Author' => Auth::user()->name]);
+        $run->testCases()->updateExistingPivot($request->testCaseId, ['LastUpdate' => date("Y-m-d H:i:s")]);
+        return redirect("sets_runs/run/execution/$testRunId/overview")->with('statusSuccess', "Test case edited");;
     }
 
     /**

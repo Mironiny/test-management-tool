@@ -6,7 +6,7 @@
 
 @section('sidemenu')
     <a href="{{ url('sets_runs')}}" style="{{ Request::is('sets_runs') ? 'color:white' : '' }}">Active test set</a>
-    <a href="{{ url('sets_runs/filter/finished') }}" style="{{ Request::is('sets_runs/filter/finished') ? 'color:white' : '' }}">Closed test set</a>
+    <a href="{{ url('sets_runs/filter/archived') }}" style="{{ Request::is('sets_runs/filter/archived') ? 'color:white' : '' }}">Archived test set</a>
 @endsection
 
 @section('content')
@@ -49,25 +49,29 @@
                             <td class="col-md-2">{{ App\TestSet::find($testSet->TestSet_id)->testRuns()->count() }}</td>
                             <td class="col-md-2">{{ $testSet->ActiveDateTo == null ? 'Active' : 'Finished' }}</td>
                             <td class="col-md-4">
-                                <div class="progress">
-                                <?php $testRuns = $testSet->testRuns->where('Status',  App\Enums\TestRunStatus::FINISHED);
+                                <div class="progress progress-striped">
+                                <?php $testRuns = $testSet->testRuns->where('Status',  App\Enums\TestRunStatus::FINISHED)->sortBy('LastUpdate');
                                     $succes = 0;
                                     $fail = 0;
                                     $blocked = 0;
                                     if ($testRuns != null && $testRuns->count() > 0) {
-                                                $testRun = $testRuns[$testRuns->count() - 1];
+                                                $testRun = $testRuns->last();
+                                                $notTested = round(($testRun->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::NOT_TESTED)->count() / $testRun->testCases()->count() * 100), 1);
                                                 $succes = round(($testRun->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::PASS)->count() / $testRun->testCases()->count() * 100), 1);
                                                 $fail = round(($testRun->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::FAIL)->count() / $testRun->testCases()->count() * 100), 1);
                                                 $blocked = round(($testRun->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::BLOCKED)->count() / $testRun->testCases()->count() * 100), 1);
                                     }
                                 ?>
+                                <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" style="width:{{ $notTested }}%">
+                                 {{ $notTested }}% Not tested
+                                </div>
                                  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" style="width:{{ $succes }}%">
                                   {{ $succes }}% Pass
                                  </div>
                                  <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" style="width:{{ $fail }}%">
                                    {{ $fail }}% Fail
                                  </div>
-                                 <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" style="width:{{ $blocked }}%">
+                                 <div class="progress-bar progress-bar-blocked" role="progressbar" style="width:{{ $blocked }}%">
                                    {{ $blocked }}% Blocked
                                  </div>
                                </div>

@@ -147,7 +147,7 @@ class DashboardController extends Controller
             ->title("Test set progress")
             ->dimensions(0, 400) // Width x Height
             // ->template("material")
-        ->colors(['#a6a6a6', '#00ff00', '#ff0000', '#9ab5ec'])
+        ->colors(['#efae4e', '#00ff00', '#ff0000', '#000000'])
         ->dataset('Not tested', $notTested)
         ->dataset('Pass', $pass)
         ->dataset('Fail', $fail)

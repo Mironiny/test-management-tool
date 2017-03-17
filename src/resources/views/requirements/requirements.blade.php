@@ -33,7 +33,7 @@
                 @if (isset($requirements))
                     <?php $id = 1; ?>
                     @foreach ($requirements as $requirement)
-                    <tr>
+                    <tr class="{{ App\Requirement::find($requirement->TestRequirement_id)->testCases()->count() < 1 ? 'danger' : 'success' }}">
                         <td>{{ $id }}</td>
                         <td><a href="{{ url("requirements/detail/$requirement->TestRequirement_id")}}">{{ $requirement->Name }}</a></td>
                         <td> <i class="{{ App\Requirement::find($requirement->TestRequirement_id)->testCases()->count() < 1 ? 'fa fa-close fa-fw' : 'fa fa-check fa-fw'}}"></i>
