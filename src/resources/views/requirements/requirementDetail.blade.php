@@ -57,7 +57,7 @@
         <div class="form-group">
 
             <div class="col-sm-offset-2 col-sm-2">
-                <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-default" role="button">Delete project</button>
+                <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-default" role="button">Delete requirement</button>
             </div>
         </div>
 

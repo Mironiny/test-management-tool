@@ -193,7 +193,17 @@ class TestRunController extends Controller
             return redirect('sets_runs')->with('statusFailure', "Test set doesn't exist");
         }
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        $runs = $set->testRuns->where('Status', '!=', TestRunStatus::ARCHIVED)->sortByDesc('Status')->sortByDesc('LastUpdate');
+        
+        // Sort (First every running by LastUpdate then finished by LastUpdate)
+        $runs = $set->testRuns->where('Status', '!=', TestRunStatus::ARCHIVED)->sort(function($a, $b) {
+           if($a->Status === $b->Status) {
+             if($a->LastUpdate === $b->LastUpdate) {
+               return 0;
+             }
+             return $a->LastUpdate > $b->LastUpdate ? -1 : 1;
+           }
+           return $a->Status > $b->Status ? -1 : 1;
+       });
 
         return view('runs/testSetDetail')
             ->with('set', $set)

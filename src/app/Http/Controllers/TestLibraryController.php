@@ -109,28 +109,31 @@ class TestLibraryController extends Controller
      */
     public function storeTestCase(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|max:45',
-            'testSuite' => 'required',
-            'description' => 'max:1023',
-            'prefixes' => 'max:1023',
-            'suffixes' => 'max:1023'
-        ]);
+        $testCaseCount =  $request->testCaseCount;
+        for ($i = 1; $i <= $testCaseCount; $i++) {
+            $this->validate($request, [
+                "name$i" => 'required|max:45',
+                "testSuite$i" => 'required',
+                "description$i" => 'max:1023',
+                "prefixes$i" => 'max:1023',
+                "suffixes$i" => 'max:1023'
+            ]);
+        }
 
-        $testCase = new TestCase;
-        $testCase->Name = $request->name;
-        $testCase->TestSuite_id = $request->testSuite;
-        $testCase->TestCaseDescription = $request->description;
-        $testCase->TestCasePrefixes = $request->prefixes;
-        $testCase->TestSteps = $request->steps;
-        $testCase->ExpectedResult = $request->expectedResult;
-        $testCase->TestCaseSuffixes = $request->suffixes;
-        $testCase->Author = Auth::user()->name;
+        for ($i = 1; $i <= $testCaseCount; $i++) {
+            $testCase = new TestCase;
+            $testCase->Name = $request["name$i"];
+            $testCase->TestSuite_id = $request["testSuite$i"];
+            $testCase->TestCaseDescription = $request["description$i"];
+            $testCase->TestCasePrefixes = $request["prefixes$i"];
+            $testCase->TestSteps = $request["steps$i"];
+            $testCase->ExpectedResult = $request["expectedResult$i"];
+            $testCase->TestCaseSuffixes = $request["suffixes$i"];
+            $testCase->Author = Auth::user()->name;
+            $testCase->save();
+        }
 
-        $testCase->save();
-        $testSuiteId = $testCase->testSuite->TestSuite_id;
-
-        return redirect("library/filter/$testSuiteId")->with('statusSuccess', trans('library.successCreateTestCase'));
+        return redirect("library")->with('statusSuccess', "Successfully added $testCaseCount Test Case(s)");
     }
 
     /**
