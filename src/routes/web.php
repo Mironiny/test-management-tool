@@ -96,6 +96,7 @@ Route::post('projects/changeproject', 'ProjectsController@changeProject');
 Route::get('projects/detail/{id}', 'ProjectsController@renderProjectDetail');
 Route::post('projects/update/{id}', 'ProjectsController@updateProject');
 Route::get('projects/terminate/{id}', 'ProjectsController@terminateProject');
+Route::post('projects/{id}/assignusers', 'ProjectsController@assignUsers');
 
 /**
  * Testing reasons.

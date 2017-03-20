@@ -57,14 +57,23 @@
             <div class="col-sm-offset-2 col-sm-2">
                 <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
+
+            @if ($logUser->pivot->Role == App\Enums\ProjectRole::OWNER || $logUser->pivot->Role == App\Enums\ProjectRole::ADMIN)
+                <div class="col-sm-2">
+                    <button type="button" data-toggle="modal" data-target="#attachUser" class="btn btn-default">Attach user</button>
+                </div>
+            @endif
         </div>
 
-        <div class="form-group">
 
-            <div class="col-sm-offset-2 col-sm-2">
-                <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-default" role="button">Terminate project</button>
+        @if ($logUser->pivot->Role == App\Enums\ProjectRole::OWNER || $logUser->pivot->Role == App\Enums\ProjectRole::ADMIN)
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-2">
+                    <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-default" role="button">Archive project</button>
+                </div>
             </div>
-        </div>
+        @endif
+
 
         <!--DIV for confirmation dialog-->
         <div id="myModal" class="modal fade" role="dialog">
@@ -88,18 +97,76 @@
 
     </form>
 
+        <!--DIV for attach user-->
+        <div id="attachUser" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Attach user to project</h4>
+                    </div>
+                    <div class="modal-body">
+                    <form class="form-horizontal" action="{{ url("projects/$projectDetail->SUT_id/assignusers")}}" method="POST"> {{ csrf_field() }}
+
+                        <select id='custom-headers' name='users[]' multiple='multiple'>
+                            @if (isset($users))
+                                @foreach ($users as $user)
+                                    @if ($user->id != $logUser->id)
+                                        <option value="{{ $user->id }}" {{$assignedUsers->contains('id', $user->id) ? 'selected' : ''}}> {{ $user->name }}</option>
+                                    @endif
+                                @endforeach
+                            @endif
+
+                              {{-- <option value='elem_1' selected>elem 1</option>
+                              <option value='elem_2'>elem 2</option>
+                              <option value='elem_3'>elem 3</option>
+                              <option value='elem_4' selected>elem 4</option>
+                              <option value='elem_100'>elem 100</option> --}}
+                        </select>
+
+                        {{-- @if (isset($testSuites))
+                            @foreach ($testSuites as $testSuite)
+                                <optgroup label='{{ $testSuite->Name }}'>
+                                    @foreach ($testSuite->testCases->where('ActiveDateTo', null) as $testCase)
+                                        <option value='{{$testCase->TestCase_id}}' {{$coverTestCases->contains('TestCase_id', $testCase->TestCase_id) ? 'selected' : ''}}>{{$testCase->Name}}</option>
+                                    @endforeach
+                                </optgroup>
+                            @endforeach
+                        @endif --}}
+
+                    </div>
+                    <div class="modal-footer">
+                        {{-- <div class="col-sm-2"> --}}
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        {{-- </div> --}}
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+
+
 </div>
 
 @endsection
 
 @section('javascript')
 <script src="/js/jquery.are-you-sure.js"></script>
+<script src="/js/jquery.multi-select.js"></script>
 
 <script>
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
         $('form').areYouSure();
         var text_max = 1023;
+
+        $('#custom-headers').multiSelect({
+          selectableHeader: "<div class='custom-header'>Selectable items</div>",
+          selectionHeader: "<div class='custom-header'>Selection items</div>",
+          selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+          selectionFooter: "<div class='custom-header'>Selection footer</div>"
+        });
 
         $('#description').keyup(function() {
             var text_length = $('#description').val().length;

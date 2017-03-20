@@ -32,6 +32,7 @@
                 <tr>
                     <th>id</th>
                     <th>Project name</th>
+                    <th>Role</th>
                     <th>Created</th>
                 </tr>
             </thead>
@@ -40,6 +41,7 @@
                 <tr>
                     <td>{{ $project->SUT_id }}</td>
                     <td><a href="#">{{ $project->Name }}</a></td>
+                    <td>{{ $project->pivot->Role}}</td>
                     <td>{{ $project->ActiveDateFrom }}</td>
                 </tr>
                 @endforeach

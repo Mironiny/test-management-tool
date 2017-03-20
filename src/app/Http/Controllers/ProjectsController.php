@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Project;
+use App\User;
+use App\Enums\ProjectRole;
 
 class ProjectsController extends Controller
 {
@@ -67,8 +70,10 @@ class ProjectsController extends Controller
         $project->Name = $request->name;
         $project->ProjectDescription = $request->description;
         $project->TestingDescription = $request->testDescription;
-
         $project->save();
+        Auth::user()->projects()->attach($project->SUT_id);
+        Auth::user()->projects()->updateExistingPivot($project->SUT_id, ['Role' => ProjectRole::OWNER]);
+
         return redirect('projects')->with('statusSuccess', trans('projects.successCreateProject'));
     }
 
@@ -133,11 +138,44 @@ class ProjectsController extends Controller
      */
     public function renderProjectDetail($id)
     {
-        $projects = Project::whereNull('ActiveDateTo')->get();
-        if (sizeof($projects) < $id) {
-            return redirect('projects')->with('statusFailure', trans('projects.projectNotExists'));
-        }
-        $projectDetail = $projects[$id - 1];
-        return view('projects/projectsDetail')->with('projectDetail', $projectDetail);
+        $projectDetail = Project::find($id);
+        $userId = Auth::user()->id;
+        $logUser = $projectDetail->Users()->where('users.id', $userId)->first();
+        $assignedUsers = $projectDetail->users()->get();
+        $users = User::all();
+    //    $logUser = Auth::user();
+        return view('projects/projectsDetail')
+            ->with('projectDetail', $projectDetail)
+            ->with('assignedUsers', $assignedUsers)
+            ->with('logUser', $logUser)
+            ->with('users', $users);
     }
+
+    public function assignUsers(Request $request, $id)
+    {
+         $project = Project::find($id);
+
+         $assignedUsers = $project->users()->get();
+         $selectedUsers = ($request->users != null) ? $request->users : array();
+
+         // Adding to database
+         if (!empty($selectedUsers)) {
+             foreach ($selectedUsers as $selectedUser) {
+                 if (!$assignedUsers->contains('id', $selectedUser)) {
+                     Project::find($id)->users()->attach($selectedUser);
+                     Project::find($id)->users()->updateExistingPivot($selectedUser, ['Role' =>  ProjectRole::USER]);
+                 }
+             }
+          }
+
+          // Deleting from db
+          foreach ($assignedUsers as $assignedUser) {
+              if (!in_array($assignedUser->id, $selectedUsers) && $assignedUser->pivot->Role != ProjectRole::OWNER) {
+                   Project::find($id)->users()->detach($assignedUser->id);
+              }
+          }
+
+         return redirect("projects/detail/$id")->with('statusSuccess', "Users changed");
+    }
+
 }

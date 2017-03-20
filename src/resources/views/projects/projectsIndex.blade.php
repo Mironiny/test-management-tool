@@ -32,6 +32,7 @@
                 <tr>
                     <th>id</th>
                     <th>Project name</th>
+                    <th>Role</th>
                     <th>Created</th>
                 </tr>
             </thead>
@@ -50,7 +51,8 @@
                     @foreach ($projects as $project)
                     <tr>
                         <td>{{ $id }}</td>
-                        <td><a href="{{ url("projects/detail/$id")}}">{{ $project->Name }}</a></td>
+                        <td><a href="{{ url("projects/detail/$project->SUT_id")}}">{{ $project->Name }}</a></td>
+                        <td>{{ $project->pivot->Role }}</td>
                         <td>{{ $project->ActiveDateFrom }}</td>
                     </tr>
                     <?php $id++; ?>

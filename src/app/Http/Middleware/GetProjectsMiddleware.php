@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Support\Facades\Auth;
 use Closure;
 use App\Project;
 use View;
@@ -21,17 +22,18 @@ class GetProjectsMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $projects = Project::whereNull('ActiveDateTo')->get();
+        $projects = Auth::user()->projects()->whereNull('ActiveDateTo')->get();
 
         View::share('projects', $projects);
 
         // Set and serve actually selected project and initialize session
         if (!$request->session()->has('selectedProject') || $request->session()->get('selectedProject') === 0) {
-            if (Project::all()->count() < 1) {
+            if (Auth::user()->projects()->count() < 1) {
                 $request->session()->put('selectedProject', 0);
             }
             else {
-                $request->session()->put('selectedProject', 1);
+                $project = Auth::user()->projects()->first();
+                $request->session()->put('selectedProject', $project->SUT_id);
             }
         }
         $selectedProject = Project::find($request->session()->get('selectedProject'));

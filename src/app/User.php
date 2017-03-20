@@ -26,4 +26,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Return assigned testCases.
+     */
+    public function projects()
+    {
+        return $this->belongsToMany('App\Project', 'User_has_SUT', 'id', 'SUT_id')->withPivot('Role');
+    }
 }

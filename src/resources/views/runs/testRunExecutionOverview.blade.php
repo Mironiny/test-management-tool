@@ -110,7 +110,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <form name="submitForm" id="close-form" action="{{ url("sets_runs/run/execution/$testRun->TestRun_id/changestatus") }}" method="POST" style="display: none;">
+                    <form name="submitForm" id="submitForm" action="{{ url("sets_runs/run/execution/$testRun->TestRun_id/changestatus") }}" method="POST" style="display: none;">
                             {{ csrf_field() }}
                             <input type="hidden" id="testCaseId" name="testCaseId" value="">
                             <input type="hidden" id="testStatus" name="testStatus" value="">
@@ -118,7 +118,7 @@
                     </form>
 
                     <a href="{{ url("sets_runs/run/execution/$testRun->TestRun_id/changestatus") }}" class="btn btn-warning" onclick="event.preventDefault();
-                      document.getElementById('testStatus').value = ('{{ App\Enums\TestCaseStatus::NOT_TESTED }}'); document.getElementById('close-form').submit();">
+                      document.getElementById('testStatus').value = ('{{ App\Enums\TestCaseStatus::NOT_TESTED }}'); document.getElementById('submitForm').submit();">
                         <i id="not_tested"></i>  {{App\Enums\TestCaseStatus::NOT_TESTED }}
                     </a>
 
@@ -128,11 +128,11 @@
                      </a>
 
                       <a href="{{ url("sets_runs/run/execution/$testRun->TestRun_id/changestatus") }}" class="btn btn-danger" onclick="event.preventDefault();
-                       document.getElementById('testStatus').value = ('{{ App\Enums\TestCaseStatus::FAIL }}');document.getElementById('close-form').submit();">
+                       document.getElementById('testStatus').value = ('{{ App\Enums\TestCaseStatus::FAIL }}');document.getElementById('submitForm').submit();">
                        <i id="fail"></i> {{App\Enums\TestCaseStatus::FAIL }}</a>
 
                        <a href="{{ url("sets_runs/run/execution/$testRun->TestRun_id/changestatus") }}" class="btn btn-danger" style="background-color: black; border-color: black" onclick="event.preventDefault();
-                        document.getElementById('testStatus').value = ('{{ App\Enums\TestCaseStatus::BLOCKED }}');document.getElementById('close-form').submit();">
+                        document.getElementById('testStatus').value = ('{{ App\Enums\TestCaseStatus::BLOCKED }}');document.getElementById('submitForm').submit();">
                         <i id="blocked"></i> {{App\Enums\TestCaseStatus::BLOCKED }}</a>
 
 

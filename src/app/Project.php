@@ -30,4 +30,12 @@ class Project extends Model
         return $this->hasMany('App\Requirement', 'SUT_id');
     }
 
+    /**
+     * Return assigned testCases.
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\User', 'User_has_SUT', 'SUT_id', 'id')->withPivot('Role');
+    }
+
 }

@@ -82,7 +82,7 @@
         </div>
     </form>
 
-        <!--DIV for confirmation dialog-->
+        <!--DIV for cover by test case-->
         <div id="cover" class="modal fade" role="dialog">
             <div class="modal-dialog modal-lg">
                 <!-- Modal content-->
