@@ -27,4 +27,4 @@ php artisan config:cache
 php artisan migrate
 
 # Run database seeder
-php artisan db:seed --class=UserTableSeeder
+#php artisan db:seed --class=UserTableSeeder
