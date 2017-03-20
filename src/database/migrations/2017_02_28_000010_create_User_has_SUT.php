@@ -40,6 +40,6 @@ class CreateUserHasSUT extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('User_has_SUT');
     }
 }
