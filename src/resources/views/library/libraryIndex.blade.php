@@ -14,6 +14,7 @@
 <div class="container">
 
     @include('layouts.status')
+    @include('layouts.formErrors')
 
     @if (Request::is('library/filter/*'))
 
@@ -100,6 +101,16 @@
 
     @endif
 
+    <form name="submitForm" id="submitForm" action="{{ url("library/testcase/create") }}" method="POST" style="display: none;">
+            {{ csrf_field() }}
+            <input type="hidden" id="name1" name="name1" value="">
+            <input type="hidden" id="testSuite1" name="testSuite1" value="">
+            <input type="hidden" id="testCaseCount" name="testCaseCount" value="1">
+            @if (isset($selectedSuite))
+                <input type="hidden" id="selectedSuite" name="selectedSuite" value="{{ $selectedSuite->TestSuite_id }}">
+            @endif
+    </form>
+
     <div class="col-md-12" style="height:20px;"></div>
     <div class="row">
         <div class="col-md-12">
@@ -109,16 +120,35 @@
                         <th>id</th>
                         <th>Test case name</th>
                         <th>Test Suite</th>
+                        <th>Last update</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <td class="col-md-1">
+                    </td>
+                    <td class="col-md-4">
+                        <input type="text" class="form-control" id="testname" name='testname' maxlength="45" value="{{ old('name') }}" placeholder="Enter test case name" autofocus>
+                    </td>
+
+                    <td  class="col-md-3">
+                        <select class="form-control" id="suite1" name="testSuite1">
+                                       @if (isset($testSuites))
+                                           @foreach ($testSuites as $testSuite)
+                                               <option value="{{ $testSuite->TestSuite_id }}" {{ isset($selectedSuite) && $selectedSuite->TestSuite_id == $testSuite->TestSuite_id ? 'selected=\"selected\"' : ''}}>{{ $testSuite->Name }} </option>
+                                           @endforeach
+                                       @endif
+                        </select>
+                    </td>
+                    <td class="col-md-4"><button type="button" onclick="$('#name1').val($('#testname').val());$('#testSuite1').val($('#suite1').val());event.preventDefault();$('#submitForm').submit();"
+                        class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button></td>
                     @if (isset($testCases))
                     <?php $id = 1; ?>
                         @foreach ($testCases as $testCase)
                             <tr>
-                                <td>{{ $id }}</td>
-                                <td><a href="{{ url("library/testcase/detail/$testCase->TestCase_id")}}">{{ $testCase->Name }}</a></td>
-                                <td>{{ App\TestSuite::find($testCase->TestSuite_id)->Name }}</td>
+                                <td class="col-md-1">{{ $id }}</td>
+                                <td class="col-md-4"><a href="{{ url("library/testcase/detail/$testCase->TestCase_id")}}">{{ $testCase->Name }}</a></td>
+                                <td class="col-md-3">{{ App\TestSuite::find($testCase->TestSuite_id)->Name }}</td>
+                                <td class="col-md-4">{{ $testCase->LastUpdate }}</td>
                             </tr>
                             <?php $id++; ?>
                         @endforeach
@@ -165,6 +195,13 @@
             $('#goals').keyup();
             $('#description').keyup();
         });
+
+        function addNewTestCase() {
+            $('#name1').val($('#testname').val());
+            $('#testSuite1').val($('#suite1').val());
+            event.preventDefault();
+            $('#submitForm').submit();
+        }
     </script>
 
 @endsection

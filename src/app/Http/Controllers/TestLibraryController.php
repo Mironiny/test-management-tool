@@ -133,7 +133,13 @@ class TestLibraryController extends Controller
             $testCase->save();
         }
 
-        return redirect("library")->with('statusSuccess', "Successfully added $testCaseCount Test Case(s)");
+        if (isset($request->selectedSuite)) {
+            return redirect("library/filter/$request->selectedSuite")->with('statusSuccess', "Successfully added $testCaseCount Test Case(s)");
+        }
+        else {
+            return redirect("library")->with('statusSuccess', "Successfully added $testCaseCount Test Case(s)");
+        }
+
     }
 
     /**

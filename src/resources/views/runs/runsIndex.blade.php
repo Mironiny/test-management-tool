@@ -61,6 +61,12 @@
                                                 $fail = round(($testRun->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::FAIL)->count() / $testRun->testCases()->count() * 100), 1);
                                                 $blocked = round(($testRun->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::BLOCKED)->count() / $testRun->testCases()->count() * 100), 1);
                                     }
+                                    else {
+                                        $notTested = 0;
+                                        $succes = 0;
+                                        $fail = 0;
+                                        $blocked = 0;
+                                    }
                                 ?>
                                 <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" style="width:{{ $notTested }}%">
                                  {{ $notTested }}% Not tested

@@ -175,8 +175,8 @@
             @if (isset($runs))
             <?php $id = 1; ?>
                 @foreach ($runs as $run)
-                    <tr>
-                        <td class="col-md-2"><a href="{{ url("sets_runs/run/execution/$run->TestRun_id/overview")}}">{{ $id }}</a></td>
+                    <tr style="cursor:pointer" class="clickable-row" data-href="{{ url("sets_runs/run/execution/$run->TestRun_id/overview")}} ">
+                        <td class="col-md-2">{{ $id }}</td>
                         <td class="col-md-3">{{ $run->Status }}</td>
                         <td class="col-md-3">{{ $run->LastUpdate }}</td>
                         <td class="col-md-3">
@@ -264,6 +264,10 @@
     $(document).ready(function() {
         $('form').areYouSure();
         var text_max = 1023;
+
+        $(".clickable-row").click(function() {
+            window.document.location = $(this).data("href");
+        });
 
     $('#optgroup').multiSelect({
         selectableOptgroup: true,
