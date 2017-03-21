@@ -24,7 +24,11 @@ php artisan key:generate
 php artisan config:cache
 
 # Run database migrations.
-php artisan migrate
+#php artisan migrate
+
+php artisan config:clear
+
+php artisan cache:clear
 
 # Run database seeder
 #php artisan db:seed --class=UserTableSeeder

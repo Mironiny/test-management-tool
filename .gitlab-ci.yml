@@ -10,7 +10,9 @@ phpunit:php5.6:mysql5.7:
   services:
     - mysql:5.7
   script:
-    - php src/vendor/bin/phpunit -c src/ --colors
+    - cd src
+    - php vendor/bin/phpunit --colors
+  #  - php src/vendor/bin/phpunit -c src/ --colors
 
 # phpunit:php5.6:mysql5.6:
 #   image: php:5.6
