@@ -30,5 +30,7 @@ php artisan config:clear
 
 php artisan cache:clear
 
+php artisan view:clear
+
 # Run database seeder
 #php artisan db:seed --class=UserTableSeeder
