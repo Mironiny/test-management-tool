@@ -105,7 +105,7 @@ class DashboardController extends Controller
         $fail = array();
         $block = array();
         foreach ($testSets as $testSet) {
-            $testRuns = $testSet->testRuns->where('Status', TestRunStatus::FINISHED);
+            $testRuns = $testSet->testRuns->where('Status', TestRunStatus::FINISHED)->sortBy('LastUpdate');
 
             $passed = 0;
             $failed = 0;
@@ -113,7 +113,7 @@ class DashboardController extends Controller
             $_notTested = 0;
 
             if ($testRuns != null && $testRuns->count() > 0) {
-                $testRun = $testRuns[$testRuns->count() - 1];
+                $testRun = $testRuns->last();
 
                 foreach ($testRun->testCases as $testCase) {
                     if ($testCase->pivot->Status == TestCaseStatus::PASS) {

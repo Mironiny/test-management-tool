@@ -22,6 +22,10 @@ font-family: "Lato", sans-serif;
     background-size: 40px 40px; !important
 }
 
+.no-sort::after { display: none!important; }
+
+.no-sort { pointer-events: none!important; cursor: default!important; }
+
 /* Black button */
 .btn-blocked {
     background: rgba(31, 27, 27, 1);
