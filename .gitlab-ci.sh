@@ -19,6 +19,8 @@ php composer.phar install
 # Copy over testing configuration.
 cp .env.testing .env
 
+chmod -R o+w storage/
+
 # Generate an application key. Re-cache.
 php artisan key:generate
 php artisan config:cache
