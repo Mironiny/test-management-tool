@@ -57,6 +57,77 @@ class DashboardController extends Controller
     }
 
     /**
+     * Get bar chart
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function getTestRunChart($selectedProject) {
+
+        if (Project::all()->count() < 0) {
+            return null;
+        }
+        $testSets = TestSet::where('SUT_id', $selectedProject)
+                                        ->whereNull('ActiveDateTo')
+                                        ->orderBy('ActiveDateFrom', 'asc')
+                                        ->get();
+        if ($testSets == null) {
+            return null;
+        }
+        $names = array();
+        $notTested = array();
+        $pass = array();
+        $fail = array();
+        $block = array();
+        foreach ($testSets as $testSet) {
+            $testRuns = $testSet->testRuns->where('Status', TestRunStatus::FINISHED)->sortBy('LastUpdate');
+
+            $passed = 0;
+            $failed = 0;
+            $blocked = 0;
+            $_notTested = 0;
+
+            if ($testRuns != null && $testRuns->count() > 0) {
+                $testRun = $testRuns->last();
+                foreach ($testRun->testCases as $testCase) {
+                    if ($testCase->pivot->Status == TestCaseStatus::PASS) {
+                        $passed++;
+                    }
+                    else if ($testCase->pivot->Status == TestCaseStatus::FAIL) {
+                        $failed++;
+                    }
+                    else if ($testCase->pivot->Status == TestCaseStatus::BLOCKED) {
+                        $blocked++;
+                    }
+                    else if ($testCase->pivot->Status == TestCaseStatus::NOT_TESTED) {
+                        $_notTested++;
+                    }
+                }
+            }
+
+            array_push($names, $testSet->Name);
+            array_push($pass, $passed);
+            array_push($fail, $failed);
+            array_push($block, $blocked);
+            array_push($notTested, $_notTested);
+        }
+        $chart = Charts::multi('bar', 'highcharts')
+            ->title("Test set progress")
+            ->dimensions(0, 400) // Width x Height
+                        // ->template("material")
+            ->colors(['#efae4e', '#00ff00', '#ff0000', '#000000'])
+            ->dataset('Not tested', $notTested)
+            ->dataset('Pass', $pass)
+            ->dataset('Fail', $fail)
+            ->dataset('Blocked', $block)
+            ->labels($names);
+
+            return $chart;
+
+    }
+
+
+
+    /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Http\Response
@@ -91,71 +162,9 @@ class DashboardController extends Controller
         }
         $pieRequirementsChart = $this->getPieRequirementChart($covered, $notCovered);
         $barRequirementsChart = $this->getBarRequirementChart($names, $counts);
+        $testRunChart = $this->getTestRunChart($selectedProject);
 
-        if (Project::all()->count() > 1) {
-            $testSets = TestSet::where('SUT_id', $selectedProject)
-                                        ->whereNull('ActiveDateTo')
-                                        ->orderBy('ActiveDateFrom', 'asc')
-                                        ->get();
-        }
-
-        $names = array();
-        $notTested = array();
-        $pass = array();
-        $fail = array();
-        $block = array();
-        foreach ($testSets as $testSet) {
-            $testRuns = $testSet->testRuns->where('Status', TestRunStatus::FINISHED)->sortBy('LastUpdate');
-
-            $passed = 0;
-            $failed = 0;
-            $blocked = 0;
-            $_notTested = 0;
-
-            if ($testRuns != null && $testRuns->count() > 0) {
-                $testRun = $testRuns->last();
-
-                foreach ($testRun->testCases as $testCase) {
-                    if ($testCase->pivot->Status == TestCaseStatus::PASS) {
-                        $passed++;
-                    }
-                    else if ($testCase->pivot->Status == TestCaseStatus::FAIL) {
-                        $failed++;
-                    }
-                    else if ($testCase->pivot->Status == TestCaseStatus::BLOCKED) {
-                        $blocked++;
-                    }
-                    else if ($testCase->pivot->Status == TestCaseStatus::NOT_TESTED) {
-                        $_notTested++;
-                    }
-                }
-
-            }
-            array_push($names, $testSet->Name);
-            array_push($pass, $passed);
-            array_push($fail, $failed);
-            array_push($block, $blocked);
-            array_push($notTested, $_notTested);
-        }
-
-        // var_dump($pass);
-        // var_dump($fail);
-        // var_dump($block);
-        // return;
-
-        $chart = Charts::multi('bar', 'highcharts')
-            ->title("Test set progress")
-            ->dimensions(0, 400) // Width x Height
-            // ->template("material")
-        ->colors(['#efae4e', '#00ff00', '#ff0000', '#000000'])
-        ->dataset('Not tested', $notTested)
-        ->dataset('Pass', $pass)
-        ->dataset('Fail', $fail)
-        ->dataset('Blocked', $block)
-        ->labels($names);
-
-
-        return view('dashboards/dashboard', ['pieRequirementsChart' => $pieRequirementsChart, 'barRequirementsChart' => $barRequirementsChart, 'testRunChart' => $chart]);
+        return view('dashboards/dashboard', ['pieRequirementsChart' => $pieRequirementsChart, 'barRequirementsChart' => $barRequirementsChart, 'testRunChart' => $testRunChart]);
     }
 
 

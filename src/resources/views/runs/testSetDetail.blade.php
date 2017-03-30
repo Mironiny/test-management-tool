@@ -175,11 +175,11 @@
             @if (isset($runs))
             <?php $id = 1; ?>
                 @foreach ($runs as $run)
-                    <tr style="cursor:pointer" class="clickable-row" data-href="{{ url("sets_runs/run/execution/$run->TestRun_id/overview")}} ">
-                        <td class="col-md-2">{{ $id }}</td>
-                        <td class="col-md-3">{{ $run->Status }}</td>
-                        <td class="col-md-3">{{ $run->LastUpdate }}</td>
-                        <td class="col-md-3">
+                    <tr style="cursor:pointer">
+                        <td class="col-md-2 clickable-row" data-href="{{ url("sets_runs/run/execution/$run->TestRun_id/overview")}} ">{{ $id }}</td>
+                        <td class="col-md-3 clickable-row" data-href="{{ url("sets_runs/run/execution/$run->TestRun_id/overview")}} ">{{ $run->Status }}</td>
+                        <td class="col-md-3 clickable-row" data-href="{{ url("sets_runs/run/execution/$run->TestRun_id/overview")}} ">{{ $run->LastUpdate }}</td>
+                        <td class="col-md-3 clickable-row" data-href="{{ url("sets_runs/run/execution/$run->TestRun_id/overview")}} ">
                             <div class="progress progress-striped">
                             <?php $notTested = round(($run->testCases()->wherePivot('Status', App\Enums\TestCaseStatus::NOT_TESTED)->count() / $run->testCases()->count() * 100), 1) ; ?>
                             <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" style="width:{{ $notTested }}%">
