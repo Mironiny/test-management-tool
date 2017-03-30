@@ -26,9 +26,13 @@ php artisan config:cache
 # Run database migrations.
 #php artisan migrate
 
+chmod -R 777 ../src/storage/
+
 php artisan config:clear
 
 php artisan cache:clear
+
+php artisan view:clear
 
 # Run database seeder
 #php artisan db:seed --class=UserTableSeeder
