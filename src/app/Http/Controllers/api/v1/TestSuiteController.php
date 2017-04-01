@@ -64,7 +64,7 @@ class TestSuiteController extends Controller
         $testSuite->TestSuiteDocumentation = $request->input('TestSuiteDocumentation');
 
         $testSuite->save();
-        return response()->json($this->filterTestSuite($testSuite), 201);
+        return response()->json($testSuite, 201);
     }
 
     /**

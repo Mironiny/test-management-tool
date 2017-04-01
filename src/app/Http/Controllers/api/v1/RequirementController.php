@@ -27,19 +27,10 @@ class RequirementController extends Controller
      */
     public function index($projectId)
     {
-        $project = $this->checkProjectAndRights($projectId);
+        $project = Commons::checkProjectAndRights($projectId);
         if (!$project instanceof Project) {
             return $project;
         }
-
-        // $project = Project::find($projectId);
-        // if ($project == null) {
-        //     return response()->json(['error' => "project not found"], 400);
-        // }
-        // $users = $project->users()->get();
-        // if (!$users->contains('id',  Auth::user()->id)) {
-        //     return response()->json(['error' => "Not rights to project"], 404);
-        // }
         $requirements = Requirement::where('SUT_id', $project->SUT_id)
                                     ->whereNull('ActiveDateTo')
                                     ->orderBy('ActiveDateFrom', 'asc')
@@ -69,7 +60,7 @@ class RequirementController extends Controller
      */
     public function store(Request $request, $projectId)
     {
-        $project = $this->checkProjectAndRights($projectId);
+        $project = Commons::checkProjectAndRights($projectId);
         if (!$project instanceof Project) {
             return $project;
         }
@@ -101,7 +92,7 @@ class RequirementController extends Controller
      */
     public function show($projectId, $requirementId)
     {
-        $project = $this->checkProjectAndRights($projectId);
+        $project = Commons::checkProjectAndRights($projectId);
         if (!$project instanceof Project) {
             return $project;
         }
@@ -136,7 +127,7 @@ class RequirementController extends Controller
      */
     public function update(Request $request, $projectId, $requirementId)
     {
-        $project = $this->checkProjectAndRights($projectId);
+        $project = Commons::checkProjectAndRights($projectId);
         if (!$project instanceof Project) {
             return $project;
         }
@@ -169,7 +160,7 @@ class RequirementController extends Controller
      */
     public function destroy($projectId, $requirementId)
     {
-        $project = $this->checkProjectAndRights($projectId);
+        $project = Commons::checkProjectAndRights($projectId);
         if (!$project instanceof Project) {
             return $project;
         }
@@ -182,16 +173,4 @@ class RequirementController extends Controller
         return response()->json(['success' => "Deleted"], 200);
     }
 
-    private function checkProjectAndRights($projectId)
-    {
-        $project = Project::find($projectId);
-        if ($project == null) {
-            return response()->json(['error' => "project not found"], 400);
-        }
-        $users = $project->users()->get();
-        if (!$users->contains('id',  Auth::user()->id)) {
-            return response()->json(['error' => "Not rights to project"], 404);
-        }
-        return $project;
-    }
 }

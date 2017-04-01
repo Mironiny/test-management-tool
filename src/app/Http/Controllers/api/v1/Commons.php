@@ -2,8 +2,17 @@
 
 namespace App\Http\Controllers\api\v1;
 
+use Illuminate\Support\Facades\Auth;
+use App\Project;
+
 class Commons {
 
+    /**
+     * Filter information to show in testcase
+     *
+     * @param  int  $id
+     * @return testcases
+     */
     public static function filterTestCase($testCases)
     {
         $data = [];
@@ -26,6 +35,23 @@ class Commons {
             $data[] = $entry;
         }
         return $data;
+    }
+
+    /**
+     * Check if project exist and if user has permission.
+     *
+     */
+    public static function checkProjectAndRights($projectId)
+    {
+        $project = Project::find($projectId);
+        if ($project == null) {
+            return response()->json(['error' => "project not found"], 400);
+        }
+        $users = $project->users()->get();
+        if (!$users->contains('id',  Auth::user()->id)) {
+            return response()->json(['error' => "Not rights to project"], 404);
+        }
+        return $project;
     }
 
 }
