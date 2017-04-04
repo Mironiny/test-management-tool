@@ -7,15 +7,26 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class registrationAndLog extends TestCase
 {
+    /**
+     * Redirect to login page if you are not autenticated.
+     *
+     * @return void
+     */
+    public function testRedirectToLoginPage()
+    {
+        $this->visit('/')
+            ->seePageIs('/login')
+            ->visit('/dashboard')
+            ->seePageIs('/login');
+    }
 
     /**
-     * Log in system in classic way.
+     * Register in system in classic way.
      *
      * @return void
      */
     public function testRegistration()
     {
-        parent::setUp();
         Artisan::call('migrate');
 
         $this->visit('/register')
@@ -32,16 +43,15 @@ class registrationAndLog extends TestCase
     }
 
     /**
-     * Log in system in classic way.
+     * Register in system with duplicated email.
      *
      * @return void
      */
     public function testRegistrationSameUser()
     {
-        parent::setUp();
-        Artisan::call('migrate');
 
         $this->visit('/register')
+            ->seePageIs('/register')
             ->type('pepa', 'name')
             ->type('email@stuff.com', 'email')
             ->type('123456', 'password')
@@ -49,13 +59,13 @@ class registrationAndLog extends TestCase
             ->press('submit')
             ->seePageIs('/register');
 
-        $this->seeInDatabase('users', [
-                'email' => 'email@stuff.com'
+        $this->dontSeeInDatabase('users', [
+                'name' => 'pepa'
             ]);
     }
 
     /**
-    * Log in system in classic way.
+    * Test log in system and logout.
     *
     * @return void
     */
@@ -72,6 +82,7 @@ class registrationAndLog extends TestCase
             ->press('submit')
             ->seePageIs('/dashboard')
             ->press('logout')
+            ->assertResponseOk()
             ->seePageIs('/login');
 
             Artisan::call('migrate:reset');
