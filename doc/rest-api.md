@@ -17,6 +17,12 @@ Podsekce:
 
 [Project](#projects)
 
+[Requirement](#requirements)
+
+[Test set](#test-sets)
+
+[Test run](#test-runs)
+
 ## Serializační formát
 
 Aplikace podporuje příjem požadavků ve formátu JSON. Aplikace odpovídá rovněž ve
@@ -56,11 +62,14 @@ kódem **401** a obsahem:
 
 ```json
 {
-   "error" : "Unauthenticated."
+    "error" : "Unauthenticated."
 }
 ```
 
+
 ## Test suites
+
+
 
     GET /api/v1/testsuites
 
@@ -102,12 +111,12 @@ Obsah:
 
 ```json
 {
-"TestSuite_id": "number",
-"Name": "string",
-"TestSuiteGoals": "string",
-"TestSuiteVersion": "string",
-"TestSuiteDocumentation": "string",
-"href": "string"
+    "TestSuite_id": "number",
+    "Name": "string",
+    "TestSuiteGoals": "string",
+    "TestSuiteVersion": "string",
+    "TestSuiteDocumentation": "string",
+    "href": "string"
 }
 ```
 
@@ -122,13 +131,14 @@ Uloží testovací sadu do aplikace
 
 ```json
 {
-"*Name*": "string",
-"TestSuiteGoals": "string",
-"TestSuiteVersion": "string",
-"TestSuiteDocumentation": "string"
+    "*Name*": "string",
+    "TestSuiteGoals": "string",
+    "TestSuiteVersion": "string",
+    "TestSuiteDocumentation": "string"
 }
 ```
 Poznámka: Atributy označené * jsou povinné
+
 ### Odpovědi
 
 1) **Úspěch** - návratový kód: 201
@@ -137,12 +147,12 @@ Obsah:
 
 ```json
 {
-"TestSuite_id": "number",
-"Name": "string",
-"TestSuiteGoals": "string",
-"TestSuiteVersion": "string",
-"TestSuiteDocumentation": "string",
-"href": "string"
+    "TestSuite_id": "number",
+    "Name": "string",
+    "TestSuiteGoals": "string",
+    "TestSuiteVersion": "string",
+    "TestSuiteDocumentation": "string",
+    "href": "string"
 }
 ```
 
@@ -154,7 +164,7 @@ Obsah:
 
 ```json
 {
-"error": "Test suite name error"
+    "error": "Test suite name error"
 }
 ```
 
@@ -169,10 +179,10 @@ Obsah:
 
 ```json
 {
-"Name": "string",
-"TestSuiteGoals": "string",
-"TestSuiteVersion": "string",
-"TestSuiteDocumentation": "string"
+    "Name": "string",
+    "TestSuiteGoals": "string",
+    "TestSuiteVersion": "string",
+    "TestSuiteDocumentation": "string"
 }
 ```
 
@@ -184,12 +194,12 @@ Obsah:
 
 ```json
 {
-"TestSuite_id": "number",
-"Name": "string",
-"TestSuiteGoals": "string",
-"TestSuiteVersion": "string",
-"TestSuiteDocumentation": "string",
-"href": "string"
+    "TestSuite_id": "number",
+    "Name": "string",
+    "TestSuiteGoals": "string",
+    "TestSuiteVersion": "string",
+    "TestSuiteDocumentation": "string",
+    "href": "string"
 }
 ```
 
@@ -201,7 +211,7 @@ Obsah:
 
 ```json
 {
-"error": "Testsuite not foundr"
+    "error": "Testsuite not foundr"
 }
 ```
 
@@ -220,7 +230,7 @@ Obsah:
 
 ```json
 {
-"success": "Deleted"
+    "success": "Deleted"
 }
 ```
 
@@ -232,11 +242,15 @@ Obsah:
 
 ```json
 {
-"error": "Testsuite not foundr"
+    "error": "Testsuite not foundr"
 }
 ```
 
+
+
 ## Test cases
+
+
 
     GET /api/v1/testcases
 
@@ -317,18 +331,18 @@ Obsah:
 
 ```json
 {
-"TestCase_id": "number",
-"TestSuite_id": "number",
-"Name": "string",
-"IsManual": 0,
-"TestCasePrefixes": "string",
-"TestSteps": "string",
-"ExpectedResult": "string",
-"TestCaseSuffixes": "string",
-"SourceCode": "string",
-"TestCaseDescription": "string",
-"Note": "string",
-"href": "string"
+    "TestCase_id": "number",
+    "TestSuite_id": "number",
+    "Name": "string",
+    "IsManual": 0,
+    "TestCasePrefixes": "string",
+    "TestSteps": "string",
+    "ExpectedResult": "string",
+    "TestCaseSuffixes": "string",
+    "SourceCode": "string",
+    "TestCaseDescription": "string",
+    "Note": "string",
+    "href": "string"
 }
 ```
 
@@ -340,7 +354,7 @@ Obsah:
 
 ```json
 {
-"error": "Testsuit not found."
+    "error": "Testsuit not found."
 }
 ```
 ---
@@ -355,15 +369,15 @@ Uloží testovací případ do aplikace
 
 ```json
 {
-"*TestSuite_id*": "number",
-"*Name*": "string",
-"IsManual": 0,
-"TestCasePrefixes": "string",
-"TestSteps": "string",
-"ExpectedResult": "string",
-"TestCaseSuffixes": "string",
-"TestCaseDescription": "string",
-"Note": "string"
+    "*TestSuite_id*": "number",
+    "*Name*": "string",
+    "IsManual": 0,
+    "TestCasePrefixes": "string",
+    "TestSteps": "string",
+    "ExpectedResult": "string",
+    "TestCaseSuffixes": "string",
+    "TestCaseDescription": "string",
+    "Note": "string"
 }
 ```
 Poznámka: Atributy označené * jsou povinné
@@ -399,7 +413,7 @@ Obsah:
 
 ```json
 {
-"error": "Test suite doesn't exists"
+    "error": "Test suite doesn't exists"
 }
 ```
 
@@ -411,7 +425,7 @@ Obsah:
 
 ```json
 {
-"error": "Test case name error"
+    "error": "Test case name error"
 }
 ```
 
@@ -447,12 +461,12 @@ Obsah:
 
 ```json
 {
-"TestSuite_id": "number",
-"Name": "string",
-"TestSuiteGoals": "string",
-"TestSuiteVersion": "string",
-"TestSuiteDocumentation": "string",
-"href": "string"
+    "TestSuite_id": "number",
+    "Name": "string",
+    "TestSuiteGoals": "string",
+    "TestSuiteVersion": "string",
+    "TestSuiteDocumentation": "string",
+    "href": "string"
 }
 ```
 
@@ -464,7 +478,7 @@ Obsah:
 
 ```json
 {
-"error": "TestCase not found"
+    "error": "TestCase not found"
 }
 ```
 
@@ -483,7 +497,7 @@ Obsah:
 
 ```json
 {
-"success": "Deleted"
+    "success": "Deleted"
 }
 ```
 
@@ -495,11 +509,15 @@ Obsah:
 
 ```json
 {
-"error": "Testcase not found"
+    "error": "Testcase not found"
 }
 ```
 
-## Project
+
+
+## Projects
+
+
 
     GET /api/v1/projects
 
@@ -514,20 +532,20 @@ Obsah:
 
 ```json
 
-    {
-      "SUT_id": "number",
-      "Name": "string",
-      "ActiveDateFrom": "string",
-      "ActiveDateTo": "string",
-      "LastUpdate": "string",
-      "ProjectDescription": "string",
-      "TestingDescription": "string",
-      "HwRequirements": "string",
-      "SwRequirements": "string",
-      "TestEstimatedDate": "string",
-      "Note": "string",
-      "Role" : "string"
-    }
+{
+    "SUT_id": "number",
+    "Name": "string",
+    "ActiveDateFrom": "string",
+    "ActiveDateTo": "string",
+    "LastUpdate": "string",
+    "ProjectDescription": "string",
+    "TestingDescription": "string",
+    "HwRequirements": "string",
+    "SwRequirements": "string",
+    "TestEstimatedDate": "string",
+    "Note": "string",
+    "Role" : "string"
+}
 
 ```
 
@@ -550,18 +568,18 @@ Obsah:
 ```json
 
 {
-  "SUT_id": "number",
-  "Name": "string",
-  "ActiveDateFrom": "string",
-  "ActiveDateTo": "string",
-  "LastUpdate": "string",
-  "ProjectDescription": "string",
-  "TestingDescription": "string",
-  "HwRequirements": "string",
-  "SwRequirements": "string",
-  "TestEstimatedDate": "string",
-  "Note": "string",
-  "Role" : "string"
+    "SUT_id": "number",
+    "Name": "string",
+    "ActiveDateFrom": "string",
+    "ActiveDateTo": "string",
+    "LastUpdate": "string",
+    "ProjectDescription": "string",
+    "TestingDescription": "string",
+    "HwRequirements": "string",
+    "SwRequirements": "string",
+    "TestEstimatedDate": "string",
+    "Note": "string",
+    "Role" : "string"
 }
 
 ```
@@ -649,7 +667,7 @@ Obsah:
 
 ```json
 {
-"error": "SUT name error"
+    "error": "SUT name error"
 }
 ```
 
@@ -676,7 +694,7 @@ id - identifikator projektu
     "TestEstimatedDate": "string",
     "Note": "string",
 }
-}
+
 ```
 
 ### Odpovědi
@@ -709,7 +727,7 @@ Obsah:
 
 ```json
 {
-"error": "SUT not found"
+    "error": "SUT not found"
 }
 ```
 
@@ -732,7 +750,7 @@ Obsah:
 
 ```json
 {
-"success": "Deleted"
+    "success": "Deleted"
 }
 ```
 
@@ -744,7 +762,7 @@ Obsah:
 
 ```json
 {
-"error": "Project not found"
+    "error": "Project not found"
 }
 ```
 
@@ -755,9 +773,1169 @@ Popis: uživatel nemá práva k projektu
 Obsah:
 
 ```json
-
 {
     "error": "No rights to project"
 }
 
 ```
+
+
+### Requirements
+
+
+
+    GET /api/v1/projects/{projectId}/requirements
+
+### Popis
+Zobrazí všechny požadavky k danému projektu včetně testovacích případů, které daný
+požadavek pokrývají.
+
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+{
+    "TestRequirement_id": "number",
+    "SUT_id": "number",
+    "Name": "string",
+    "CoverageCriteria": "string",
+    "RequirementDescription": "string",
+    "TestCase": [
+        {
+            "TestCase_id": "number",
+            "Name": "string"
+        }
+    ]
+}
+
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+---
+
+    GET /api/v1/projects/{projectId}/requirements/{requirementId}
+
+### Popis
+Zobrazí všechny požadavky k danému projektu včetně testovacích případů, které daný
+požadavek pokrývají.
+
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+{
+    "TestRequirement_id": "number",
+    "SUT_id": "number",
+    "Name": "string",
+    "CoverageCriteria": "string",
+    "RequirementDescription": "string",
+    "TestCase": [
+        {
+            "TestCase_id": "number",
+            "Name": "string"
+        }
+    ]
+}
+
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+
+4) **Neúspěch**: návratový kód: 400
+
+Popis: Neexistující požadavek
+
+Obsah:
+```json
+
+{
+    "error": "No requirement found"
+}
+
+```
+---
+
+    POST /api/v1/projects/{projectId}/requirements
+
+### Popis
+Uloží požadavek
+
+### Vstup
+
+```json
+
+{
+    "*Name*": "string",
+    "CoverageCriteria": "string",
+    "RequirementDescription": "string"
+}
+```
+Poznámka: Atributy označené * jsou povinné
+
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 201
+
+Obsah:
+
+```json
+
+{
+    "TestRequirement_id": 19,
+    "Name": "string",
+    "SUT_id": "number",
+    "CoverageCriteria": "string",
+    "RequirementDescription": "string",
+    "LastUpdate": "string",
+    "ActiveDateFrom": "string"
+
+}
+
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+
+4) **Neúspěch** - návratový kód: 400
+
+Popis: V případě nezadání atributu Name či překročení maximální povolené velikosti 45 znaků
+
+Obsah:
+
+```json
+{
+    "error": "Requirement name error"
+}
+```
+
+---
+
+    PUT /api/v1/projects/{projectId}/requirements/{requirementId}
+
+### Popis
+Uloží požadavek
+
+### Vstup
+
+```json
+
+{
+    "Name": "string",
+    "CoverageCriteria": "string",
+    "RequirementDescription": "string"
+}
+```
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 201
+
+Obsah:
+
+```json
+
+{
+    "TestRequirement_id": 19,
+    "Name": "string",
+    "SUT_id": "number",
+    "CoverageCriteria": "string",
+    "RequirementDescription": "string",
+    "LastUpdate": "string",
+    "ActiveDateFrom": "string"
+
+}
+
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+
+4) **Neúspěch**: návratový kód: 400
+
+Popis: Neexistující požadavek
+
+Obsah:
+```json
+
+{
+    "error": "No requirement found"
+}
+
+```
+
+---
+
+    DELETE /api/v1/projects/{projectId}/requirements/
+
+### Popis
+Archivuje daný požadavek.
+
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+{
+    "success": "Deleted"
+}
+
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+
+4) **Neúspěch**: návratový kód: 400
+
+Popis: Neexistující požadavek
+
+Obsah:
+```json
+
+{
+    "error": "No requirement found"
+}
+
+```
+---
+
+
+## Test set
+
+
+
+    GET /api/v1/projects/{projectId}/testsets
+
+
+
+### Popis
+Zobrazí všechny aktivní testovací sety. Včetně testovacích případů, které jsou v
+daném setu zahrnuty.
+
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+{
+    "TestSet_id": "number",
+    "SUT_id": "number",
+    "Name": "string",
+    "Author": "string",
+    "TestSetDescription": "string",
+    "TestCase": [
+      {
+        "TestCase_id": "number",
+        "Name": "string"
+      }
+  ]
+}
+
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+---
+
+
+    GET /api/v1/projects/{projectId}/testsets/{setId}
+
+
+
+### Popis
+Zobrazí vybraný testovací set včetně
+
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+{
+    "TestSet_id": "number",
+    "SUT_id": "number",
+    "Name": "string",
+    "Author": "string",
+    "TestSetDescription": "string",
+    "TestCase": [
+      {
+        "TestCase_id": "number",
+        "Name": "string"
+      }
+  ]
+}
+
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+---
+
+4) **Neúspěch**: návratový kód: 404
+
+Popis: Testset nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Not existing set"
+}
+
+```
+---
+
+
+    POST /api/v1/projects/{projectId}/testsets
+
+### Popis
+Vytvoří testovací set a naplni ho testovacimi pripady.
+
+### Vstup
+
+```json
+
+{
+    "*Name*": "string",
+    "Author": "string",
+    "TestSetDescription": "string",
+    "TestCases": ["number"]
+}
+```
+Poznámka: atributy označené hvězdičkou jsou povinné
+
+### Příklad
+
+```json
+{
+    "Name": "Validace",
+    "Author": "Admin",
+    "TestSetDescription": "popis",
+    "TestCases": [1, 2, 5, 10]
+}
+```
+
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+{
+    "TestSet_id": "number",
+    "SUT_id": "number",
+    "Name": "string",
+    "Author": "string",
+    "TestSetDescription": "string",
+    "TestCase": [
+      {
+        "TestCase_id": "number",
+        "Name": "string"
+      }
+  ]
+}
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+
+4) **Neúspěch**: návratový kód: 404
+
+Popis: V případě nezadání atributu Name či překročení maximální povolené velikosti 45 znaků
+
+Obsah:
+```json
+
+{
+    "error": "Set name error"
+}
+
+```
+
+---
+
+    PUT /api/v1/projects/{projectId}/testsets/{setId}
+
+### Popis
+Aktualizuje testset
+
+### Vstup
+
+```json
+
+{
+    "Name": "string",
+    "Author": "string",
+    "TestSetDescription": "string"
+}
+```
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+{
+    "TestSet_id": "number",
+    "SUT_id": "number",
+    "Name": "string",
+    "Author": "string",
+    "TestSetDescription": "string",
+    "TestCase": [
+      {
+        "TestCase_id": "number",
+        "Name": "string"
+      }
+  ]
+}
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+
+4) **Neúspěch**: návratový kód: 404
+
+Popis: Testset nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Not existing set"
+}
+
+```
+---
+
+    DELETE /api/v1/projects/{projectId}/testsets/{setId}
+
+### Popis
+Archivuje testset
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+```json
+{
+    "success": "Deleted"
+}
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+
+4) **Neúspěch**: návratový kód: 404
+
+Popis: Testset nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Not existing set"
+}
+
+```
+
+---
+
+
+## Test sets
+
+
+    GET /api/v1/projects/{projectId}/testsets/{setId}/testruns
+
+
+### Popis
+Zobrazí všechny test run náležící dané test set.
+
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+{
+    "TestRun_id": "number",
+    "TestSet_id": "number",
+    "Status": "string",
+    "TestCase": [
+        {
+            "TestCase_id": "number",
+            "Name": "string",
+            "Status": "string"
+        }
+    ]
+}
+
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+
+4) **Neúspěch**: návratový kód: 404
+
+Popis: Test set nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Testset don't exist"
+}
+
+```
+---
+
+    GET /api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}
+
+
+### Popis
+Zobrazí daný test run.
+
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+{
+    "TestRun_id": "number",
+    "TestSet_id": "number",
+    "Status": "string",
+    "TestCase": [
+        {
+            "TestCase_id": "number",
+            "Name": "string",
+            "Status": "string"
+        }
+    ]
+}
+
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+
+4) **Neúspěch**: návratový kód: 404
+
+Popis: Test set nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Testset don't exist"
+}
+
+```
+---
+
+    POST /api/v1/projects/{projectId}/testsets/{setId}/testruns
+
+
+### Popis
+Zobrazí daný test run
+
+### Vstup
+Žádný vstup není zpracován. Pouhé zaslaní POST se správnými parametry v URL vytvoří
+test run
+
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+{
+    "TestRun_id": "number",
+    "TestSet_id": "number",
+    "Status": "string",
+    "TestCase": [
+        {
+            "TestCase_id": "number",
+            "Name": "string"
+        }
+    ]
+}
+
+```
+Poznámka: pro status jsou povolené hodnoty: "Running", "Finished" a "Archived".
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+
+4) **Neúspěch**: návratový kód: 404
+
+Popis: Test set nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Testset don't exist"
+}
+
+```
+---
+
+    PUT /api/v1/projects/{projectId}/testsets/{setId}/testruns
+
+
+### Popis
+Aktualizuje stav daneho testRun
+
+### Vstup
+```json
+
+{
+	"Status" : "Finished"
+}
+```
+
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+{
+    "Status": "string",
+}
+
+```
+Poznámka: pro status jsou povolené hodnoty: "Running", "Finished" a "Archived".
+
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+
+4) **Neúspěch**: návratový kód: 404
+
+Popis: Test set nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Testset don't exist"
+}
+
+```
+---
+
+    DELETE /api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}
+
+
+### Popis
+Archivuje dany test run
+
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+{
+    "success": "Deleted"
+}
+
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+
+4) **Neúspěch**: návratový kód: 404
+
+Popis: Test set nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Testset don't exist"
+}
+
+```
+
+5) **Neúspěch**: návratový kód: 404
+
+Popis: Test run nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Test run don't exist"
+}
+
+```
+---
+
+---
+
+    PUT /api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}/testcase/{testCaseID}
+
+
+### Popis
+Změní status testovaciho případu v rámci test run
+
+### Vstup
+```json
+{
+	"Status" : "string"
+}
+```
+
+### Odpovědi
+
+1) **Úspěch**: návratový kód: 200
+
+Obsah:
+
+```json
+
+{
+    "TestRun_id": "number",
+    "TestSet_id": "number",
+    "Status": "string",
+    "TestCase": [
+        {
+            "TestCase_id": "number",
+            "Name": "string",
+            "Status": "string"
+        }
+    ]
+}
+```
+
+2) **Neúspěch**: návratový kód: 404
+
+Popis: Projekt nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Project not found"
+}
+
+```
+
+3) **Neúspěch**: návratový kód: 400
+
+Popis: Uživatel nemá práva k projektu
+
+Obsah:
+```json
+
+{
+    "error": "Not rights to project"
+}
+
+```
+
+4) **Neúspěch**: návratový kód: 404
+
+Popis: Test set nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Testset don't exist"
+}
+
+```
+
+5) **Neúspěch**: návratový kód: 404
+
+Popis: Test run nenalezen
+
+Obsah:
+```json
+
+{
+    "error": "Test run don't exist"
+}
+
+```
+---
