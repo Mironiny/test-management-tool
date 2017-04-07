@@ -69,14 +69,20 @@ kódem **401** a obsahem:
 
 ## Test suites
 
+Method | URI
+------------ | -------------
+GET | [/api/v1/testsuites](#GET-/api/v1/testsuites)
+GET | [/api/v1/testsuites/{suiteId}](#GET-/api/v1/testsuites{suiteId})
+POST | /api/v1/testsuites
+PUT | /api/v1/testsuites/{suiteId}
+DELETE | /api/v1/testsuites/{suiteId}
 
+### GET /api/v1/testsuites
 
-    GET /api/v1/testsuites
-
-### Popis
+#### Popis
  Vrátí všechny testovací sady.
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -95,15 +101,15 @@ Obsah:
 
 ---
 
-    GET /api/v1/testsuites/{id}
+### GET /api/v1/testsuites/{id}
 
-### Popis
+#### Popis
 Vrátí vybranou testovací sadu
 
-### Parametry
+#### Parametry
 id - identifikator testovací sady
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch** - návratový kód: 200
 
@@ -122,12 +128,12 @@ Obsah:
 
 ---
 
-    POST /api/v1/testsuites
+### POST /api/v1/testsuites
 
-### Popis
+#### Popis
 Uloží testovací sadu do aplikace
 
-### Vstup
+#### Vstup
 
 ```json
 {
@@ -139,7 +145,7 @@ Uloží testovací sadu do aplikace
 ```
 Poznámka: Atributy označené * jsou povinné
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch** - návratový kód: 201
 
@@ -170,12 +176,12 @@ Obsah:
 
 ---
 
-    PUT /api/v1/testsuites/{id}
+### PUT /api/v1/testsuites/{id}
 
-### Popis
+#### Popis
  Edituje existující testovací sadu
 
-### Vstup
+#### Vstup
 
 ```json
 {
@@ -186,7 +192,7 @@ Obsah:
 }
 ```
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch** - návratový kód: 201
 
@@ -217,12 +223,12 @@ Obsah:
 
 ---
 
-    DELETE /api/v1/testsuites/{id}
+## DELETE /api/v1/testsuites/{id}
 
-### Popis
+#### Popis
 Archvivuje danou testovací sadu
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch** - návratový kód: 200
 
@@ -1493,7 +1499,7 @@ Obsah:
 ---
 
 
-## Test sets
+## Test runs
 
 
     GET /api/v1/projects/{projectId}/testsets/{setId}/testruns
