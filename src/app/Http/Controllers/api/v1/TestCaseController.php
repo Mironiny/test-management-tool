@@ -113,23 +113,27 @@ class TestCaseController extends Controller
     public function update(Request $request, $id)
     {
         // Validation
-        if ($request->input('TestSuite_id') == null) {
-            return response()->json(['error' => "Test suite doesn't pass in request"], 400);
-        }
-        $testSuite = TestSuite::find($request->input('TestSuite_id'));
-        if ($testSuite == null) {
-            return response()->json(['error' => "Test suite doesn't exists"], 400);
-        }
-        if ($request->input('Name') == null || strlen($request->input('Name') > 45)) {
-            return response()->json(['error' => "Test case name error"], 400);
-        }
-
+        // if ($request->input('TestSuite_id') == null) {
+        //     return response()->json(['error' => "Test suite doesn't pass in request"], 400);
+        // }
+        // $testSuite = TestSuite::find($request->input('TestSuite_id'));
+        // if ($testSuite == null) {
+        //     return response()->json(['error' => "Test suite doesn't exists"], 400);
+        // }
+        // if ($request->input('Name') == null || strlen($request->input('Name') > 45)) {
+        //     return response()->json(['error' => "Test case name error"], 400);
+        // }
         $testCase = TestCase::find($id);
         if ($testCase == null) {
             return response()->json(['error' => "TestCase not found"], 404);
         }
-        $testCase->TestSuite_id = $request->input('TestSuite_id');
-        $testCase->Name =  $request->input('Name');
+        if ($request->input('TestSuite_id') != null) {
+            $testCase->TestSuite_id = $request->input('TestSuite_id');
+        }
+        if ($request->input('Name')) {
+            $testCase->Name =  $request->input('Name');
+        }
+
         $testCase->IsManual =  $request->input('IsManual');
         $testCase->TestCasePrefixes =  $request->input('TestCasePrefixes');
         $testCase->TestSteps =  $request->input('TestSteps');

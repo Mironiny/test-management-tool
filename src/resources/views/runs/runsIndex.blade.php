@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col-md-9"></div>
             <div class="col-md-3">
-                <a href="{{ url('sets_runs/set/create')}}" class="btn btn-primary btn-block {{ isset($selectedProject) ? '' : 'disabled' }}" role="button">
+                <a id="newSet" href="{{ url('sets_runs/set/create')}}" class="btn btn-primary btn-block {{ isset($selectedProject) ? '' : 'disabled' }}" role="button">
                     <span class="glyphicon glyphicon-plus"></span> New test set
                 </a>
             </div>

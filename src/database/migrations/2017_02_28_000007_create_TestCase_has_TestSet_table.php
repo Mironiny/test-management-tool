@@ -28,7 +28,7 @@ class CreateTestcaseHasTestsetTable extends Migration
 
             $table->foreign('TestsSet_id', 'fk_Test Case_has_Test Run_Test Run1_idx')
                 ->references('TestSet_id')->on('TestSet')
-                ->onDelete('no action')
+                ->onDelete('cascade')
                 ->onUpdate('no action');
         });
     }

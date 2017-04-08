@@ -36,7 +36,7 @@ class TestRunController extends Controller
     {
         $selectedProject = $request->session()->get('selectedProject');
 
-        if (Project::all()->count() > 1) {
+        if (Project::all()->count() > 0) {
             $testSets = TestSet::where('SUT_id', $selectedProject)
                                         ->whereNull('ActiveDateTo')
                                         ->orderBy('ActiveDateFrom', 'asc')
@@ -193,7 +193,7 @@ class TestRunController extends Controller
             return redirect('sets_runs')->with('statusFailure', "Test set doesn't exist");
         }
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        
+
         // Sort (First every running by LastUpdate then finished by LastUpdate)
         $runs = $set->testRuns->where('Status', '!=', TestRunStatus::ARCHIVED)->sort(function($a, $b) {
            if($a->Status === $b->Status) {

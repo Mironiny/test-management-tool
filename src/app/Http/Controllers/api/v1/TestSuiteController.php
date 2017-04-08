@@ -54,7 +54,7 @@ class TestSuiteController extends Controller
     {
         // Validation
         if ($request->input('Name') == null || strlen($request->input('Name') > 45)) {
-            return response()->json(['error' => "Test case name error"], 400);
+            return response()->json(['error' => "Test suite name error"], 400);
         }
 
         $testSuite = new TestSuite;

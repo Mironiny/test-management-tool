@@ -37,7 +37,8 @@ class RequirementController extends Controller
                                     ->select('TestRequirement_id', 'SUT_id', 'Name','CoverageCriteria', 'RequirementDescription')
                                     ->get();
         foreach ($requirements as $requirement) {
-            $requirement['TestCase'] = $requirement->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+            $testcase = $requirement->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+            $requirement['TestCase'] = $testcase;
         }
         return response()->json($requirements);
     }
@@ -69,13 +70,10 @@ class RequirementController extends Controller
         if ($request->input('Name') == null || strlen($request->input('Name') > 45)) {
             return response()->json(['error' => "Requirement name error"], 400);
         }
-        if ($request->input('SUT_id') == null || Project::find($request->input('SUT_id') == null)) {
-            return response()->json(['error' => "SUT id don't exists"], 400);
-        }
 
         $requirement = new Requirement;
         $requirement->Name = $request->input('Name');
-        $requirement->SUT_id = $request->input('SUT_id');
+        $requirement->SUT_id = $projectId;
         $requirement->CoverageCriteria = $request->input('CoverageCriteria');
         $requirement->RequirementDescription = $request->input('RequirementDescription');
         $requirement->save();
@@ -100,7 +98,7 @@ class RequirementController extends Controller
                                     ->select('TestRequirement_id', 'SUT_id', 'Name','CoverageCriteria', 'RequirementDescription')
                                     ->first();
         if ($requirement == null) {
-            return response()->json(['error' => "Not rights to project"], 404);
+            return response()->json(['error' => "No requirement found"], 404);
         }
         $requirement['TestCase'] = $requirement->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
 

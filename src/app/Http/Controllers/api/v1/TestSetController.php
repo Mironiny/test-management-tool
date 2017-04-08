@@ -72,21 +72,19 @@ class TestSetController extends Controller
 
         // Validation
         if ($request->input('Name') == null || strlen($request->input('Name') > 45)) {
-            return response()->json(['error' => "Requirement name error"], 400);
-        }
-        if ($request->input('SUT_id') == null || Project::find($request->input('SUT_id') == null)) {
-            return response()->json(['error' => "SUT id don't exists"], 400);
+            return response()->json(['error' => "Set name error"], 400);
         }
         if ($request->input('TestCases') == null) {
             return response()->json(['error' => "Testset have to contain testcases"], 400);
         }
 
         $testSet = new TestSet;
-        $testSet->SUT_id = $request->input('SUT_id');
+        $testSet->SUT_id = $projectId;
         $testSet->Name = $request->input('Name');
         $testSet->TestSetDescription = $request->input('TestSetDescription');
         $testSet->save();
 
+        // test case attach
         foreach ($request->input('TestCases') as $testCase) {
             $testCaseObj = TestCase::find($testCase);
             if ($testCaseObj == null) {
@@ -99,7 +97,7 @@ class TestSetController extends Controller
             }
             $testSet->TestCases()->attach($testCase);
         }
-
+        $testSet['Testcases'] = $testSet->TestCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
         return response()->json($testSet, 201);
 
     }

@@ -153,6 +153,7 @@
 
                             <form id="close-form" action="{{ url("/sets_runs/run/execution/{$testRun->TestRun_id}/close") }}" method="POST" style="display: none;">
                                     {{ csrf_field() }}
+                                    <button type="submit" name="finish">Save</button>
                             </form>
                             {{-- <a href="{{ url("projects/terminate/$projectDetail->SUT_id")}}" class="btn btn-default" role="button">Yes</a> --}}
                             <button type="button" class="btn btn-default" data-dismiss="modal">No</button>

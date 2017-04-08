@@ -168,8 +168,7 @@
     });
 
     function showDialog(testCaseId,status) {
-        console.log(status);
-
+        
         var mymodal = $('#myModal');
         mymodal.modal('show');
 

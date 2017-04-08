@@ -38,11 +38,11 @@ class TestRunController extends Controller
         }
         $testSet = TestSet::find($testSetId);
         if ($testSet == null) {
-            return response()->json(['error' => "Testset don't exist"], 400);
+            return response()->json(['error' => "Testset don't exist"], 404);
         }
-        if ($testSet->SUT_id != $projectId) {
-            return response()->json(['error' => "Testset don't existsflajfsj"], 400);
-        }
+        // if ($testSet->SUT_id != $projectId) {
+        //     return response()->json(['error' => "Testset don't existsflajfsj"], 400);
+        // }
         $testRuns = TestRun::where('TestSet_id', $testSetId)
                                 ->whereNull('ActiveDateTo')
                                 ->orderBy('ActiveDateFrom', 'asc')
@@ -50,7 +50,13 @@ class TestRunController extends Controller
                                 ->get();
         foreach ($testRuns as $testRun) {
             $testRun['TestCase'] = $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+            $testCases =  $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+            foreach ($testCases as $testCase) {
+                $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
+            }
+            $testRun['TestCase'] = $testCases;
         }
+
         return response()->json($testRuns);
 
     }
@@ -85,17 +91,24 @@ class TestRunController extends Controller
         if ($testSet->SUT_id != $projectId) {
             return response()->json(['error' => "Testset not belongs to projectId"], 400);
         }
-
         $testRun = new TestRun;
         $testRun->TestSet_id = $testSetId;
         $testRun->Status = TestRunStatus::RUNNING;
+
         $testRun->save();
+
 
         // Copy test set testcases to run
         foreach ($testSet->testCases as $testCase) {
             $testRun->testCases()->attach($testCase->TestCase_id);
             $testRun->testCases()->updateExistingPivot($testCase->TestCase_id, ['Status' => TestCaseStatus::NOT_TESTED]);
         }
+
+        $testCases =  $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+        foreach ($testCases as $testCase) {
+            $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
+        }
+        $testRun['TestCase'] = $testCases;
 
         return response()->json($testRun, 201);
     }
@@ -119,13 +132,17 @@ class TestRunController extends Controller
         if ($testSet->SUT_id != $projectId) {
             return response()->json(['error' => "Testset not belongs to projectId"], 400);
         }
-        $testRun = TestRun::find($testRunId)
+        $testRun = TestRun::where('TestRun_id', $testRunId)
                              ->select('TestRun_id', 'TestSet_id', 'Status')
                              ->first();
-        // if ($testRun->TestSet_id != $testSetId) {
-        //     return response()->json(['error' => "TestRun Not belongs to test set"], 400);
-        // }
+        return response()->json($testRun);
+
         $testRun['TestCase'] = $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+        $testCases =  $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+        foreach ($testCases as $testCase) {
+            $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
+        }
+        $testRun['TestCase'] = $testCases;
 
         return response()->json($testRun);
     }
@@ -173,6 +190,12 @@ class TestRunController extends Controller
             $testRun->save();
             return response()->json($testRun);
         }
+
+        $testCases =  $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+        foreach ($testCases as $testCase) {
+            $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
+        }
+        $testRun['TestCase'] = $testCases;
 
         return response()->json(['error' => "Not supported status"], 400);
     }
@@ -227,6 +250,13 @@ class TestRunController extends Controller
             $testRun->testCases()->updateExistingPivot($testCaseId, ['Status' => $request->input('Status')]);
             $testRun->testCases()->updateExistingPivot($testCaseId, ['Author' => Auth::user()->name]);
             $testRun->testCases()->updateExistingPivot($testCaseId, ['LastUpdate' => date("Y-m-d H:i:s")]);
+
+            $testCases =  $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+            foreach ($testCases as $testCase) {
+                $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
+            }
+            $testRun['TestCase'] = $testCases;
+
             return response()->json($testRun);
         }
 

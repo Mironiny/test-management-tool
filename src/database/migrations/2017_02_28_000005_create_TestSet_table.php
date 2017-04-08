@@ -15,7 +15,7 @@ class CreateTestsetTable extends Migration
     {
         Schema::create('TestSet', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('TestSet_id');
+            $table->increments('TestSet_id')->onDelete('cascade');
             $table->unsignedInteger('SUT_id');
             $table->unsignedInteger('TestExecutor_id')->nullable();
             $table->string('Name', 45);

@@ -93,7 +93,7 @@
         <div class="row">
             <div class="col-md-9"></div>
             <div class="col-md-3">
-                <a href="{{ url('library/testcase/create')}}" class="btn btn-primary btn-block" role="button">
+                <a id="newCase" href="{{ url('library/testcase/create')}}" class="btn btn-primary btn-block" role="button">
                     <span class="glyphicon glyphicon-plus"></span> New test case
                 </a>
             </div>

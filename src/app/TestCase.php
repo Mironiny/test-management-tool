@@ -12,6 +12,8 @@ class TestCase extends Model
     const CREATED_AT = 'ActiveDateFrom';
     const UPDATED_AT = 'LastUpdate';
 
+    protected $hidden = array('pivot');
+
     /**
      * Define a table to map a model.
      */

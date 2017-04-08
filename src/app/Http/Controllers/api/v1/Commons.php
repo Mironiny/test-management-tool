@@ -45,11 +45,11 @@ class Commons {
     {
         $project = Project::find($projectId);
         if ($project == null) {
-            return response()->json(['error' => "project not found"], 400);
+            return response()->json(['error' => "Project not found"], 404);
         }
         $users = $project->users()->get();
         if (!$users->contains('id',  Auth::user()->id)) {
-            return response()->json(['error' => "Not rights to project"], 404);
+            return response()->json(['error' => "Not rights to project"], 400);
         }
         return $project;
     }

@@ -30,6 +30,11 @@ class ProjectController extends Controller
     public function index()
     {
         $data = Auth::user()->projects()->whereNull('ActiveDateTo')->get();
+        foreach ($data as $project) {
+            unset($project['pivot']);
+            $project['Role'] = Auth::user()->projects()->where('SUT.SUT_id', $project->SUT_id)->first()->pivot->Role;
+         }
+
 
         return response()->json($data);
     }
@@ -86,9 +91,10 @@ class ProjectController extends Controller
         }
         $users = $project->users()->get();
         if ($users->contains('id',  Auth::user()->id)) {
+            $project['Role'] = Auth::user()->projects()->where('SUT.SUT_id', $project->SUT_id)->first()->pivot->Role;
             return response()->json($project);
         }
-        return response()->json(['error' => "Not rights to project"], 404);
+        return response()->json(['error' => "No rights to project"], 400);
     }
 
     /**
@@ -112,18 +118,20 @@ class ProjectController extends Controller
     public function update(Request $request, $id)
     {
         // Validation
-        if ($request->input('Name') == null || strlen($request->input('Name') > 45)) {
-            return response()->json(['error' => "SUT name error"], 400);
-        }
+        // if ($request->input('Name') == null || strlen($request->input('Name') > 45)) {
+        //     return response()->json(['error' => "SUT name error"], 400);
+        // }
 
         $project = Project::find($id);
         if ($project == null) {
             return response()->json(['error' => "SUT not found"], 400);
         }
-        if (!$users->contains('id',  Auth::user()->id)) {
+        if (!$project->users()->get()->contains('id',  Auth::user()->id)) {
             return response()->json(['error' => "Not rights to project"], 404);
         }
-        $project->Name = $request->input('Name');
+        if ($request->input('Name') != null) {
+            $project->Name = $request->input('Name');
+        }
         $project->ProjectDescription = $request->input('ProjectDescription');
         $project->TestingDescription = $request->input('TestingDescription');
         $project->HwRequirements = $request->input('HwRequirements');
@@ -146,7 +154,7 @@ class ProjectController extends Controller
         if ($project == null) {
             return response()->json(['error' => "Project not found"], 404);
         }
-        if (!$users->contains('id',  Auth::user()->id)) {
+        if (!$project->users()->get()->contains('id',  Auth::user()->id)) {
             return response()->json(['error' => "Not rights to project"], 404);
         }
         $project->ActiveDateTo = date("Y-m-d H:i:s");

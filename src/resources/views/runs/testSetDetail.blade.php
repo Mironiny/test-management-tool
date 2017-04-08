@@ -59,7 +59,7 @@
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-2">
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" name="submit" class="btn btn-primary">Update</button>
             </div>
             <div class="col-sm-2">
                 <button type="button" data-toggle="modal" data-target="#cover" class="btn btn-default">Show test cases</button>
@@ -146,7 +146,7 @@
                 <span class="glyphicon glyphicon-play"></span> New run
             </a> --}}
 
-            <a href="{{ url('sets_runs/run/create') }}" onclick="event.preventDefault();
+            <a id="newRun" href="{{ url('sets_runs/run/create') }}" onclick="event.preventDefault();
              document.getElementById('newRunForm').submit();" class="btn btn-success btn-block {{ isset($selectedProject) ? '' : 'disabled' }}" role="button">
                 <span class="glyphicon glyphicon-play"></span> New run
             </a>
@@ -154,6 +154,7 @@
                 <form id="newRunForm" action="{{ url('/sets_runs/run/create') }}" method="POST" style="display: none;">
                     {{ csrf_field() }}
                     <input type="hidden" name="setId" value="{{ $set->TestSet_id }}">
+                    <button type="submit" name="newRunSubmit" class="btn btn-primary">Update</button>
                 </form>
 
         </div>
@@ -223,6 +224,7 @@
                             {{ csrf_field() }}
                             <input type="hidden" id="testRunId" name="testRunId" value="">
                             <input type="hidden" id="status" name="status" value="">
+                            <button type="submit" name="changeStatus" class="btn btn-primary">Update</button>
                     </form>
 
                     <a href="#" class="btn btn-default" onclick="event.preventDefault();

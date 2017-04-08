@@ -47,7 +47,7 @@
         <div class="form-group">
 
             <div class="col-sm-offset-2 col-sm-2">
-                <button type="submit" class="btn btn-primary">Save changes</button>
+                <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
             </div>
             <div class="col-sm-2">
                 <button type="button" data-toggle="modal" data-target="#cover" class="btn btn-default">{{ ($count = App\Requirement::find($requirementDetail->TestRequirement_id)->testCases()->count()) < 1 ? "Cover by test case" : "Edit coverage" }} </button>
@@ -92,7 +92,7 @@
                         <h4 class="modal-title">Cover requirement by test cases</h4>
                     </div>
                     <div class="modal-body">
-                    <form class="form-horizontal" action="{{ url("requirements/cover/$requirementDetail->TestRequirement_id")}}" method="POST"> {{ csrf_field() }}
+                    <form name="cover" class="form-horizontal" action="{{ url("requirements/cover/$requirementDetail->TestRequirement_id")}}" method="POST"> {{ csrf_field() }}
 
                         <select id='optgroup' name="testcases[]" multiple='multiple'>
                             @if (isset($testSuites))
@@ -110,7 +110,7 @@
                     </div>
                     <div class="modal-footer">
                         {{-- <div class="col-sm-2"> --}}
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" name="submitCover" class="btn btn-primary">Save changes</button>
                         {{-- </div> --}}
                     </div>
                 </form>

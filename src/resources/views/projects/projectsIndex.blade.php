@@ -19,8 +19,8 @@
     <div class="row">
         <div class="col-md-9"></div>
         <div class="col-md-3">
-            <a href="{{ url('/projects/create') }}" class="btn btn-primary btn-block" role="button">
-          <span class="glyphicon glyphicon-plus"></span> @lang('projects.newProject')
+            <a id="newProject" href="{{ url('/projects/create') }}" class="btn btn-primary btn-block" role="button">
+                <span class="glyphicon glyphicon-plus"></span> @lang('projects.newProject')
             </a>
         </div>
     </div>

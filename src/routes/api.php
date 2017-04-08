@@ -34,5 +34,5 @@ Route::resource('v1/projects/{projectID}/requirements', api\v1\RequirementContro
 Route::resource('v1/projects/{projectID}/testsets', api\v1\TestSetController::class);
 
 // Test run api
-Route::post('v1/projects/{projectID}/testsets/{testSetId}/testruns/{testRunId}/testcase/{testCaseID}', 'api\v1\TestRunController@changeTestCaseStatus');
+Route::put('v1/projects/{projectID}/testsets/{testSetId}/testruns/{testRunId}/testcase/{testCaseID}', 'api\v1\TestRunController@changeTestCaseStatus');
 Route::resource('v1/projects/{projectID}/testsets/{testSetId}/testruns', api\v1\TestRunController::class);

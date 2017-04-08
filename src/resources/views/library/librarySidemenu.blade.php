@@ -4,7 +4,7 @@
 
 
 <a href="{{ url('library')}}" style="{{ Request::is('library') ? 'color:white' : '' }}" >All tests</a>
-<a href="{{ url('library/testsuite/create')}}"style="{{ Request::is('library/testsuite/create') ? 'color:white' : '' }}"><span class="fa fa-plus  fa-fw"></span> New test suite</i></a>
+<a id="newSuite" href="{{ url('library/testsuite/create')}}"style="{{ Request::is('library/testsuite/create') ? 'color:white' : '' }}"><span class="fa fa-plus  fa-fw"></span> New test suite</i></a>
 <hr />
 @if (isset($testSuites))
     @foreach ($testSuites as $testSuite)

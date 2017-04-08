@@ -29,7 +29,7 @@ class RequirementsController extends Controller
     public function index(Request $request)
     {
         $selectedProject = $request->session()->get('selectedProject');
-        if (Project::all()->count() > 1) {
+        if (Project::all()->count() > 0) {
             $requirements = Requirement::where('SUT_id', $selectedProject)
                                         ->whereNull('ActiveDateTo')
                                         ->orderBy('ActiveDateFrom', 'asc')

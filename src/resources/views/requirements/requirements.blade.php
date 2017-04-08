@@ -13,7 +13,7 @@
     <div class="row">
         <div class="col-md-9"></div>
         <div class="col-md-3">
-            <a href="{{ url('requirements/create')}}" class="btn btn-primary btn-block {{ isset($selectedProject) ? '' : 'disabled' }}" role="button">
+            <a id="newRequirement" href="{{ url('requirements/create')}}" class="btn btn-primary btn-block {{ isset($selectedProject) ? '' : 'disabled' }}" role="button">
                 <span class="glyphicon glyphicon-plus"></span> @lang('requirements.newRequirement')
             </a>
         </div>

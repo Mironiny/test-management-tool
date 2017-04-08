@@ -30,3 +30,17 @@ $factory->define(App\Project::class, function (Faker\Generator $faker) {
         'TestingDescription' => $faker->text($maxNbChars = 200)
     ];
 });
+
+$factory->define(App\TestSuite::class, function (Faker\Generator $faker) {
+    return [
+        'Name' => $faker->name
+    ];
+});
+
+
+$factory->define(App\TestCase::class, function (Faker\Generator $faker) {
+    return [
+        'Name' => $faker->name,
+        'TestSuite_id' => 1
+    ];
+});
