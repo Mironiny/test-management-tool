@@ -71,8 +71,8 @@ kódem **401** a obsahem:
 
 Method | URI
 ------------ | -------------
-GET | [/api/v1/testsuites](#GET-/api/v1/testsuites)
-GET | [/api/v1/testsuites/{suiteId}](#GET-/api/v1/testsuites{suiteId})
+GET | /api/v1/testsuites]
+GET | /api/v1/testsuites/{suiteId}
 POST | /api/v1/testsuites
 PUT | /api/v1/testsuites/{suiteId}
 DELETE | /api/v1/testsuites/{suiteId}
@@ -257,13 +257,21 @@ Obsah:
 ## Test cases
 
 
+Method | URI
+------------ | -------------
+GET | /api/v1/testcases]
+GET | /api/v1/testcases/{caseId}
+POST | /api/v1/testcases
+PUT | /api/v1/testcases/{caseId}
+DELETE | /api/v1/testcases/{caseId}
 
-    GET /api/v1/testcases
 
-### Popis
+### GET /api/v1/testcases
+
+#### Popis
 Vrátí všechny testovací případy
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -288,15 +296,15 @@ Obsah:
 
 ---
 
-    GET /api/v1/testcases/{id}
+### GET /api/v1/testcases/{id}
 
-### Popis
+#### Popis
 Vrátí vybraný testovací případ
 
-### Parametry
+#### Parametry
 id - identifikator testovacího případu
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch** - návratový kód: 200
 
@@ -321,15 +329,15 @@ Obsah:
 
 ---
 
-    GET /api/v1/testsuites/{idSuite}testcases
+### GET /api/v1/testsuites/{idSuite}testcases
 
-### Popis
+#### Popis
 Vrátí všechny testovací případy pro danou testovací sadu
 
-### Parametry
+#### Parametry
 id - identifikator testovací sady
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch** - návratový kód: 200
 
@@ -366,12 +374,12 @@ Obsah:
 ---
 
 
-    POST /api/v1/testcases
+### POST /api/v1/testcases
 
-### Popis
+#### Popis
 Uloží testovací případ do aplikace
 
-### Vstup
+#### Vstup
 
 ```json
 {
@@ -388,7 +396,7 @@ Uloží testovací případ do aplikace
 ```
 Poznámka: Atributy označené * jsou povinné
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch** - návratový kód: 201
 
@@ -435,15 +443,15 @@ Obsah:
 }
 ```
 
-    PUT /api/v1/testcases/{id}
+### PUT /api/v1/testcases/{id}
 
-### Popis
+#### Popis
 Edituje existující testovací případ
 
-### Parametry
+#### Parametry
 id - identifikator testovacího případu
 
-### Vstup
+#### Vstup
 
 ```json
 {
@@ -459,7 +467,7 @@ id - identifikator testovacího případu
 }
 ```
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch** - návratový kód: 201
 
@@ -490,12 +498,12 @@ Obsah:
 
 ---
 
-    DELETE /api/v1/testcase/{id}
+### DELETE /api/v1/testcase/{id}
 
-### Popis
+#### Popis
 Archvivuje daný testovací případ
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch** - návratový kód: 200
 
@@ -523,14 +531,20 @@ Obsah:
 
 ## Projects
 
+Method | URI
+------------ | -------------
+GET | /api/v1/projects]
+GET | /api/v1/projects/{projectId}
+POST | /api/v1/projects
+PUT | /api/v1/projects/{projectId}
+DELETE | /api/v1/projects/{projectId}
 
+### GET /api/v1/projects
 
-    GET /api/v1/projects
-
-### Popis
+#### Popis
 Vrátí všechny projekty přiřazené danému uživateli
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -557,15 +571,15 @@ Obsah:
 
 ---
 
-    GET /api/v1/projects/{id}
+### GET /api/v1/projects/{id}
 
-### Popis
+#### Popis
 Vrátí daný projekt uživateli
 
-### Parametry
+#### Parametry
 id - identifikátor projektu
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -620,12 +634,12 @@ Obsah:
 
 ---
 
-    POST /api/v1/projects
+### POST /api/v1/projects
 
-### Popis
+#### Popis
 Uloží testovací případ do aplikace
 
-### Vstup
+#### Vstup
 
 ```json
 {
@@ -643,7 +657,7 @@ Uloží testovací případ do aplikace
 ```
 Poznámka: Atributy označené * jsou povinné
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch** - návratový kód: 201
 
@@ -677,15 +691,15 @@ Obsah:
 }
 ```
 
-    PUT /api/v1/projects/{id}
+### PUT /api/v1/projects/{id}
 
-### Popis
+#### Popis
 Edituje existující existujici projekt
 
-### Parametry
+#### Parametry
 id - identifikator projektu
 
-### Vstup
+#### Vstup
 
 ```json
 {
@@ -703,7 +717,7 @@ id - identifikator projektu
 
 ```
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch** - návratový kód: 201
 
@@ -740,15 +754,15 @@ Obsah:
 ---
 
 
-    DELETE /api/v1/projects/{id}
+### DELETE /api/v1/projects/{id}
 
 ### Popis
 Archvivuje daný projekt
 
-### Parametry
+#### Parametry
 id - identifikator projektu
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch** - návratový kód: 200
 
@@ -789,14 +803,22 @@ Obsah:
 ### Requirements
 
 
+Method | URI
+------------ | -------------
+GET | /api/v1/projects/{projectId}/requirements
+GET | /api/v1/projects/{projectId}/requirements/{requirementId}
+POST | /api/v1/projects/{projectId}/requirements
+PUT | /api/v1/projects/{projectId}/requirements/{requirementId}
+DELETE | /api/v1/projects/{projectId}/requirements/{requirementId}
 
-    GET /api/v1/projects/{projectId}/requirements
 
-### Popis
+### GET /api/v1/projects/{projectId}/requirements
+
+#### Popis
 Zobrazí všechny požadavky k danému projektu včetně testovacích případů, které daný
 požadavek pokrývají.
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -847,13 +869,13 @@ Obsah:
 ```
 ---
 
-    GET /api/v1/projects/{projectId}/requirements/{requirementId}
+### GET /api/v1/projects/{projectId}/requirements/{requirementId}
 
-### Popis
+#### Popis
 Zobrazí všechny požadavky k danému projektu včetně testovacích případů, které daný
 požadavek pokrývají.
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -917,12 +939,12 @@ Obsah:
 ```
 ---
 
-    POST /api/v1/projects/{projectId}/requirements
+### POST /api/v1/projects/{projectId}/requirements
 
-### Popis
+#### Popis
 Uloží požadavek
 
-### Vstup
+#### Vstup
 
 ```json
 
@@ -934,7 +956,7 @@ Uloží požadavek
 ```
 Poznámka: Atributy označené * jsou povinné
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 201
 
@@ -995,12 +1017,12 @@ Obsah:
 
 ---
 
-    PUT /api/v1/projects/{projectId}/requirements/{requirementId}
+### PUT /api/v1/projects/{projectId}/requirements/{requirementId}
 
-### Popis
+#### Popis
 Uloží požadavek
 
-### Vstup
+#### Vstup
 
 ```json
 
@@ -1010,7 +1032,7 @@ Uloží požadavek
     "RequirementDescription": "string"
 }
 ```
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 201
 
@@ -1072,12 +1094,12 @@ Obsah:
 
 ---
 
-    DELETE /api/v1/projects/{projectId}/requirements/
+### DELETE /api/v1/projects/{projectId}/requirements/
 
-### Popis
+#### Popis
 Archivuje daný požadavek.
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -1134,17 +1156,22 @@ Obsah:
 
 ## Test set
 
+Method | URI
+------------ | -------------
+GET | /api/v1/projects/{projectId}/testsets
+GET | /api/v1/projects/{projectId}/testsets/{setId}
+POST | /api/v1/projects/{projectId}/testsets
+PUT | /api/v1/projects/{projectId}/testsets/{setId}
+DELETE | /api/v1/projects/{projectId}/testsets/{setId}
 
 
-    GET /api/v1/projects/{projectId}/testsets
+### GET /api/v1/projects/{projectId}/testsets
 
-
-
-### Popis
+#### Popis
 Zobrazí všechny aktivní testovací sety. Včetně testovacích případů, které jsou v
 daném setu zahrnuty.
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -1196,14 +1223,14 @@ Obsah:
 ---
 
 
-    GET /api/v1/projects/{projectId}/testsets/{setId}
+### GET /api/v1/projects/{projectId}/testsets/{setId}
 
 
 
-### Popis
+#### Popis
 Zobrazí vybraný testovací set včetně
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -1269,12 +1296,12 @@ Obsah:
 ---
 
 
-    POST /api/v1/projects/{projectId}/testsets
+### POST /api/v1/projects/{projectId}/testsets
 
-### Popis
+#### Popis
 Vytvoří testovací set a naplni ho testovacimi pripady.
 
-### Vstup
+#### Vstup
 
 ```json
 
@@ -1287,7 +1314,7 @@ Vytvoří testovací set a naplni ho testovacimi pripady.
 ```
 Poznámka: atributy označené hvězdičkou jsou povinné
 
-### Příklad
+#### Příklad
 
 ```json
 {
@@ -1298,7 +1325,7 @@ Poznámka: atributy označené hvězdičkou jsou povinné
 }
 ```
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -1362,12 +1389,12 @@ Obsah:
 
 ---
 
-    PUT /api/v1/projects/{projectId}/testsets/{setId}
+### PUT /api/v1/projects/{projectId}/testsets/{setId}
 
-### Popis
+#### Popis
 Aktualizuje testset
 
-### Vstup
+#### Vstup
 
 ```json
 
@@ -1440,9 +1467,9 @@ Obsah:
 ```
 ---
 
-    DELETE /api/v1/projects/{projectId}/testsets/{setId}
+### DELETE /api/v1/projects/{projectId}/testsets/{setId}
 
-### Popis
+#### Popis
 Archivuje testset
 
 1) **Úspěch**: návratový kód: 200
@@ -1501,14 +1528,23 @@ Obsah:
 
 ## Test runs
 
+Method | URI
+------------ | -------------
+GET | /api/v1/projects/{projectId}/testsets/{setId}/testruns
+GET | /api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}
+POST | /api/v1/projects/{projectId}/testsets/{setId}/testruns
+PUT | /api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}
+DELETE | api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}
+PUT | /api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}/testcase/{testCaseID}
 
-    GET /api/v1/projects/{projectId}/testsets/{setId}/testruns
+
+### GET /api/v1/projects/{projectId}/testsets/{setId}/testruns
 
 
-### Popis
+#### Popis
 Zobrazí všechny test run náležící dané test set.
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -1571,13 +1607,13 @@ Obsah:
 ```
 ---
 
-    GET /api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}
+### GET /api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}
 
 
-### Popis
+#### Popis
 Zobrazí daný test run.
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -1640,17 +1676,17 @@ Obsah:
 ```
 ---
 
-    POST /api/v1/projects/{projectId}/testsets/{setId}/testruns
+### POST /api/v1/projects/{projectId}/testsets/{setId}/testruns
 
 
-### Popis
+#### Popis
 Zobrazí daný test run
 
-### Vstup
+#### Vstup
 Žádný vstup není zpracován. Pouhé zaslaní POST se správnými parametry v URL vytvoří
 test run
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -1713,13 +1749,13 @@ Obsah:
 ```
 ---
 
-    PUT /api/v1/projects/{projectId}/testsets/{setId}/testruns
+### PUT /api/v1/projects/{projectId}/testsets/{setId}/testruns
 
 
-### Popis
+#### Popis
 Aktualizuje stav daneho testRun
 
-### Vstup
+#### Vstup
 ```json
 
 {
@@ -1727,7 +1763,7 @@ Aktualizuje stav daneho testRun
 }
 ```
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -1783,13 +1819,13 @@ Obsah:
 ```
 ---
 
-    DELETE /api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}
+### DELETE /api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}
 
 
-### Popis
+#### Popis
 Archivuje dany test run
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
@@ -1858,20 +1894,20 @@ Obsah:
 
 ---
 
-    PUT /api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}/testcase/{testCaseID}
+### PUT /api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}/testcase/{testCaseID}
 
 
-### Popis
+#### Popis
 Změní status testovaciho případu v rámci test run
 
-### Vstup
+#### Vstup
 ```json
 {
 	"Status" : "string"
 }
 ```
 
-### Odpovědi
+#### Odpovědi
 
 1) **Úspěch**: návratový kód: 200
 
