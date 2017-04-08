@@ -71,7 +71,7 @@ kódem **401** a obsahem:
 
 Method | URI
 ------------ | -------------
-GET | /api/v1/testsuites]
+GET | /api/v1/testsuites
 GET | /api/v1/testsuites/{suiteId}
 POST | /api/v1/testsuites
 PUT | /api/v1/testsuites/{suiteId}
@@ -259,7 +259,7 @@ Obsah:
 
 Method | URI
 ------------ | -------------
-GET | /api/v1/testcases]
+GET | /api/v1/testcases
 GET | /api/v1/testcases/{caseId}
 POST | /api/v1/testcases
 PUT | /api/v1/testcases/{caseId}
@@ -533,7 +533,7 @@ Obsah:
 
 Method | URI
 ------------ | -------------
-GET | /api/v1/projects]
+GET | /api/v1/projects
 GET | /api/v1/projects/{projectId}
 POST | /api/v1/projects
 PUT | /api/v1/projects/{projectId}
