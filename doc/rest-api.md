@@ -1309,7 +1309,7 @@ Vytvoří testovací set a naplni ho testovacimi pripady.
     "*Name*": "string",
     "Author": "string",
     "TestSetDescription": "string",
-    "TestCases": ["number"]
+    "*TestCases*": ["number"]
 }
 ```
 Poznámka: atributy označené hvězdičkou jsou povinné
