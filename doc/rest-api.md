@@ -1327,7 +1327,7 @@ Poznámka: atributy označené hvězdičkou jsou povinné
 
 #### Odpovědi
 
-1) **Úspěch**: návratový kód: 200
+1) **Úspěch**: návratový kód: 201
 
 Obsah:
 
@@ -1374,7 +1374,7 @@ Obsah:
 
 ```
 
-4) **Neúspěch**: návratový kód: 404
+4) **Neúspěch**: návratový kód: 400
 
 Popis: V případě nezadání atributu Name či překročení maximální povolené velikosti 45 znaků
 
@@ -1406,7 +1406,7 @@ Aktualizuje testset
 ```
 ### Odpovědi
 
-1) **Úspěch**: návratový kód: 200
+1) **Úspěch**: návratový kód: 201
 
 Obsah:
 
@@ -1688,7 +1688,7 @@ test run
 
 #### Odpovědi
 
-1) **Úspěch**: návratový kód: 200
+1) **Úspěch**: návratový kód: 201
 
 Obsah:
 
@@ -1766,7 +1766,7 @@ Poznámka: pro status jsou povolené hodnoty: "Running", "Finished" a "Archived"
 
 #### Odpovědi
 
-1) **Úspěch**: návratový kód: 200
+1) **Úspěch**: návratový kód: 201
 
 Obsah:
 
