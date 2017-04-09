@@ -965,7 +965,7 @@ Obsah:
 ```json
 
 {
-    "TestRequirement_id": 19,
+    "TestRequirement_id": "number",
     "Name": "string",
     "SUT_id": "number",
     "CoverageCriteria": "string",
@@ -1041,7 +1041,7 @@ Obsah:
 ```json
 
 {
-    "TestRequirement_id": 19,
+    "TestRequirement_id": "number",
     "Name": "string",
     "SUT_id": "number",
     "CoverageCriteria": "string",
@@ -1749,7 +1749,7 @@ Obsah:
 ```
 ---
 
-### PUT /api/v1/projects/{projectId}/testsets/{setId}/testruns
+### PUT /api/v1/projects/{projectId}/testsets/{setId}/testruns/{runId}
 
 
 #### Popis
@@ -1759,9 +1759,10 @@ Aktualizuje stav daneho testRun
 ```json
 
 {
-	"Status" : "Finished"
+	"Status" : "string"
 }
 ```
+Poznámka: pro status jsou povolené hodnoty: "Running", "Finished" a "Archived".
 
 #### Odpovědi
 
@@ -1776,7 +1777,7 @@ Obsah:
 }
 
 ```
-Poznámka: pro status jsou povolené hodnoty: "Running", "Finished" a "Archived".
+
 
 
 2) **Neúspěch**: návratový kód: 404
@@ -1906,6 +1907,7 @@ Změní status testovaciho případu v rámci test run
 	"Status" : "string"
 }
 ```
+Poznámka: pro status jsou povolené hodnoty: "Pass", "Fail" a "Blocked".
 
 #### Odpovědi
 
