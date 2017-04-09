@@ -209,7 +209,7 @@ Obsah:
 }
 ```
 
-2) **Neúspěch** - návratový kód: 400
+2) **Neúspěch** - návratový kód: 404
 
 Popis: V případě nenalezení testovací sady
 
@@ -329,7 +329,7 @@ Obsah:
 
 ---
 
-### GET /api/v1/testsuites/{idSuite}testcases
+### GET /api/v1/testsuites/{idSuite}/testcases
 
 #### Popis
 Vrátí všechny testovací případy pro danou testovací sadu
@@ -739,7 +739,7 @@ Obsah:
 }
 ```
 
-2) **Neúspěch** - návratový kód: 400
+2) **Neúspěch** - návratový kód: 404
 
 Popis: V případě nenalezení testovacího případu k editaci
 
@@ -1154,7 +1154,7 @@ Obsah:
 ---
 
 
-## Test set
+## Test sets
 
 Method | URI
 ------------ | -------------
