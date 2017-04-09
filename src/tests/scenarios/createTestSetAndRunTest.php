@@ -295,6 +295,8 @@ class createTestSetAndRunTest extends TestCase
                 'TestRun_id' => 1,
                 'Status' => 'Archived'
             ]);
+            
+        Artisan::call('migrate:reset');
     }
 
 }

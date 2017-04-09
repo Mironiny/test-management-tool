@@ -92,7 +92,7 @@ class TestRunController extends Controller
             return response()->json(['error' => "Testset not belongs to projectId"], 400);
         }
         $testRun = new TestRun;
-        $testRun->TestSet_id = $testSetId;
+        $testRun->TestSet_id = (int) $testSetId;
         $testRun->Status = TestRunStatus::RUNNING;
 
         $testRun->save();
@@ -188,7 +188,7 @@ class TestRunController extends Controller
         if ($request->input('Status') == TestRunStatus::RUNNING || $request->input('Status') == TestRunStatus::FINISHED || $request->input('Status') == TestRunStatus::ARCHIVED) {
             $testRun->Status = $request->input('Status');
             $testRun->save();
-            return response()->json($testRun);
+            return response()->json($testRun, 201);
         }
 
         $testCases =  $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
@@ -206,9 +206,26 @@ class TestRunController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($projectId, $testSetId, $testRunId)
     {
-        //
+        $project = Commons::checkProjectAndRights($projectId);
+        if (!$project instanceof Project) {
+            return $project;
+        }
+        $testSet = TestSet::find($testSetId);
+        if ($testSet == null) {
+            return response()->json(['error' => "Testset don't exist"], 400);
+        }
+        if ($testSet->SUT_id != $projectId) {
+            return response()->json(['error' => "Testset not belongs to projectId"], 400);
+        }
+        $testrun = TestRun::where('TestRun_id', $testRunId)->first();
+        if ($testrun == null) {
+            return response()->json(['error' => "TestRun not find"], 404);
+        }
+        $testrun->ActiveDateTo = date("Y-m-d H:i:s");
+        $testrun->save();
+        return response()->json(['success' => "Deleted"], 200);
     }
 
     /**

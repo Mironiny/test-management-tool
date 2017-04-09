@@ -124,7 +124,7 @@ class ProjectController extends Controller
 
         $project = Project::find($id);
         if ($project == null) {
-            return response()->json(['error' => "SUT not found"], 400);
+            return response()->json(['error' => "SUT not found"], 404);
         }
         if (!$project->users()->get()->contains('id',  Auth::user()->id)) {
             return response()->json(['error' => "Not rights to project"], 404);

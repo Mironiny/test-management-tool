@@ -72,8 +72,8 @@ class RequirementController extends Controller
         }
 
         $requirement = new Requirement;
-        $requirement->Name = $request->input('Name');
-        $requirement->SUT_id = $projectId;
+        $requirement->Name =  $request->input('Name');
+        $requirement->SUT_id = (int) $projectId;
         $requirement->CoverageCriteria = $request->input('CoverageCriteria');
         $requirement->RequirementDescription = $request->input('RequirementDescription');
         $requirement->save();
@@ -130,19 +130,17 @@ class RequirementController extends Controller
             return $project;
         }
 
-        // Validation
-        if ($request->input('Name') == null || strlen($request->input('Name') > 45)) {
-            return response()->json(['error' => "Requirement name error"], 400);
-        }
-        if ($request->input('SUT_id') == null || Project::find($request->input('SUT_id') == null)) {
-            return response()->json(['error' => "SUT id don't exists"], 400);
-        }
         $requirement = Requirement::find($requirementId);
         if ($requirement == null) {
             return response()->json(['error' => "Requirement not find"], 400);
         }
-        $requirement->Name = $request->input('Name');
-        $requirement->SUT_id = $request->input('SUT_id');
+
+        if ($request->input('Name') != null) {
+            $requirement->Name = $request->input('Name');
+        }
+        if ($request->input('SUT_id') != null) {
+            $requirement->SUT_id = $request->input('SUT_id');
+        }
         $requirement->CoverageCriteria = $request->input('CoverageCriteria');
         $requirement->RequirementDescription = $request->input('RequirementDescription');
         $requirement->save();

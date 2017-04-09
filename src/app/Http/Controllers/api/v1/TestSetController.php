@@ -79,7 +79,7 @@ class TestSetController extends Controller
         }
 
         $testSet = new TestSet;
-        $testSet->SUT_id = $projectId;
+        $testSet->SUT_id = (int) $projectId;
         $testSet->Name = $request->input('Name');
         $testSet->TestSetDescription = $request->input('TestSetDescription');
         $testSet->save();
@@ -132,8 +132,7 @@ class TestSetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -146,7 +145,23 @@ class TestSetController extends Controller
      */
     public function update(Request $request, $projectId, $testSetId)
     {
+        $project = Commons::checkProjectAndRights($projectId);
+        if (!$project instanceof Project) {
+            return $project;
+        }
 
+        $testSet = TestSet::where('TestSet_id', $testSetId)->first();
+        if ($testSet == null) {
+            return response()->json(['error' => "Not existing set"], 404);
+        }
+        if ($request->input('Name') != null) {
+            $testSet->Name = $request->input('Name');
+        }
+        if ($request->input('TestSetDescription') != null) {
+            $testSet->TestSetDescription = $request->input('TestSetDescription');
+        }
+        $testSet->save();
+        return response()->json($testSet, 201);
     }
 
     /**
@@ -155,8 +170,18 @@ class TestSetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($projectId, $testSetId)
     {
-        //
+        $project = Commons::checkProjectAndRights($projectId);
+        if (!$project instanceof Project) {
+            return $project;
+        }
+        $testset = TestSet::find($testSetId);
+        if ($testset == null) {
+            return response()->json(['error' => "Testset not find"], 404);
+        }
+        $testset->ActiveDateTo = date("Y-m-d H:i:s");
+        $testset->save();
+        return response()->json(['success' => "Deleted"], 200);
     }
 }
