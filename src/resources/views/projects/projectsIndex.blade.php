@@ -2,7 +2,7 @@
 
 @section('sidemenu')
     <a href="{{ url('projects')}}" style="{{ Request::is('projects') ? 'color:white' : '' }}">Active projects</a>
-    <a href="{{ url('projects/filter/finished')}}" style="{{ Request::is('projects/filter/finished') ? 'color:white' : '' }}">Completed projects</a>
+    <a href="{{ url('projects/filter/finished')}}" style="{{ Request::is('projects/filter/finished') ? 'color:white' : '' }}">Archived projects</a>
 @endsection
 
 @section('title')

@@ -17,7 +17,7 @@
 
     <div class="row">
         <div class="col-md-5">
-            <a href="{{ URL::previous() }}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
+            <a href="{{ url('library')}}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-chevron-left"></span> Back</a>
         </div>
         <div class="col-md-5"></div>
         <div class="col-md-2">

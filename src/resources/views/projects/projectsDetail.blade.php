@@ -50,6 +50,25 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="HwRequirements"> HW requirements:</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="HwRequirements" name='HwRequirements' placeholder="Enter HW requirements">{{ $projectDetail->HwRequirements }}</textarea>
+                <div class="pull-right">
+                    <div id="HW_feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="SwRequirements"> SW requirements:</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="SwRequirements" name='SwRequirements' placeholder="Enter SW requirements">{{ $projectDetail->SwRequirements }}</textarea>
+                <div class="pull-right">
+                    <div id="SW_feedback"></div>
+                </div>
+            </div>
+        </div>
 
 
         <div class="form-group">

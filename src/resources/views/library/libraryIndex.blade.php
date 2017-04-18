@@ -20,12 +20,12 @@
 
         <form class="form-horizontal" action="{{ url("library/testsuite/update/$selectedSuite->TestSuite_id")}}" method="POST">
             {{ csrf_field() }}
-            {{-- <div class="form-group">
+            <div class="form-group">
                 <label class="control-label col-sm-2" for="name"><span class="text-danger">*</span>Test suite name:</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" id="name" name='name' maxlength="45" disabled="disabled" value="{{ $selectedSuite->Name }}" required autofocus>
+                    <input type="text" class="form-control" id="name" name='name' maxlength="45" value="{{ $selectedSuite->Name }}" required autofocus>
                 </div>
-            </div> --}}
+            </div>
 
             <div class="form-group">
                 <label class="control-label col-sm-2" for="test">Test suite description:</label>
@@ -167,7 +167,7 @@
     $(document).ready(function() {
         $('#myTable').DataTable( {
   "aoColumnDefs": [
-      { 'bSortable': false, 'aTargets': [ 1 ] }
+      { 'bSortable': false, 'aTargets': [ 2 ] }
    ]});
     });
 </script>

@@ -155,7 +155,7 @@ class TestLibraryController extends Controller
         ]);
 
         $testCase = TestCase::find($id);
-        // $testCase->Name = $request->name;
+        $testCase->Name = $request->name;
         $testCase->TestSuite_id = $request->testSuite;
         $testCase->TestCaseDescription = $request->description;
         $testCase->TestCasePrefixes = $request->prefixes;
@@ -227,6 +227,7 @@ class TestLibraryController extends Controller
     public function updateTestSuite(Request $request, $id)
     {
         $testSuite = TestSuite::find($id);
+        $testSuite->Name = $request->name;
         $testSuite->TestSuiteDocumentation = $request->description;
         $testSuite->TestSuiteGoals = $request->goals;
 

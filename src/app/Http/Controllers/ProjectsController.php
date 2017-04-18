@@ -70,6 +70,8 @@ class ProjectsController extends Controller
         $project->Name = $request->name;
         $project->ProjectDescription = $request->description;
         $project->TestingDescription = $request->testDescription;
+        $project->HwRequirements = $request->HwRequirements;
+        $project->SwRequirements = $request->SwRequirements;
         $project->save();
         Auth::user()->projects()->attach($project->SUT_id);
         Auth::user()->projects()->updateExistingPivot($project->SUT_id, ['Role' => ProjectRole::OWNER]);
@@ -97,6 +99,8 @@ class ProjectsController extends Controller
 
         $projectDetail->ProjectDescription = $request->description;
         $projectDetail->TestingDescription = $request->testDescription;
+        $projectDetail->HwRequirements = $request->HwRequirements;
+        $projectDetail->SwRequirements = $request->SwRequirements;
 
         $projectDetail->save();
         return redirect('projects')->with('statusSuccess', trans('projects.successEditedProject'));
