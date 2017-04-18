@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Project;
 use App\Requirement;
+use App\RequirementOverview;
 use App\TestCase;
 use App\TestSet;
 use Charts;
@@ -139,10 +140,22 @@ class DashboardController extends Controller
             return view('dashboards/dashboard');
         }
 
-        $requirements = Requirement::where('SUT_id', $selectedProject)
-                                    ->whereNull('ActiveDateTo')
-                                    ->orderBy('ActiveDateFrom', 'asc')
-                                    ->get();
+        $requirementsOverview = RequirementOverview::where('SUT_id', $selectedProject)
+                                                    ->orderBy('ActiveDateFrom', 'asc')
+                                                    ->get();
+
+        $requirements = collect();
+        foreach ($requirementsOverview as $requirementOverview) {
+            $requirement = $requirementOverview->testRequrements()
+                                                ->whereNull('ActiveDateTo')
+                                                ->first();
+            $requirements->push($requirement);
+        }
+
+        // $requirements = Requirement::where('SUT_id', $selectedProject)
+        //                             ->whereNull('ActiveDateTo')
+        //                             ->orderBy('ActiveDateFrom', 'asc')
+        //                             ->get();
 
         $covered = 0;
         $notCovered = 0;

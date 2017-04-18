@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class RequirementOverview extends Model
 {
     /**
      * Define a table colum ActiveDateFrom and LastUpdate for automatic handle..
@@ -15,27 +15,19 @@ class Project extends Model
     /**
      * Define a table to map a model.
      */
-    protected $table = 'SUT';
+    protected $table = 'TestRequirementOverview';
 
     /**
      * Define primary key of table.
      */
-    protected $primaryKey = 'SUT_id';
-
-    /**
-    * Get the requirement for project.
-    */
-    public function requirements()
-    {
-        return $this->hasMany('App\RequirementOverview', 'SUT_id');
-    }
+    protected $primaryKey = 'TestRequirementOverview_id';
 
     /**
      * Return assigned testCases.
      */
-    public function users()
+    public function testRequrements()
     {
-        return $this->belongsToMany('App\User', 'User_has_SUT', 'SUT_id', 'id')->withPivot('Role');
+        return $this->hasMany('App\Requirement', 'TestRequirementOverview_id');
     }
 
 }

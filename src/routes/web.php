@@ -46,6 +46,8 @@ Route::get('requirements/detail/{id}', 'RequirementsController@renderRequirement
 Route::post('requirements/update/{id}', 'RequirementsController@updateRequirement');
 Route::get('requirements/terminate/{id}', 'RequirementsController@deleteRequirement');
 Route::post('requirements/cover/{id}', 'RequirementsController@coverRequirement');
+Route::post('requirements/changeversion/{id}', 'RequirementsController@changeVersion');
+Route::post('requirements/removeversion/{id}', 'RequirementsController@removeVersion');
 
 /**
  * Test sets and runs routes.

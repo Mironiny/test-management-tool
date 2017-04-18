@@ -30,12 +30,16 @@
                 </tr>
             </thead>
             <tbody>
-                @if (isset($requirements))
+                @if (isset($requirementsOverview))
                     <?php $id = 1; ?>
-                    @foreach ($requirements as $requirement)
+                    @foreach ($requirementsOverview as $requirementOverview)
+                        <?php  $requirement = $requirementOverview->testRequrements()
+                                                                ->whereNull('ActiveDateTo')
+                                                                ->first(); ?>
+
                     <tr class="{{ App\Requirement::find($requirement->TestRequirement_id)->testCases()->count() < 1 ? 'danger' : 'success' }}">
                         <td>{{ $id }}</td>
-                        <td><a href="{{ url("requirements/detail/$requirement->TestRequirement_id")}}">{{ $requirement->Name }}</a></td>
+                        <td><a href="{{ url("requirements/detail/$requirementOverview->TestRequirementOverview_id")}}">{{ $requirement->Name }}</a></td>
                         <td> <i class="{{ App\Requirement::find($requirement->TestRequirement_id)->testCases()->count() < 1 ? 'fa fa-close fa-fw' : 'fa fa-check fa-fw'}}"></i>
                         {{ ($count = App\Requirement::find($requirement->TestRequirement_id)->testCases()->count()) < 1 ? "Not covered" : "Covered by $count test(s)" }}</td>
                     </tr>

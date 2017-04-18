@@ -27,11 +27,11 @@
     </br>
     </br>
 
-    <form class="form-horizontal" action="{{ url("requirements/update/$requirementDetail->TestRequirement_id")}}" method="POST"> {{ csrf_field() }}
+    <form class="form-horizontal" action="{{ url("requirements/update/$requirementDetail->TestRequirementOverview_id")}}" method="POST"> {{ csrf_field() }}
         <div class="form-group">
             <label class="control-label col-sm-2" for="name"><span class="text-danger">*</span>Requirement name:</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" id="name" disabled="disabled" name='name' maxlength="45" value="{{ $requirementDetail->Name }}" required autofocus>
+                <input type="text" class="form-control" id="name" name='name' maxlength="45" value="{{ $requirementDetail->Name }}" required autofocus>
             </div>
         </div>
         <div class="form-group">
@@ -51,6 +51,9 @@
             </div>
             <div class="col-sm-2">
                 <button type="button" data-toggle="modal" data-target="#cover" class="btn btn-default">{{ ($count = App\Requirement::find($requirementDetail->TestRequirement_id)->testCases()->count()) < 1 ? "Cover by test case" : "Edit coverage" }} </button>
+            </div>
+            <div class="col-sm-2">
+                <button type="button" data-toggle="modal" data-target="#history" class="btn btn-default">History</button>
             </div>
         </div>
 
@@ -74,7 +77,7 @@
                         <p>Do you really want to delete requirement?</p>
                     </div>
                     <div class="modal-footer">
-                        <a href="{{ url("requirements/terminate/$requirementDetail->TestRequirement_id")}}" class="btn btn-default" role="button">Yes</a>
+                        <a href="{{ url("requirements/terminate/$requirementDetail->TestRequirementOverview_id")}}" class="btn btn-default" role="button">Yes</a>
                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                     </div>
                 </div>
@@ -92,7 +95,7 @@
                         <h4 class="modal-title">Cover requirement by test cases</h4>
                     </div>
                     <div class="modal-body">
-                    <form name="cover" class="form-horizontal" action="{{ url("requirements/cover/$requirementDetail->TestRequirement_id")}}" method="POST"> {{ csrf_field() }}
+                    <form name="cover" class="form-horizontal" action="{{ url("requirements/cover/$requirementDetail->TestRequirementOverview_id")}}" method="POST"> {{ csrf_field() }}
 
                         <select id='optgroup' name="testcases[]" multiple='multiple'>
                             @if (isset($testSuites))
@@ -117,6 +120,68 @@
                 </div>
             </div>
         </div>
+
+        <!--DIV for cover by test case-->
+        <div id="history" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">History of requirement</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <table class="table table-striped table-bordered table-hover" id="historyTable">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>Created at</th>
+                                    <th>Name</th>
+                                    <th>TestCases</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (isset($requirementsHistory))
+                                <?php $id = 1; ?>
+                                    @foreach ($requirementsHistory as $requirementVersion)
+                                        <tr class="{{ $requirementVersion->TestRequirement_id == $requirementDetail->TestRequirement_id ? 'success' : '' }}">
+                                            <td class="col-md-1">{{ $id }}</td>
+                                            <td class="col-md-4">{{ $requirementVersion->ActiveDateFrom }}</td>
+                                            <td class="col-md-4">{{ $requirementVersion->Name }}</td>
+                                            <td class="col-md-1">{{ $requirementVersion->testCases()->count() }}</td>
+                                            <td class="col-md-1">
+                                                <button class="btn btn-default {{ $requirementVersion->TestRequirement_id == $requirementDetail->TestRequirement_id ? 'disabled' : ''}}" onclick="changeVersion('{{ $requirementVersion->TestRequirement_id}}')">
+                                                    Restore
+                                                </button>
+                                            </td>
+                                            <td class="col-md-1">
+                                                <button class="btn btn-default {{ $requirementVersion->TestRequirement_id == $requirementDetail->TestRequirement_id ? 'disabled' : ''}}" onclick="removeVersion('{{ $requirementVersion->TestRequirement_id}}')">
+                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <?php $id++; ?>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                        <form id="changeVersion-form" action="{{ url("requirements/changeversion/$requirementDetail->TestRequirementOverview_id") }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                                <input type="hidden" id="versionToChange" name="versionToChange" value="">
+                        </form>
+                        <form id="removeVersion-form" action="{{ url("requirements/removeversion/$requirementDetail->TestRequirementOverview_id") }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                                <input type="hidden" id="versionToChangeRemove" name="versionToChangeRemove" value="">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <br/>
         <br/>
         <table class="table table-striped table-bordered table-hover" id="myTable">
@@ -155,6 +220,7 @@
 <script>
     $(document).ready(function() {
         $('#myTable').DataTable();
+        $('#historyTable').DataTable();
     });
 </script>
 
@@ -178,6 +244,21 @@
 
         $('#description').keyup();
     });
+
+    //
+    function changeVersion(versionId) {
+        document.getElementById('versionToChange').value = versionId;
+        $( "#changeVersion-form" ).submit();
+    }
+
+    function removeVersion(versionId) {
+        if (window.confirm("Are you sure? Delete of the version will be permanent.")) {
+           document.getElementById('versionToChangeRemove').value = versionId;
+           $( "#removeVersion-form" ).submit();
+        }
+
+
+    }
 </script>
 
 @endsection
