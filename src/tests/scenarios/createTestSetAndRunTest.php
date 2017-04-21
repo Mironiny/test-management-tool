@@ -9,6 +9,7 @@ class createTestSetAndRunTest extends TestCase
 
     protected static $user;
     protected static $testSuite;
+    protected static $tests;
 
     public function setUp()
     {
@@ -19,9 +20,10 @@ class createTestSetAndRunTest extends TestCase
             self::$testSuite = factory(App\TestSuite::class, 4)
                                 ->create()
                                 ->each(function ($u) {
-                                    $u->testCases()->save(factory(App\TestCase::class)->create());
+                                    $u->testCases()->save(factory(App\TestCaseOverview::class)->create());
                                 });
             self::$user =  factory(App\User::class)->create();
+            self::$tests =  factory(App\TestCase::class, 2)->create();
         }
 
     }
@@ -68,7 +70,7 @@ class createTestSetAndRunTest extends TestCase
              ->seePageIs('/sets_runs/set/create')
              ->type('New set name', 'name')
              ->type('New set description', 'description')
-             ->select([1, 2], 'testcases[]')
+             ->select([1], 'testcases[]')
              ->press('submit');
 
              $this->seeInDatabase('TestSet', [
@@ -212,7 +214,7 @@ class createTestSetAndRunTest extends TestCase
     {
         $this->actingAs(self::$user)
              ->visit('/sets_runs/run/execution/1/overview')
-             ->see(self::$testSuite[0]->testCases()->where('TestCase_id', 1)->first()->Name);
+             ->see(self::$testSuite[0]->testCases()->where('testCaseOverview_id', 1)->first()->Name);
     }
 
     /**
@@ -244,14 +246,15 @@ class createTestSetAndRunTest extends TestCase
     {
         $this->actingAs(self::$user)
              ->visit('/sets_runs/run/execution/1/overview')
-             ->click(self::$testSuite[1]->testCases()->where('TestCase_id', 2)->first()->Name)
-             ->seePageIs('sets_runs/run/execution/1/testcase/2')
+             ->click(self::$testSuite[0]->testCases()->where('TestCaseOverview_id', 1)->first()->Name)
+             ->seePageIs('/sets_runs/run/execution/1/testcase/1')
+             ->visit('sets_runs/run/execution/1/testcase/1')
              ->type('Pass', 'status')
              ->press('dontMove');
 
              $this->seeInDatabase('TestRun_has_TestCase', [
                  'TestRun_id' => 1,
-                 'TestCase_id' => 2,
+                 'TestCase_id' => 1,
                  'Status' => 'Pass'
              ]);
 
@@ -266,8 +269,8 @@ class createTestSetAndRunTest extends TestCase
     {
         $this->actingAs(self::$user)
              ->visit('/sets_runs/run/execution/1/overview')
-             ->click(self::$testSuite[1]->testCases()->where('TestCase_id', 2)->first()->Name)
-             ->seePageIs('sets_runs/run/execution/1/testcase/2')
+             ->click(self::$testSuite[0]->testCases()->where('TestCaseOverview_id', 1)->first()->Name)
+             ->seePageIs('sets_runs/run/execution/1/testcase/1')
              ->press('finish');
 
              $this->seeInDatabase('TestRun', [
@@ -295,7 +298,7 @@ class createTestSetAndRunTest extends TestCase
                 'TestRun_id' => 1,
                 'Status' => 'Archived'
             ]);
-            
+
         Artisan::call('migrate:reset');
     }
 

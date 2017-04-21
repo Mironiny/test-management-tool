@@ -10,6 +10,7 @@ use App\Project;
 use App\Requirement;
 use App\TestSet;
 use App\TestCase;
+use App\TestCaseOverview;
 
 class TestSetController extends Controller
 {
@@ -41,7 +42,10 @@ class TestSetController extends Controller
                                     ->select('TestSet_id', 'SUT_id', 'Name','Author', 'TestSetDescription')
                                     ->get();
         foreach ($testSets as $testSet) {
-            $testSet['TestCase'] = $testSet->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+            $testSet['TestCase'] = $testSet->testCases()
+                                    ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                                    ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                    ->get();
             $testSet['TestRun'] = $testSet->testRuns()->select('TestRun.TestRun_id', 'TestRun.TestSet_id', 'TestRun.Status')->get();
         }
         return response()->json($testSets);
@@ -86,7 +90,7 @@ class TestSetController extends Controller
 
         // test case attach
         foreach ($request->input('TestCases') as $testCase) {
-            $testCaseObj = TestCase::find($testCase);
+            $testCaseObj = TestCaseOverview::find($testCase);
             if ($testCaseObj == null) {
                 $testSet->delete();
                 return response()->json(['error' => "TestCase with id $testCase don't exist"], 400);
@@ -95,9 +99,11 @@ class TestSetController extends Controller
                 $testSet->delete();
                 return response()->json(['error' => "TestCase with id $testCase is not active"], 400);
             }
-            $testSet->TestCases()->attach($testCase);
+            $testSet->TestCases()->attach($testCaseObj->testCases()->whereNull('ActiveDateTo')->first()->TestCase_id);
         }
-        $testSet['Testcases'] = $testSet->TestCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+        $testSet['Testcases'] = $testSet->TestCases()
+                                ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                                ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')->get();
         return response()->json($testSet, 201);
 
     }
@@ -120,7 +126,9 @@ class TestSetController extends Controller
         if ($testSet == null) {
             return response()->json(['error' => "Not existing set"], 404);
         }
-        $testSet['TestCase'] = $testSet->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+        $testSet['TestCase'] = $testSet->testCases()
+                                        ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                                        ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')->get();
         $testSet['TestRun'] = $testSet->testRuns()->select('TestRun.TestRun_id', 'TestRun.TestSet_id', 'TestRun.Status')->get();
 
         return response()->json($testSet);

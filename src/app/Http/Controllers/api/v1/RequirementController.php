@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Project;
 use App\Requirement;
+use App\RequirementOverview;
 
 class RequirementController extends Controller
 {
@@ -31,16 +32,24 @@ class RequirementController extends Controller
         if (!$project instanceof Project) {
             return $project;
         }
-        $requirements = Requirement::where('SUT_id', $project->SUT_id)
-                                    ->whereNull('ActiveDateTo')
-                                    ->orderBy('ActiveDateFrom', 'asc')
-                                    ->select('TestRequirement_id', 'SUT_id', 'Name','CoverageCriteria', 'RequirementDescription')
-                                    ->get();
-        foreach ($requirements as $requirement) {
-            $testcase = $requirement->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
-            $requirement['TestCase'] = $testcase;
+        $requirementOverview = RequirementOverview::where('SUT_id', $projectId)->get();
+        $requirements_ = collect();
+        foreach ($requirementOverview as $overview) {
+            $requirements_->push($overview->testRequrements()->whereNull('ActiveDateTo')->select('TestRequirement_id', 'Name','CoverageCriteria', 'RequirementDescription')
+                                        ->first());
         }
-        return response()->json($requirements);
+
+        foreach ($requirements_ as $requirement) {
+            $requirement['SUT_id'] = $projectId;
+            if ($requirement->testCases() != null) {
+                $testcase = $requirement->testCases()
+                                        ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                                        ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                        ->get();
+                $requirement['TestCase'] = $testcase;
+            }
+        }
+        return response()->json($requirements_);
     }
 
     /**
@@ -71,12 +80,17 @@ class RequirementController extends Controller
             return response()->json(['error' => "Requirement name error"], 400);
         }
 
+        $requirementOverview = new RequirementOverview;
+        $requirementOverview->SUT_id =(int) $projectId;
+        $requirementOverview->save();
+
         $requirement = new Requirement;
         $requirement->Name =  $request->input('Name');
-        $requirement->SUT_id = (int) $projectId;
+        $requirement->TestRequirementOverview_id = (int) $requirementOverview->TestRequirementOverview_id;
         $requirement->CoverageCriteria = $request->input('CoverageCriteria');
         $requirement->RequirementDescription = $request->input('RequirementDescription');
         $requirement->save();
+        $requirement['SUT_id'] = (int) $requirementOverview->SUT_id;
 
         return response()->json($requirement, 201);
 
@@ -94,13 +108,20 @@ class RequirementController extends Controller
         if (!$project instanceof Project) {
             return $project;
         }
-        $requirement = Requirement::where('TestRequirement_id', $requirementId)
-                                    ->select('TestRequirement_id', 'SUT_id', 'Name','CoverageCriteria', 'RequirementDescription')
+        $requirementOverview = RequirementOverview::where('SUT_id', $projectId)->first();
+        $requirement = $requirementOverview->testRequrements()->whereNull('ActiveDateTo')->select('TestRequirement_id', 'Name','CoverageCriteria', 'RequirementDescription')
                                     ->first();
+        // $requirement = Requirement::where('TestRequirement_id', $requirementId)
+        //                             ->select('TestRequirement_id', 'SUT_id', 'Name','CoverageCriteria', 'RequirementDescription')
+        //                             ->first();
         if ($requirement == null) {
             return response()->json(['error' => "No requirement found"], 404);
         }
-        $requirement['TestCase'] = $requirement->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+        $requirement['SUT_id'] = (int) $projectId;
+        $requirement['TestCase'] = $requirement->testCases()
+                                                ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                                                ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                                ->get();
 
         return response()->json($requirement);
     }
@@ -129,23 +150,30 @@ class RequirementController extends Controller
         if (!$project instanceof Project) {
             return $project;
         }
-
-        $requirement = Requirement::find($requirementId);
-        if ($requirement == null) {
+        $requirementOverview = RequirementOverview::find($requirementId);
+        if ($requirementOverview == null) {
             return response()->json(['error' => "Requirement not find"], 400);
         }
 
-        if ($request->input('Name') != null) {
-            $requirement->Name = $request->input('Name');
-        }
-        if ($request->input('SUT_id') != null) {
-            $requirement->SUT_id = $request->input('SUT_id');
-        }
-        $requirement->CoverageCriteria = $request->input('CoverageCriteria');
-        $requirement->RequirementDescription = $request->input('RequirementDescription');
+        $requirement = $requirementOverview->testRequrements()->whereNull('ActiveDateTo')->select('TestRequirement_id', 'Name','CoverageCriteria', 'RequirementDescription')
+                                    ->first();
+        $requirement->ActiveDateTo = date("Y-m-d H:i:s");
         $requirement->save();
 
-        return response()->json($requirement, 201);
+        $requirementNew = new Requirement;
+        $requirementNew->TestRequirementOverview_id = $requirementId;
+        if ($request->input('Name') != null) {
+            $requirementNew->Name = $request->input('Name');
+        }
+        else {
+            $requirementNew->Name = $requirement->Name;
+        }
+        $requirementNew->CoverageCriteria = $request->input('CoverageCriteria');
+        $requirementNew->RequirementDescription = $request->input('RequirementDescription');
+        $requirementNew->save();
+        $requirementNew['SUT_id'] = (int) $projectId;
+
+        return response()->json($requirementNew, 201);
     }
 
     /**

@@ -39,9 +39,16 @@ $factory->define(App\TestSuite::class, function (Faker\Generator $faker) {
 });
 
 
-$factory->define(App\TestCase::class, function (Faker\Generator $faker) {
+$factory->define(App\TestCaseOverview::class, function (Faker\Generator $faker) {
     return [
         'Name' => $faker->name,
         'TestSuite_id' => 1
+    ];
+});
+
+$factory->define(App\TestCase::class, function (Faker\Generator $faker) {
+    return [
+        'TestCaseOverview_id' => 1,
+        'Version_id' => 1,
     ];
 });

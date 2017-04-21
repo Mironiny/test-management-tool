@@ -43,9 +43,7 @@ class testCaseTest extends TestCase
             ]);
 
         $this->seeInDatabase('TestCase', [
-            'TestSuite_id' => 1,
-            'TestCase_id' => 1,
-            'Name' => 'TestCase1'
+            'TestCase_id' => 1
         ]);
 
     }
@@ -94,24 +92,18 @@ class testCaseTest extends TestCase
     public function testUpdate()
     {
         $this->actingAs(self::$user, 'api')
-             ->json('PUT', '/api/v1/testcases/1', ['Name' => 'TestCase2'])
+             ->json('PUT', '/api/v1/testcases/1', ['TestCaseDescription' => 'Dessc'])
              ->assertResponseStatus(201)
              ->seeJson([
                 'TestSuite_id' => 1,
-                'Name' => 'TestCase2'
+                'Name' => 'TestCase1'
             ]);
 
         $this->seeInDatabase('TestCase', [
-            'TestSuite_id' => 1,
             'TestCase_id' => 1,
-            'Name' => 'TestCase2'
+            'TestCaseDescription' => 'Dessc'
         ]);
 
-        $this->DontSeeInDatabase('TestCase', [
-            'TestSuite_id' => 1,
-            'TestCase_id' => 1,
-            'Name' => 'TestCase1'
-        ]);
     }
 
     /**

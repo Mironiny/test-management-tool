@@ -35,6 +35,6 @@ class CreateTestrequirementoverviewTable extends Migration
      */
      public function down()
      {
-       Schema::dropIfExists('TestRequirement');
+       Schema::dropIfExists('TestRequirementOverview');
      }
 }

@@ -10,6 +10,7 @@ class createAndEditRequirementTest extends TestCase
 {
     protected static $user;
     protected static $testSuite;
+    protected static $tests;
 
     public function setUp()
     {
@@ -20,9 +21,10 @@ class createAndEditRequirementTest extends TestCase
             self::$testSuite = factory(App\TestSuite::class, 2)
                                 ->create()
                                 ->each(function ($u) {
-                                    $u->testCases()->save(factory(App\TestCase::class)->create());
+                                    $u->testCases()->save(factory(App\TestCaseOverview::class)->create());
                                 });
-            self::$user =  factory(App\User::class)->create();
+            self::$user = factory(App\User::class)->create();
+            self::$tests =  factory(App\TestCase::class, 2)->create();
         }
 
     }
@@ -156,7 +158,7 @@ class createAndEditRequirementTest extends TestCase
         $this->call('POST', '/requirements/cover/1', ['testcases[]' => '[1,2]']);
 
         $this->visit('/requirements/detail/1')
-            ->see(self::$testSuite[0]->testCases()->where('TestCase_id', 1)->first()->Name);
+            ->see(self::$testSuite[0]->testCases()->where('TestCaseOverview_id', 1)->first()->Name);
 
         Artisan::call('migrate:reset');
 

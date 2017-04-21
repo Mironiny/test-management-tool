@@ -9,6 +9,7 @@ class SetAndRunTest extends TestCase
 
     protected static $user;
     protected static $testSuite;
+    protected static $tests;
 
     public function setUp()
     {
@@ -20,8 +21,9 @@ class SetAndRunTest extends TestCase
             self::$testSuite = factory(App\TestSuite::class, 2)
                                 ->create()
                                 ->each(function ($u) {
-                                    $u->testCases()->save(factory(App\TestCase::class)->create());
+                                    $u->testCases()->save(factory(App\TestCaseOverview::class)->create());
                                 });
+            self::$tests =  factory(App\TestCase::class, 2)->create();
         }
     }
 
@@ -62,7 +64,7 @@ class SetAndRunTest extends TestCase
              ->json('POST', '/api/v1/projects/1/testsets', ['Name' => 'set1',
                                                     "Author" => "meee",
                                                     "TestSetDescription" => "description",
-                                                    "TestCases" => [1, 2]
+                                                    "TestCases" => [1]
                                                 ])
             ->assertResponseStatus(201)
             ->seeJson([

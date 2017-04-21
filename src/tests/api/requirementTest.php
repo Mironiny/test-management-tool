@@ -67,7 +67,6 @@ class requirementTest extends TestCase
             ]);
 
         $this->seeInDatabase('TestRequirement', [
-            'SUT_id' => 1,
             'TestRequirement_id' => 1,
             'Name' => 'SuperRequirement',
             'RequirementDescription' => 'SuperDescription'
@@ -132,14 +131,12 @@ class requirementTest extends TestCase
             ]);
 
         $this->seeInDatabase('TestRequirement', [
-            'SUT_id' => 1,
             'TestRequirement_id' => 1,
             'Name' => 'EvenBetterSuperRequirement',
             'RequirementDescription' => 'EvenMoreSuperDescription'
         ]);
 
         $this->dontSeeInDatabase('TestRequirement', [
-            'SUT_id' => 1,
             'TestRequirement_id' => 1,
             'Name' => 'SuperRequirement',
             'RequirementDescription' => 'SuperDescription'

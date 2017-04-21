@@ -10,6 +10,7 @@ use App\Project;
 use App\Requirement;
 use App\TestSet;
 use App\TestCase;
+use App\TestCaseOverview;
 use App\TestRun;
 use App\Enums\TestRunStatus;
 use App\Enums\TestCaseStatus;
@@ -49,8 +50,14 @@ class TestRunController extends Controller
                                 ->select('TestRun_id', 'TestSet_id', 'Status')
                                 ->get();
         foreach ($testRuns as $testRun) {
-            $testRun['TestCase'] = $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
-            $testCases =  $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+            $testRun['TestCase'] = $testRun->testCases()
+                                            ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                                            ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                            ->get();
+            $testCases =  $testRun->testCases()
+                                    ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                                    ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                    ->get();
             foreach ($testCases as $testCase) {
                 $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
             }
@@ -104,7 +111,10 @@ class TestRunController extends Controller
             $testRun->testCases()->updateExistingPivot($testCase->TestCase_id, ['Status' => TestCaseStatus::NOT_TESTED]);
         }
 
-        $testCases =  $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+        $testCases =  $testRun->testCases()
+                                ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                               ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                               ->get();
         foreach ($testCases as $testCase) {
             $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
         }
@@ -137,8 +147,14 @@ class TestRunController extends Controller
                              ->first();
         return response()->json($testRun);
 
-        $testRun['TestCase'] = $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
-        $testCases =  $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+        $testRun['TestCase'] = $testRun->testCases()
+                                        ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                                        ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                        ->get();
+        $testCases =  $testRun->testCases()
+                        ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                        ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                        ->get();
         foreach ($testCases as $testCase) {
             $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
         }
@@ -191,7 +207,10 @@ class TestRunController extends Controller
             return response()->json($testRun, 201);
         }
 
-        $testCases =  $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+        $testCases =  $testRun->testCases()
+                               ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                               ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                               ->get();
         foreach ($testCases as $testCase) {
             $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
         }
@@ -254,11 +273,13 @@ class TestRunController extends Controller
             return response()->json(['error' => "TestRun Not exist"], 400);
         }
 
-        $testCase = TestCase::find($testCaseId);
-        if ($testCase == null) {
+        $testCaseO = TestCaseOverview::find($testCaseId);
+        if ($testCaseO == null) {
             return response()->json(['error' => "TestCase Not exist"], 400);
         }
-        if (!$testRun->testCases()->get()->contains('TestCase_id', $testCaseId)) {
+        $testCase = $testCaseO->testCases()->whereNull('ActiveDateTo')->first();
+
+        if (!$testRun->testCases()->get()->contains('TestCaseOverview_id', $testCaseId)) {
             return response()->json(['error' => "TestRun not contains testcase"], 400);
         }
         if ($request->input('Status') == TestCaseStatus::NOT_TESTED || $request->input('Status') == TestCaseStatus::PASS || $request->input('Status') == TestCaseStatus::FAIL
@@ -268,7 +289,10 @@ class TestRunController extends Controller
             $testRun->testCases()->updateExistingPivot($testCaseId, ['Author' => Auth::user()->name]);
             $testRun->testCases()->updateExistingPivot($testCaseId, ['LastUpdate' => date("Y-m-d H:i:s")]);
 
-            $testCases =  $testRun->testCases()->select('TestCase.TestCase_id', 'TestCase.Name')->get();
+            $testCases =  $testRun->testCases()
+                                    ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                                    ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                    ->get();
             foreach ($testCases as $testCase) {
                 $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
             }

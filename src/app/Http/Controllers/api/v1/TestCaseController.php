@@ -28,7 +28,14 @@ class TestCaseController extends Controller
      */
     public function index()
     {
-        $data = Commons::filterTestCase(TestCase::whereNull('ActiveDateTo')->get());
+        $testCases = TestCase::whereNull('ActiveDateTo')->get();
+        foreach ($testCases as $testCase) {
+            $testCaseOverview = $testCase->testCaseOverview->get();
+            $testCase['TestCase_id'] = TestCaseOverview::find($testCase->TestCaseOverview_id)->TestCaseOverview_id;
+            $testCase['Name'] = TestCaseOverview::find($testCase->TestCaseOverview_id)->Name;
+            $testCase['TestSuite_id'] = $testCase->testCaseOverview->TestSuite_id;
+        }
+        $data = Commons::filterTestCase($testCases);
 
         return response()->json($data);
     }
@@ -65,11 +72,12 @@ class TestCaseController extends Controller
 
         $testCaseOverview = new TestCaseOverview;
         $testCaseOverview->TestSuite_id = $request->input('TestSuite_id');
+        $testCaseOverview->Name =  $request->input('Name');
         $testCaseOverview->save();
 
         $testCase = new TestCase;
         $testCase->TestCaseOverview_id = $testCaseOverview->TestCaseOverview_id;
-        $testCase->Name =  $request->input('Name');
+        $testCase->Version_id =  1;
         $testCase->IsManual =  $request->input('IsManual');
         $testCase->TestCasePrefixes =  $request->input('TestCasePrefixes');
         $testCase->TestSteps =  $request->input('TestSteps');
@@ -80,6 +88,12 @@ class TestCaseController extends Controller
         $testCase->Note =  $request->input('Note');
 
         $testCase->save();
+        $testCase['TestCase_id'] = $testCase->TestCaseOverview_id;
+        $testCase['TestSuite_id'] = $testCaseOverview->TestSuite_id;
+        $testCase['Name'] = $testCaseOverview->Name;
+        unset($testCase['TestCaseOverview_id']);
+        unset($testCase['Version_id']);
+
 
         return response()->json($testCase, 201);
     }
@@ -92,9 +106,18 @@ class TestCaseController extends Controller
      */
     public function show($id)
     {
-        $data = Commons::filterTestCase(TestCase::whereNull('ActiveDateTo')->where('TestCase_id', $id)->get());
+        $testCaseOverview = TestCaseOverview::find($id);
+        if ($testCaseOverview != null) {
+            $testCase = $testCaseOverview->testCases()->whereNull('ActiveDateTo')->first();
+            $testCase['Name'] = $testCaseOverview->Name;
+            unset($testCase['TestCaseOverview_id']);
+            $testCase['TestCase_id'] = $id;
+            $testCase['TestSuite_id'] = (int) $testCaseOverview->TestSuite_id;
+            //$data = Commons::filterTestCase($testCase);
 
-        return response()->json($data);
+            return response()->json($testCase);
+        }
+
     }
 
     /**
@@ -117,40 +140,35 @@ class TestCaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validation
-        // if ($request->input('TestSuite_id') == null) {
-        //     return response()->json(['error' => "Test suite doesn't pass in request"], 400);
-        // }
-        // $testSuite = TestSuite::find($request->input('TestSuite_id'));
-        // if ($testSuite == null) {
-        //     return response()->json(['error' => "Test suite doesn't exists"], 400);
-        // }
-        // if ($request->input('Name') == null || strlen($request->input('Name') > 45)) {
-        //     return response()->json(['error' => "Test case name error"], 400);
-        // }
-        $testCase = TestCase::find($id);
+        $testCaseOverview = TestCaseOverview::find($id);
+        if ($testCaseOverview == null) {
+            return response()->json(['error' => "TestCase not found"], 404);
+        }
+        $testCase = $testCaseOverview->testCases()->whereNull('ActiveDateTo')->first();
         if ($testCase == null) {
             return response()->json(['error' => "TestCase not found"], 404);
         }
-        if ($request->input('TestSuite_id') != null) {
-            $testCase->TestSuite_id = $request->input('TestSuite_id');
-        }
-        if ($request->input('Name')) {
-            $testCase->Name =  $request->input('Name');
-        }
-
-        $testCase->IsManual =  $request->input('IsManual');
-        $testCase->TestCasePrefixes =  $request->input('TestCasePrefixes');
-        $testCase->TestSteps =  $request->input('TestSteps');
-        $testCase->ExpectedResult =  $request->input('ExpectedResult');
-        $testCase->TestCaseSuffixes =  $request->input('TestCaseSuffixes');
-        $testCase->SourceCode =  $request->input('SourceCode');
-        $testCase->TestCaseDescription =  $request->input('TestCaseDescription');
-        $testCase->Note =  $request->input('Note');
-
+        $testCase->ActiveDateTo = date("Y-m-d H:i:s");
         $testCase->save();
 
-        return response()->json($testCase, 201);
+        $newTestCase = new TestCase;
+        $newTestCase->TestCaseOverview_id = $id;
+        $newTestCase->IsManual =  $request->input('IsManual');
+        $newTestCase->TestCasePrefixes =  $request->input('TestCasePrefixes');
+        $newTestCase->TestSteps =  $request->input('TestSteps');
+        $newTestCase->ExpectedResult =  $request->input('ExpectedResult');
+        $newTestCase->TestCaseSuffixes =  $request->input('TestCaseSuffixes');
+        $newTestCase->SourceCode =  $request->input('SourceCode');
+        $newTestCase->TestCaseDescription =  $request->input('TestCaseDescription');
+        $newTestCase->Note =  $request->input('Note');
+        $newTestCase->Version_id = $testCaseOverview->testCases()->count() + 1;
+
+        $newTestCase->save();
+        $newTestCase['Name'] = $testCaseOverview->Name;
+        $newTestCase['SUT_id'] = $testCaseOverview->SUT_id;
+        $newTestCase['TestSuite_id'] = $testCaseOverview->TestSuite_id;
+
+        return response()->json($newTestCase, 201);
     }
 
     /**
