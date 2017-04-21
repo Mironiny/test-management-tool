@@ -146,7 +146,7 @@
                         @foreach ($testCases as $testCase)
                             <tr>
                                 <td class="col-md-1">{{ $id }}</td>
-                                <td class="col-md-4"><a href="{{ url("library/testcase/detail/$testCase->TestCase_id")}}">{{ $testCase->Name }}</a></td>
+                                <td class="col-md-4"><a href="{{ url("library/testcase/detail/$testCase->TestCaseOverview_id")}}">{{ $testCase->Name }}</a></td>
                                 <td class="col-md-3">{{ App\TestSuite::find($testCase->TestSuite_id)->Name }}</td>
                                 <td class="col-md-4">{{ $testCase->LastUpdate }}</td>
                             </tr>

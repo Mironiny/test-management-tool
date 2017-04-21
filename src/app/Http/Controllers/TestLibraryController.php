@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\TestCase;
+use App\TestCaseOverview;
 use App\TestSuite;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,9 +49,9 @@ class TestLibraryController extends Controller
     public function filterByTestSuite(Request $request, $id)
     {
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        $testCases = TestCase::where('TestSuite_id', $id)
-                                ->whereNull('ActiveDateTo')
-                                ->get();
+        $testCases = TestCaseOverview::where('TestSuite_id', $id)
+                                    ->whereNull('ActiveDateTo')
+                                    ->get();
 
         $selectedSuite = TestSuite::find($id);
 
@@ -90,7 +91,15 @@ class TestLibraryController extends Controller
     public function renderTestCaseDetail(Request $request, $id)
     {
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        $testCase = TestCase::find($id);
+        $testCaseOverview = TestCaseOverview::find($id);
+        $testCase = $testCaseOverview
+                    ->testCases()
+                    ->whereNull('ActiveDateTo')
+                    ->first();
+
+        $testCaseHistory = $testCaseOverview->testCases()
+                                            ->orderBy('ActiveDateFrom', 'DESC')
+                                            ->get();
         // if (sizeof($testCases) < $id) {
         //     return redirect('library')->with('statusFailure', trans('library.testCaseNotExists'));
         // }
@@ -98,6 +107,8 @@ class TestLibraryController extends Controller
 
         return view('library/testCaseDetail')
                 ->with('testSuites', $testSuites)
+                ->with('testCaseOverview', $testCaseOverview)
+                ->with('testCaseHistory', $testCaseHistory)
                 ->with('testCase', $testCase);
 
     }
@@ -121,9 +132,14 @@ class TestLibraryController extends Controller
         }
 
         for ($i = 1; $i <= $testCaseCount; $i++) {
+            $testCaseOverview = new TestCaseOverview;
+            $testCaseOverview->TestSuite_id = $request["testSuite$i"];
+            $testCaseOverview->Name = $request["name$i"];
+            $testCaseOverview->save();
+
             $testCase = new TestCase;
-            $testCase->Name = $request["name$i"];
-            $testCase->TestSuite_id = $request["testSuite$i"];
+            $testCase->TestCaseOverview_id = $testCaseOverview->TestCaseOverview_id;
+            $testCase->Version_id = 1;
             $testCase->TestCaseDescription = $request["description$i"];
             $testCase->TestCasePrefixes = $request["prefixes$i"];
             $testCase->TestSteps = $request["steps$i"];
@@ -150,20 +166,38 @@ class TestLibraryController extends Controller
     public function updateTestCase(Request $request, $id)
     {
         $this->validate($request, [
-            'testSuite' => 'required',
             'description' => 'max:1023'
         ]);
 
-        $testCase = TestCase::find($id);
-        $testCase->Name = $request->name;
-        $testCase->TestSuite_id = $request->testSuite;
-        $testCase->TestCaseDescription = $request->description;
-        $testCase->TestCasePrefixes = $request->prefixes;
-        $testCase->TestSteps = $request->steps;
-        $testCase->ExpectedResult = $request->expectedResult;
-        $testCase->TestCaseSuffixes = $request->suffixes;
+        $testCaseOverview = TestCaseOverview::find($id);
+        $testCaseDetail = $testCaseOverview
+                    ->testCases()
+                    ->whereNull('ActiveDateTo')
+                    ->first();
 
-        $testCase->save();
+        // Check if there is a change
+        if ($testCaseDetail->TestCaseDescription == $request->description &&
+            $testCaseDetail->TestCasePrefixes == $request->prefixes &&
+            $testCaseDetail->TestSteps == $request->steps &&
+            $testCaseDetail->ExpectedResult ==  $request->expectedResult &&
+            $testCaseDetail->TestCaseSuffixes == $request->suffixes) {
+            return redirect("library/testcase/detail/$id")->with('statusSuccess', "Nothing to change");
+        }
+
+        // Record will be not active
+        $testCaseDetail->ActiveDateTo = date("Y-m-d H:i:s");
+        $testCaseDetail->save();
+
+        $testCaseNew = new TestCase;
+        $testCaseNew->Version_id = $testCaseOverview->testCases()->count() + 1;
+        $testCaseNew->TestCaseOverview_id = $id;
+        $testCaseNew->TestCaseDescription = $request->description;
+        $testCaseNew->TestCasePrefixes = $request->prefixes;
+        $testCaseNew->TestSteps = $request->steps;
+        $testCaseNew->ExpectedResult = $request->expectedResult;
+        $testCaseNew->TestCaseSuffixes = $request->suffixes;
+
+        $testCaseNew->save();
 
         return redirect("library/testcase/detail/$id")->with('statusSuccess', trans('library.successEditedTestCase'));
     }
@@ -248,6 +282,43 @@ class TestLibraryController extends Controller
         $testSuite->save();
 
         return redirect('library')->with('statusSuccess', trans('library.deleteTestSuite'));
+    }
+
+    /**
+     * Change actual selected version of requirement.
+     *
+     * @return view
+     */
+    public function changeVersion(Request $request, $id)
+    {
+        $testCaseOverview = testCaseOverview::find($id);
+        $testCaseOld = $testCaseOverview->testCases()
+                                            ->whereNull('ActiveDateTo')
+                                            ->first();
+
+        $testCaseOld->ActiveDateTo = date("Y-m-d H:i:s");
+        $testCaseOld->save();
+
+        $testCaseNew = TestCase::find($request->versionToChange);
+        $testCaseNew->ActiveDateTo = null;
+        $testCaseNew->save();
+
+        return redirect("library/testcase/detail/$id")->with('statusSuccess', "Version of requirement changed");
+
+    }
+
+    /**
+     * Remove version from db.
+     *
+     * @return view
+     */
+    public function removeVersion(Request $request, $id)
+    {
+        $requirement = Requirement::find($request->versionToChangeRemove);
+        $requirement->delete();
+
+        return redirect("requirements/detail/$id")->with('statusSuccess', "Version was deleted");
+
     }
 
 }

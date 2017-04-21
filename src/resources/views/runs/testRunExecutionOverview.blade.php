@@ -62,8 +62,8 @@
                              ?>
                             <tr class="{{ $class }}" style="{{$class == "blocked" ? "background-color:#d9d9d9" : ''}}">
                                 <td class="col-md-1">{{ $id }}</td>
-                                <td class="col-md-4"><a href="{{ url("sets_runs/run/execution/$testRun->TestRun_id/testcase/$testCase->TestCase_id")}}">{{ $testCase->Name }}</a></td>
-                                <td class="col-md-3">{{ App\TestSuite::find($testCase->TestSuite_id)->Name }}</td>
+                                <td class="col-md-4"><a href="{{ url("sets_runs/run/execution/$testRun->TestRun_id/testcase/$testCase->TestCase_id")}}">{{ $testCase->testCaseOverview->Name }}</a></td>
+                                <td class="col-md-3">{{ App\TestSuite::find($testCase->testCaseOverview->TestSuite_id)->Name }}</td>
                                 <td class="col-md-3">{{ $testCase->pivot->Status }}</td>
                                 <td class="col-md-1"><button class="btn btn-default {{ $testRun->Status == App\Enums\TestRunStatus::RUNNING ? '' : 'disabled'}}" onclick="showDialog('{{ $testCase->TestCase_id}}', '{{ $testCase->pivot->Status}}')">Change</button></td>
                             </tr>
@@ -168,7 +168,7 @@
     });
 
     function showDialog(testCaseId,status) {
-        
+
         var mymodal = $('#myModal');
         mymodal.modal('show');
 

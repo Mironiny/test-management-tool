@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\v1;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\TestCase;
+use App\TestCaseOverview;
 use App\TestSuite;
 
 class TestCaseController extends Controller
@@ -62,8 +63,12 @@ class TestCaseController extends Controller
             return response()->json(['error' => "Test case name error"], 400);
         }
 
+        $testCaseOverview = new TestCaseOverview;
+        $testCaseOverview->TestSuite_id = $request->input('TestSuite_id');
+        $testCaseOverview->save();
+
         $testCase = new TestCase;
-        $testCase->TestSuite_id = $request->input('TestSuite_id');
+        $testCase->TestCaseOverview_id = $testCaseOverview->TestCaseOverview_id;
         $testCase->Name =  $request->input('Name');
         $testCase->IsManual =  $request->input('IsManual');
         $testCase->TestCasePrefixes =  $request->input('TestCasePrefixes');

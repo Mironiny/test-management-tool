@@ -10,6 +10,7 @@ use App\TestSet;
 use App\TestRun;
 use App\TestSuite;
 use App\TestCase;
+use App\TestCaseOverview;
 use App\Enums\TestRunStatus;
 use App\Enums\TestCaseStatus;
 use Charts;
@@ -94,7 +95,6 @@ class TestRunController extends Controller
             'name' => 'required|max:45',
             'testcases' => 'required'
         ]);
-
         $set = new TestSet;
         $set->Name = $request->name;
         if ($request->session()->get('selectedProject') == 0) {
@@ -107,7 +107,12 @@ class TestRunController extends Controller
         // Adding to database
         if ($request->testcases != null) {
             foreach ($request->testcases as $testCase ) {
-                $set->TestCases()->attach($testCase);
+                $testCaseOverview = TestCaseOverview::find($testCase);
+                $testCase = $testCaseOverview
+                            ->testCases()
+                            ->whereNull('ActiveDateTo')
+                            ->first();
+                $set->TestCases()->attach($testCase->TestCase_id);
             }
         }
         return redirect('sets_runs')->with('statusSuccess',"Test set was created");
@@ -289,28 +294,37 @@ class TestRunController extends Controller
             return redirect('sets_runs')->with('statusFailure', "Test set doesn't exist");
         }
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        $testCases = $run->testCases()->orderBy('TestSuite_id')->orderBy('TestCase_id')->get();
 
-        $collection = collect();
+        // Get testcases ordered by Suite and Overview id
+        $testCases = $run->testCases()
+                        ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                        ->orderBy('TestCaseOverview.TestSuite_id')
+                        ->orderBy('TestCaseOverview.TestCaseOverview_id')
+                        ->get();
+
+        // Get only suites of assigned testcases
+        $fillteredSuite = collect();
         foreach ($testCases as $testCase) {
-            if (!$collection->contains('TestSuite_id', $testCase->testSuite->TestSuite_id)) {
-                $collection->push($testCase->testSuite);
+            if (!$fillteredSuite->contains('TestSuite_id', $testCase->testCaseOverview->TestSuite_id)) {
+                $fillteredSuite->push($testCase->testCaseOverview->testSuite);
             }
         }
+        // Get overview page
         if ($testCaseId == null) {
             return view('runs/testRunExecutionOverview')
                 ->with('testRun', $run)
-                ->with('testSuites', $collection)
+                ->with('testSuites', $fillteredSuite)
                 ->with('testCases', $testCases)
                 ->with('sidemenuToogle', true);
         }
+        // Get detailed page
         else {
             $selectedTestCase = $run->testCases->where('TestCase_id', $testCaseId)->first();
         }
 
         return view('runs/testRunExecution')
             ->with('testRun', $run)
-            ->with('testSuites', $collection)
+            ->with('testSuites', $fillteredSuite)
             ->with('selectedTestCase', $selectedTestCase)
             ->with('testCases', $testCases)
             ->with('sidemenuToogle', true);

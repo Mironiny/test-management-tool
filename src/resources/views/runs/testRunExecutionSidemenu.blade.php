@@ -23,7 +23,7 @@
                 <ul id="insideExecution">
                     @if (isset($testCases))
                         @foreach ($testCases as $testCase)
-                            @if ($testCase->testSuite->TestSuite_id == $testSuite->TestSuite_id )
+                            @if ($testCase->testCaseOverview->TestSuite_id == $testSuite->TestSuite_id )
                                 <li>
                                     <a href="{{ url("sets_runs/run/execution/$testRun->TestRun_id/testcase/$testCase->TestCase_id") }}" style="padding: 0px 0px 0px 0px; {{ isset($selectedTestCase) && $testCase->TestCase_id == $selectedTestCase->TestCase_id ? 'color:white' : '' }}">
                                         @if ($testCase->pivot->Status == App\Enums\TestCaseStatus::PASS )
@@ -35,7 +35,7 @@
                                         @elseif ($testCase->pivot->Status == App\Enums\TestCaseStatus::NOT_TESTED )
                                             <span class="label label-warning"> </span>
                                         @endif
-                                        &nbsp;{{ $testCase->Name }}
+                                        &nbsp;{{ $testCase->testCaseOverview->Name }}
                                      </a>
                                 </li>
                             @endif

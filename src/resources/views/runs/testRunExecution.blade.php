@@ -36,7 +36,14 @@
             <div class="form-group">
                 <label class="control-label col-sm-2" for="name">Test case name:</label>
                 <div class="col-sm-6">
-                    <input type="text" class="form-control" id="name" disabled="disabled" name='name' maxlength="45" value="{{ $selectedTestCase->Name }}">
+                    <input type="text" class="form-control" id="name" disabled="disabled" name='name' maxlength="45" value="{{ $selectedTestCase->testCaseOverview->Name }}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="description"> Test case version:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="version" name='version' disabled="disabled" value="{{ $selectedTestCase->Version_id }}">
                 </div>
             </div>
 

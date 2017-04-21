@@ -97,12 +97,12 @@
                     <div class="modal-body">
                     <form name="cover" class="form-horizontal" action="{{ url("requirements/cover/$requirementDetail->TestRequirementOverview_id")}}" method="POST"> {{ csrf_field() }}
 
-                        <select id='optgroup' name="testcases[]" multiple='multiple'>
+                        <select id="optgroup" name="testcases[]" multiple='multiple'>
                             @if (isset($testSuites))
                                 @foreach ($testSuites as $testSuite)
-                                    <optgroup label='{{ $testSuite->Name }}'>
+                                    <optgroup label="{{ $testSuite->Name }}">
                                         @foreach ($testSuite->testCases->where('ActiveDateTo', null) as $testCase)
-                                            <option value='{{$testCase->TestCase_id}}' {{$coverTestCases->contains('TestCase_id', $testCase->TestCase_id) ? 'selected' : ''}}>{{$testCase->Name}}</option>
+                                            <option value="{{$testCase->TestCaseOverview_id}}" {{$coverTestCases->contains('TestCaseOverview_id', $testCase->TestCaseOverview_id) ? 'selected' : ''}}>{{$testCase->Name}}</option>
                                         @endforeach
                                     </optgroup>
                                 @endforeach
@@ -135,12 +135,12 @@
                         <table class="table table-striped table-bordered table-hover" id="historyTable">
                             <thead>
                                 <tr>
-                                    <th>id</th>
+                                    <th>Version id</th>
                                     <th>Created at</th>
                                     <th>Name</th>
                                     <th>TestCases</th>
                                     <th></th>
-                                    <th></th>
+                                    <th>Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -189,6 +189,7 @@
                 <tr>
                     <th>id</th>
                     <th>Test case name</th>
+                    <th>Version id</th>
                     <th>Test Suite</th>
                 </tr>
             </thead>
@@ -198,8 +199,10 @@
                     @foreach ($coverTestCases as $testCase)
                         <tr>
                             <td>{{ $id }}</td>
-                            <td><a href="{{ url("library/testcase/detail/$testCase->TestCase_id")}}">{{ $testCase->Name }}</a></td>
-                            <td><a href="{{ url("library/filter/$testCase->TestSuite_id")}}">{{ App\TestSuite::find($testCase->TestSuite_id)->Name }}</a></td>
+                            <td><a href="{{ url("library/testcase/detail/$testCase->TestCaseOverview_id")}}">{{ $testCase->testCaseOverview->Name }}</a></td>
+                            <td>{{ $testCase->Version_id }}</td>
+                            <?php $TestSuite_id = $testCase->testCaseOverview->TestSuite_id; ?>
+                            <td><a href="{{ url("library/filter/$TestSuite_id")}}">{{ App\TestSuite::find($TestSuite_id)->Name }}</a></td>
                         </tr>
                         <?php $id++; ?>
                     @endforeach
@@ -249,15 +252,6 @@
     function changeVersion(versionId) {
         document.getElementById('versionToChange').value = versionId;
         $( "#changeVersion-form" ).submit();
-    }
-
-    function removeVersion(versionId) {
-        if (window.confirm("Are you sure? Delete of the version will be permanent.")) {
-           document.getElementById('versionToChangeRemove').value = versionId;
-           $( "#removeVersion-form" ).submit();
-        }
-
-
     }
 </script>
 

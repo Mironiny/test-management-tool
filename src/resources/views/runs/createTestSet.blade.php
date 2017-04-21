@@ -52,7 +52,7 @@
                         @foreach ($testSuites as $testSuite)
                             <optgroup label='{{ $testSuite->Name }}'>
                                 @foreach ($testSuite->testCases->where('ActiveDateTo', null) as $testCase)
-                                    <option value='{{$testCase->TestCase_id}}'>{{$testCase->Name}}</option>
+                                    <option value='{{$testCase->TestCaseOverview_id}}'>{{$testCase->Name}}</option>
                                 @endforeach
                             </optgroup>
                         @endforeach

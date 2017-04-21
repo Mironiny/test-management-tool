@@ -31,18 +31,24 @@
     <br/>
     <br/>
 
-    <form class="form-horizontal" action="{{ url("library/testcase/update/$testCase->TestCase_id")}}" method="POST">
+    <form class="form-horizontal" action="{{ url("library/testcase/update/$testCase->TestCaseOverview_id")}}" method="POST">
         {{ csrf_field() }}
         <div class="form-group">
             <label class="control-label col-sm-2" for="name"><span class="text-danger">*</span>Test case name:</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" id="name" name='name' maxlength="45" value="{{ $testCase->Name }}" required autofocus>
+                <input type="text" class="form-control" id="name" disabled="disabled" name='name' maxlength="45" value="{{ $testCaseOverview->Name }}" required autofocus>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="version">Version id</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="version" disabled="disabled" name='version' maxlength="45" value="{{ $testCase->Version_id }}">
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-2" for="Suite"><span class="text-danger">*</span>Test suite:</label>
             <div class="col-sm-10">
-                <select class="form-control" id="suite" name="testSuite">
+                <select class="form-control" disabled="disabled" id="suite" name="testSuite">
                    @if (isset($testSuites))
                        @foreach ($testSuites as $testSuite)
                            <option value="{{ $testSuite->TestSuite_id }}" {{ $testSuite->TestSuite_id == $testCase->TestSuite_id ? "selected=\"selected\"" : '' }}>{{ $testSuite->Name }} </option>
@@ -106,6 +112,9 @@
             <div class="col-sm-offset-2 col-sm-2">
                 <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
             </div>
+            <div class="col-sm-2">
+                <button type="button" data-toggle="modal" data-target="#history" class="btn btn-default">History</button>
+            </div>
         </div>
 
         <div class="form-group">
@@ -134,6 +143,50 @@
             </div>
         </div>
     </form>
+
+    <!--DIV for cover by test case-->
+    <div id="history" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">History of testcases</h4>
+                </div>
+                <div class="modal-body">
+
+                    <table class="table table-striped table-bordered table-hover" id="historyTable">
+                        <thead>
+                            <tr>
+                                <th>Version id</th>
+                                <th>Created at</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (isset($testCaseHistory))
+                                @foreach ($testCaseHistory as $testCaseVersion)
+                                    <tr class="{{ $testCaseVersion->TestCase_id == $testCase->TestCase_id ? 'success' : '' }}">
+                                        <td class="col-md-1">{{ $testCaseVersion->Version_id }}</td>
+                                        <td class="col-md-4">{{ $testCaseVersion->ActiveDateFrom }}</td>
+                                        <td class="col-md-1">
+                                            <button class="btn btn-default {{ $testCaseVersion->TestCase_id == $testCase->TestCase_id ? 'disabled' : ''}}" onclick="changeVersion('{{ $testCaseVersion->TestCase_id }}')">
+                                                Restore
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                    <form id="changeVersion-form" action="{{ url("library/testcase/changeversion/$testCaseVersion->TestCaseOverview_id") }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                            <input type="hidden" id="versionToChange" name="versionToChange" value="">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -191,6 +244,13 @@
         $('#expectedResult').keyup();
         $('#steps').keyup();
     });
+
+    function changeVersion(versionId) {
+        document.getElementById('versionToChange').value = versionId;
+        $( "#changeVersion-form" ).submit();
+    }
+
+
 </script>
 
 @endsection

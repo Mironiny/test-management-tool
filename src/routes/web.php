@@ -81,6 +81,8 @@ Route::post('sets_runs/run/execution/{runId}/close', 'TestRunController@closeTes
  Route::post('library/testcase/create', 'TestLibraryController@storeTestCase');
  Route::post('library/testcase/update/{id}', 'TestLibraryController@updateTestCase');
  Route::get('library/testcase/terminate/{id}', 'TestLibraryController@deleteTestCase');
+ Route::post('library/testcase/changeversion/{id}', 'TestLibraryController@changeVersion');
+ Route::post('library/testcase/removeversion/{id}', 'TestLibraryController@removeVersion');
 
  Route::get('library/testsuite/create', 'TestLibraryController@createTestSuiteForm');
  Route::post('library/testsuite/create', 'TestLibraryController@storeTestSuite');

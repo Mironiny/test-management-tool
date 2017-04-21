@@ -16,8 +16,8 @@ class CreateTestcaseTable extends Migration
         Schema::create('TestCase', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('TestCase_id');
-            $table->unsignedInteger('TestSuite_id');
-            $table->string('Name', 45);
+            $table->unsignedInteger('TestCaseOverview_id');
+            $table->unsignedInteger('Version_id');
             $table->dateTime('ActiveDateFrom');
             $table->dateTime('ActiveDateTo')->nullable();
             $table->dateTime('LastUpdate')->nullable();
@@ -31,10 +31,12 @@ class CreateTestcaseTable extends Migration
             $table->string('TestCaseDescription')->nullable();
             $table->string('Note', 255)->nullable();
 
-            $table->foreign('TestSuite_id', 'fk_TestCase_TestSuite1_idx')
-                ->references('TestSuite_id')->on('TestSuite')
-                ->onDelete('no action')
-                ->onUpdate('no action');
+            // $table->foreign('TestCaseOverview_id', 'fk_TestCase_overview_idx')
+            //     ->references('TestCaseOverview_id')->on('TestCaseOverview')
+            //     ->onDelete('no action')
+            //     ->onUpdate('no action');
+
+
         });
     }
 

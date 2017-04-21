@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Project;
 use App\TestSuite;
+use App\TestCase;
+use App\TestCaseOverview;
 use App\Requirement;
 use App\RequirementOverview;
 use Lang;
@@ -123,6 +125,7 @@ class RequirementsController extends Controller
                                                 ->whereNull('ActiveDateTo')
                                                 ->first();
             $coverTestCases = Requirement::find($requirementDetail->TestRequirement_id)->testCases()->get();
+
             $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
 
             return view('requirements/requirementDetail')
@@ -150,7 +153,7 @@ class RequirementsController extends Controller
                                             ->first();
 
         // Check if there is a change
-        if ($requirementDetail->Name == $request->name && $requirementDetail->RequirementDescription = $request->description) {
+        if ($requirementDetail->Name == $request->name && $requirementDetail->RequirementDescription == $request->description) {
             return redirect('requirements')->with('statusSuccess', "Nothing to change");
         }
 
@@ -233,13 +236,13 @@ class RequirementsController extends Controller
         $isChange = false;
         if (!empty($selectedTestcases)) {
             foreach ($selectedTestcases as $selectedTestCase ) {
-                if (!$coveredTestCases->contains('TestCase_id', $selectedTestCase)) {
+                if (!$coveredTestCases->contains('TestCaseOverview_id', $selectedTestCase)) {
                     $isChange = true;
                 }
             }
         }
         foreach ($coveredTestCases as $coveredTestCase) {
-            if (!in_array($coveredTestCase->TestCase_id, $selectedTestcases)) {
+            if (!in_array($coveredTestCase->TestCaseOverview_id, $selectedTestcases)) {
                 $isChange = true;
             }
         }
@@ -260,7 +263,9 @@ class RequirementsController extends Controller
         // Adding to database
         if (!empty($selectedTestcases)) {
             foreach ($selectedTestcases as $selectedTestCase ) {
-                Requirement::find($requirementNew->TestRequirement_id)->TestCases()->attach($selectedTestCase);
+                $testCaseOverview = TestCaseOverview::find($selectedTestCase);
+                $testCaseDetail = $testCaseOverview->testCases()->whereNull('ActiveDateTo')->first();
+                Requirement::find($requirementNew->TestRequirement_id)->TestCases()->attach($testCaseDetail->TestCase_id);
             }
         }
         return redirect("requirements/detail/$id")->with('statusSuccess', trans('requirements.successEditedRequirement'));
