@@ -6,6 +6,7 @@
 
 @section('sidemenu')
     <a href="{{ url("sets_runs/set/detail/$set->TestSet_id")}}" style="{{ Request::is("sets_runs/set/detail/$set->TestSet_id") ? 'color:white' : '' }}">Test runs</a>
+    <a href="{{ url("sets_runs/set/detail/$set->TestSet_id/testcases")}}" style="{{ Request::is("sets_runs/set/detail/$set->TestSet_id/testcases") ? 'color:white' : '' }}">Assigned test cases</a>
     <a href="{{ url("sets_runs/set/detail/$set->TestSet_id/filter/archived") }}" style="{{ Request::is("sets_runs/set/detail/$set->TestSet_id/filter/archived") ? 'color:white' : '' }}">Archived test runs</a>
 @endsection
 

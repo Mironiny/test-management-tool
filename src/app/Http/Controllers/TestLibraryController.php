@@ -209,9 +209,13 @@ class TestLibraryController extends Controller
      */
     public function deleteTestCase(Request $request, $id)
     {
-        $testCase = TestCase::find($id);
-        $testCase->ActiveDateTo = date("Y-m-d H:i:s");
-        $testCase->save();
+        $testCaseOverview = TestCaseOverview::find($id);
+        $testCaseOverview->ActiveDateTo = date("Y-m-d H:i:s");
+        $testCaseOverview->save();
+
+        // $testCase = TestCase::find($id);
+        // $testCase->ActiveDateTo = date("Y-m-d H:i:s");
+        // $testCase->save();
 
         return redirect('library')->with('statusSuccess', trans('library.deleteTestCase'));
     }

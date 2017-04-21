@@ -136,7 +136,7 @@
                         <p>Do you really want to delete test case?</p>
                     </div>
                     <div class="modal-footer">
-                        <a href="{{ url("library/testcase/terminate/$testCase->TestCase_id")}}" class="btn btn-default" role="button">Yes</a>
+                        <a href="{{ url("library/testcase/terminate/$testCase->TestCaseOverview_id")}}" class="btn btn-default" role="button">Yes</a>
                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                     </div>
                 </div>

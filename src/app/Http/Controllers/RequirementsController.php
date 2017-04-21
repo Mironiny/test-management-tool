@@ -124,7 +124,11 @@ class RequirementsController extends Controller
             $requirementDetail = $requirementOverview->testRequrements()
                                                 ->whereNull('ActiveDateTo')
                                                 ->first();
-            $coverTestCases = Requirement::find($requirementDetail->TestRequirement_id)->testCases()->get();
+            $coverTestCases = Requirement::find($requirementDetail->TestRequirement_id)
+                                            ->testCases()
+                                            ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                                            ->orderBy('TestCaseOverview.TestCaseOverview_id')
+                                            ->get();
 
             $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
 

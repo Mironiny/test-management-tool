@@ -62,6 +62,7 @@ Route::post('sets_runs/set/update/{id}', 'TestRunController@updateSet');
 Route::post('sets_runs/set/updateTestCases/{id}', 'TestRunController@updateSetTestCases');
 Route::get('sets_runs/set/detail/{id}', 'TestRunController@renderSetDetail');
 Route::get('sets_runs/set/detail/{id}/filter/archived', 'TestRunController@renderSetDetailFiltered');
+Route::get('sets_runs/set/detail/{id}/testcases', 'TestRunController@renderSetTestCasesView');
 
 Route::post('sets_runs/run/changestatus', 'TestRunController@testRunChangeStatus');
 Route::post('sets_runs/run/create', 'TestRunController@createRun');

@@ -59,7 +59,7 @@ class TestRunController extends Controller
     {
         $selectedProject = $request->session()->get('selectedProject');
 
-        if (Project::all()->count() > 1) {
+        if (Project::all()->count() > 0) {
             $testSets = TestSet::where('SUT_id', $selectedProject)
                                         ->whereNotNull('ActiveDateTo')
                                         ->orderBy('ActiveDateFrom', 'asc')
@@ -150,6 +150,28 @@ class TestRunController extends Controller
         $set->save();
 
         return redirect("sets_runs")->with('statusSuccess', "Test set finished");
+    }
+    /**
+     * Terminate test set.
+     *
+     * @return view
+     */
+    public function renderSetTestCasesView(Request $request, $id)
+    {
+        $selectedProject = $request->session()->get('selectedProject');
+        $set = TestSet::find($id);
+        if ($set->SUT_id != $selectedProject) {
+            return redirect('sets_runs')->with('statusFailure', "Test set doesn't exist");
+        }
+        $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
+        $testCases = $set->testCases()
+                          ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                          ->orderBy('TestCaseOverview.TestCaseOverview_id')
+                          ->get();
+        return view('runs/testSetTestCases')
+                ->with('set', $set)
+                ->with('testCases', $testCases)
+                ->with('testSuites', $testSuites);
     }
 
     /**
@@ -364,7 +386,11 @@ class TestRunController extends Controller
         }
         // Move to the the next test
         if (isset($request->move)) {
-            $testCases = $run->testCases()->orderBy('TestSuite_id')->orderBy('TestCase_id')->get();
+            $testCases = $run->testCases()
+                            ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                            ->orderBy('TestCaseOverview.TestSuite_id')
+                            ->orderBy('TestCase.TestCaseOverview_id')->get();
+
             $currentCases = TestCase::find($testCaseId);
 
             $currentPosition = 0;

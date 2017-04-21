@@ -199,8 +199,20 @@
                     @foreach ($coverTestCases as $testCase)
                         <tr>
                             <td>{{ $id }}</td>
-                            <td><a href="{{ url("library/testcase/detail/$testCase->TestCaseOverview_id")}}">{{ $testCase->testCaseOverview->Name }}</a></td>
-                            <td>{{ $testCase->Version_id }}</td>
+                            <td class="{{  App\testCaseOverview::find($testCase->TestCaseOverview_id)->ActiveDateTo ==  null ? '' : 'danger' }}"><a href="{{ url("library/testcase/detail/$testCase->TestCaseOverview_id")}}">
+                                {{ $testCase->testCaseOverview->Name }}</a>
+                                <?php  if (App\testCaseOverview::find($testCase->TestCaseOverview_id)->ActiveDateTo !=  null) { ?>
+                                        <span data-toggle="tooltip" data-placement="top" title="Already deleted test case." class="glyphicon glyphicon-exclamation-sign"></span>
+                                    <?php } ?>
+                            </td>
+                            <?php $TestSuite_id = $testCase->testCaseOverview->TestSuite_id; ?>
+                            <td class="{{  App\testCaseOverview::find($testCase->TestCaseOverview_id)->testCases()->whereNull('ActiveDateTo')->first()->Version_id ==  $testCase->Version_id ? '' : 'danger' }}">
+                                {{ $testCase->Version_id }}
+                                    <?php  if (App\testCaseOverview::find($testCase->TestCaseOverview_id)->testCases()->whereNull('ActiveDateTo')->first()->Version_id !=  $testCase->Version_id) { ?>
+                                            <span data-toggle="tooltip" data-placement="top" title="Not up-to-date version." class="glyphicon glyphicon-exclamation-sign"></span>
+                                        <?php } ?>
+
+                            </td>
                             <?php $TestSuite_id = $testCase->testCaseOverview->TestSuite_id; ?>
                             <td><a href="{{ url("library/filter/$TestSuite_id")}}">{{ App\TestSuite::find($TestSuite_id)->Name }}</a></td>
                         </tr>
@@ -222,6 +234,7 @@
 
 <script>
     $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
         $('#myTable').DataTable();
         $('#historyTable').DataTable();
     });
