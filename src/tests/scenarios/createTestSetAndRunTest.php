@@ -20,10 +20,10 @@ class createTestSetAndRunTest extends TestCase
             self::$testSuite = factory(App\TestSuite::class, 4)
                                 ->create()
                                 ->each(function ($u) {
-                                    $u->testCases()->save(factory(App\TestCaseOverview::class)->create());
+                                    $u->testCases()->save(factory(App\TestCase::class)->create());
                                 });
             self::$user =  factory(App\User::class)->create();
-            self::$tests =  factory(App\TestCase::class, 2)->create();
+            self::$tests =  factory(App\TestCaseHistory::class, 2)->create();
         }
 
     }

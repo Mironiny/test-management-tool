@@ -37,11 +37,11 @@
                                                                 ->whereNull('ActiveDateTo')
                                                                 ->first(); ?>
 
-                    <tr class="{{ App\Requirement::find($requirement->TestRequirement_id)->testCases()->count() < 1 ? 'danger' : 'success' }}">
+                    <tr class="{{ App\RequirementHistory::find($requirement->TestRequirement_id)->testCases()->count() < 1 ? 'danger' : 'success' }}">
                         <td>{{ $id }}</td>
                         <td><a href="{{ url("requirements/detail/$requirementOverview->TestRequirementOverview_id")}}">{{ $requirement->Name }}</a></td>
-                        <td> <i class="{{ App\Requirement::find($requirement->TestRequirement_id)->testCases()->count() < 1 ? 'fa fa-close fa-fw' : 'fa fa-check fa-fw'}}"></i>
-                        {{ ($count = App\Requirement::find($requirement->TestRequirement_id)->testCases()->count()) < 1 ? "Not covered" : "Covered by $count test(s)" }}</td>
+                        <td> <i class="{{ App\RequirementHistory::find($requirement->TestRequirement_id)->testCases()->count() < 1 ? 'fa fa-close fa-fw' : 'fa fa-check fa-fw'}}"></i>
+                        {{ ($count = App\RequirementHistory::find($requirement->TestRequirement_id)->testCases()->count()) < 1 ? "Not covered" : "Covered by $count test(s)" }}</td>
                     </tr>
                     <?php $id++; ?>
                     @endforeach

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TestCase extends Model
+class TestCaseHistory extends Model
 {
     /**
      * Define a table colum ActiveDateFrom and LastUpdate for automatic handle..
@@ -12,30 +12,32 @@ class TestCase extends Model
     const CREATED_AT = 'ActiveDateFrom';
     const UPDATED_AT = 'LastUpdate';
 
+    protected $hidden = array('pivot');
+
     /**
      * Define a table to map a model.
      */
-    protected $table = 'TestCase';
+    protected $table = 'TestCaseHistory';
 
     /**
      * Define primary key of table.
      */
-    protected $primaryKey = 'TestCaseOverview_id';
+    protected $primaryKey = 'TestCase_id';
+
 
     /**
      * Return assigned testCases.
      */
-    public function testCases()
+    public function testRuns()
     {
-        return $this->hasMany('App\TestCaseHistory', 'TestCaseOverview_id');
+        return $this->belongsToMany('App\TestRun', 'TestRun_has_TestCase', 'TestCase_id', 'TestRun_id')->withPivot('Author', 'Status', 'Note', 'LastUpdate');
     }
 
     /**
     * Get the post that owns the comment.
     */
-    public function testSuite()
+    public function testCaseOverview()
     {
-        return $this->belongsTo('App\TestSuite', 'TestSuite_id');
+        return $this->belongsTo('App\TestCase', 'TestCaseOverview_id');
     }
-
 }

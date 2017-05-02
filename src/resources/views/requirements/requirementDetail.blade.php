@@ -50,7 +50,7 @@
                 <button type="submit" name="submit" class="btn btn-primary">Save changes</button>
             </div>
             <div class="col-sm-2">
-                <button type="button" data-toggle="modal" data-target="#cover" class="btn btn-default">{{ ($count = App\Requirement::find($requirementDetail->TestRequirement_id)->testCases()->count()) < 1 ? "Cover by test case" : "Edit coverage" }} </button>
+                <button type="button" data-toggle="modal" data-target="#cover" class="btn btn-default">{{ ($count = App\RequirementHistory::find($requirementDetail->TestRequirement_id)->testCases()->count()) < 1 ? "Cover by test case" : "Edit coverage" }} </button>
             </div>
             <div class="col-sm-2">
                 <button type="button" data-toggle="modal" data-target="#history" class="btn btn-default">History</button>
@@ -199,16 +199,16 @@
                     @foreach ($coverTestCases as $testCase)
                         <tr>
                             <td>{{ $id }}</td>
-                            <td class="{{  App\testCaseOverview::find($testCase->TestCaseOverview_id)->ActiveDateTo ==  null ? '' : 'danger' }}"><a href="{{ url("library/testcase/detail/$testCase->TestCaseOverview_id")}}">
+                            <td class="{{  App\TestCase::find($testCase->TestCaseOverview_id)->ActiveDateTo ==  null ? '' : 'danger' }}"><a href="{{ url("library/testcase/detail/$testCase->TestCaseOverview_id")}}">
                                 {{ $testCase->testCaseOverview->Name }}</a>
-                                <?php  if (App\testCaseOverview::find($testCase->TestCaseOverview_id)->ActiveDateTo !=  null) { ?>
+                                <?php  if (App\TestCase::find($testCase->TestCaseOverview_id)->ActiveDateTo !=  null) { ?>
                                         <span data-toggle="tooltip" data-placement="top" title="Already deleted test case." class="glyphicon glyphicon-exclamation-sign"></span>
                                     <?php } ?>
                             </td>
                             <?php $TestSuite_id = $testCase->testCaseOverview->TestSuite_id; ?>
-                            <td class="{{  App\testCaseOverview::find($testCase->TestCaseOverview_id)->testCases()->whereNull('ActiveDateTo')->first()->Version_id ==  $testCase->Version_id ? '' : 'danger' }}">
+                            <td class="{{  App\TestCase::find($testCase->TestCaseOverview_id)->testCases()->whereNull('ActiveDateTo')->first()->Version_id ==  $testCase->Version_id ? '' : 'danger' }}">
                                 {{ $testCase->Version_id }}
-                                    <?php  if (App\testCaseOverview::find($testCase->TestCaseOverview_id)->testCases()->whereNull('ActiveDateTo')->first()->Version_id !=  $testCase->Version_id) { ?>
+                                    <?php  if (App\TestCase::find($testCase->TestCaseOverview_id)->testCases()->whereNull('ActiveDateTo')->first()->Version_id !=  $testCase->Version_id) { ?>
                                             <span data-toggle="tooltip" data-placement="top" title="Not up-to-date version." class="glyphicon glyphicon-exclamation-sign"></span>
                                         <?php } ?>
 

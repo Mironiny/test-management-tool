@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\TestSuite;
-use App\TestCase;
+use App\TestCaseHistory;
 use App\Http\Controllers\api\v1\Commons;
 
 class TestSuiteController extends Controller

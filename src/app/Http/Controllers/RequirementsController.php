@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Project;
 use App\TestSuite;
+use App\TestCaseHistory;
 use App\TestCase;
-use App\TestCaseOverview;
+use App\RequirementHistory;
 use App\Requirement;
-use App\RequirementOverview;
 use Lang;
 
 class RequirementsController extends Controller
@@ -33,27 +33,11 @@ class RequirementsController extends Controller
     {
         $selectedProject = $request->session()->get('selectedProject');
         if (Project::all()->count() > 0) {
-            $requirementsOverview = RequirementOverview::where('SUT_id', $selectedProject)
+            $requirementsOverview = Requirement::where('SUT_id', $selectedProject)
                                                         ->whereNull('ActiveDateTo')
                                                         ->orderBy('ActiveDateFrom', 'asc')
                                                         ->get();
 
-            // $requirements = collect();
-            // foreach ($requirementsOverview as $requirementOverview) {
-            //     $requirement = $requirementOverview->testRequrements()
-            //                                         ->whereNull('ActiveDateTo')
-            //                                         ->first();
-            //     $requirements->push($requirement);
-            //}
-            // $requirements = Requirement::
-            //                             whereNull('ActiveDateTo')
-            //                             ->orderBy('ActiveDateFrom', 'asc')
-            //                             ->get();
-        //    var_dump($requirements) ;
-                                        // $requirements = Requirement::where('SUT_id', $selectedProject)
-                                        //                             ->whereNull('ActiveDateTo')
-                                        //                             ->orderBy('ActiveDateFrom', 'asc')
-                                        //                             ->get();
             return view('requirements/requirements')
                 // ->with('requirements', $requirements)
                 ->with('requirementsOverview', $requirementsOverview);
@@ -85,14 +69,14 @@ class RequirementsController extends Controller
             'description' => 'max:1023'
         ]);
 
-        $requirementOverview = new RequirementOverview;
+        $requirementOverview = new Requirement;
         if ($request->session()->get('selectedProject') == 0) {
             return redirect('requirements')->with('statusFailure', trans('requirements.failureCreateRequirementNotSelectedProject'));
         }
         $requirementOverview->SUT_id = $request->session()->get('selectedProject');
         $requirementOverview->save();
 
-        $requirement = new Requirement;
+        $requirement = new RequirementHistory;
         $requirement->Name = $request->name;
         $requirement->TestRequirementOverview_id = $requirementOverview->TestRequirementOverview_id;
         $requirement->RequirementDescription = $request->description;
@@ -111,7 +95,7 @@ class RequirementsController extends Controller
         // $requirementDetail = Requirement::find($id);
         $selectedProject = $request->session()->get('selectedProject');
 
-        $requirementOverview = RequirementOverview::find($id);
+        $requirementOverview = Requirement::find($id);
 
         $requirementsHistory = $requirementOverview->testRequrements()
                                                     ->orderBy('ActiveDateFrom', 'DESC')
@@ -124,10 +108,10 @@ class RequirementsController extends Controller
             $requirementDetail = $requirementOverview->testRequrements()
                                                 ->whereNull('ActiveDateTo')
                                                 ->first();
-            $coverTestCases = Requirement::find($requirementDetail->TestRequirement_id)
+            $coverTestCases = RequirementHistory::find($requirementDetail->TestRequirement_id)
                                             ->testCases()
-                                            ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                                            ->orderBy('TestCaseOverview.TestCaseOverview_id')
+                                            ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                                            ->orderBy('TestCase.TestCaseOverview_id')
                                             ->get();
 
             $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
@@ -151,7 +135,7 @@ class RequirementsController extends Controller
             'name' => 'required|max:45',
             'description' => 'max:1023'
         ]);
-        $requirementOverview = RequirementOverview::find($id);
+        $requirementOverview = Requirement::find($id);
         $requirementDetail = $requirementOverview->testRequrements()
                                             ->whereNull('ActiveDateTo')
                                             ->first();
@@ -166,7 +150,7 @@ class RequirementsController extends Controller
         $requirementDetail->save();
 
         // Create new record
-        $requirementNew = new Requirement;
+        $requirementNew = new RequirementHistory;
         if (isset($request->name)) {
             $requirementNew->Name = $request->name;
         }
@@ -184,7 +168,7 @@ class RequirementsController extends Controller
 
         // Testcase copy
         foreach ($requirementDetail->testCases()->get() as $testCase ) {
-            Requirement::find($requirementNew->TestRequirement_id)->TestCases()->attach($testCase->TestCase_id);
+            RequirementHistory::find($requirementNew->TestRequirement_id)->TestCases()->attach($testCase->TestCase_id);
         }
 
 
@@ -198,7 +182,7 @@ class RequirementsController extends Controller
      */
     public function deleteRequirement(Request $request, $id)
     {
-        $requirementDetail = RequirementOverview::find($id);
+        $requirementDetail = Requirement::find($id);
         if ($requirementDetail == null) {
             return redirect('requirements')->with('statusFailure', trans('requirements.requirementNotExists'));
         }
@@ -215,7 +199,7 @@ class RequirementsController extends Controller
      */
     private function getActiveRequirementsBySelectedProject($selectedProject)
     {
-        return Requirement::where('SUT_id', $selectedProject)
+        return RequirementHistory::where('SUT_id', $selectedProject)
                                     ->whereNull('ActiveDateTo')
                                     ->orderBy('ActiveDateFrom', 'desc')
                                     ->get();
@@ -228,12 +212,12 @@ class RequirementsController extends Controller
      */
     public function coverRequirement(Request $request, $id)
     {
-        $requirementOverview = RequirementOverview::find($id);
+        $requirementOverview = Requirement::find($id);
         $requirementDetail = $requirementOverview->testRequrements()
                                             ->whereNull('ActiveDateTo')
                                             ->first();
 
-        $coveredTestCases = Requirement::find($requirementDetail->TestRequirement_id)->TestCases()->get();
+        $coveredTestCases = RequirementHistory::find($requirementDetail->TestRequirement_id)->TestCases()->get();
         $selectedTestcases = ($request->testcases != null) ? $request->testcases : array();
 
         // Check if there is a change
@@ -258,7 +242,7 @@ class RequirementsController extends Controller
         $requirementDetail->ActiveDateTo = date("Y-m-d H:i:s");
         $requirementDetail->save();
 
-        $requirementNew = new Requirement;
+        $requirementNew = new RequirementHistory;
         $requirementNew->Name = $requirementDetail->Name;
         $requirementNew->RequirementDescription = $requirementDetail->RequirementDescription;
         $requirementNew->TestRequirementOverview_id = $requirementDetail->TestRequirementOverview_id;
@@ -267,9 +251,9 @@ class RequirementsController extends Controller
         // Adding to database
         if (!empty($selectedTestcases)) {
             foreach ($selectedTestcases as $selectedTestCase ) {
-                $testCaseOverview = TestCaseOverview::find($selectedTestCase);
+                $testCaseOverview = TestCase::find($selectedTestCase);
                 $testCaseDetail = $testCaseOverview->testCases()->whereNull('ActiveDateTo')->first();
-                Requirement::find($requirementNew->TestRequirement_id)->TestCases()->attach($testCaseDetail->TestCase_id);
+                RequirementHistory::find($requirementNew->TestRequirement_id)->TestCases()->attach($testCaseDetail->TestCase_id);
             }
         }
         return redirect("requirements/detail/$id")->with('statusSuccess', trans('requirements.successEditedRequirement'));
@@ -282,7 +266,7 @@ class RequirementsController extends Controller
      */
     public function changeVersion(Request $request, $id)
     {
-        $requirementOverview = RequirementOverview::find($id);
+        $requirementOverview = Requirement::find($id);
         $requirementOld = $requirementOverview->testRequrements()
                                             ->whereNull('ActiveDateTo')
                                             ->first();
@@ -290,7 +274,7 @@ class RequirementsController extends Controller
         $requirementOld->ActiveDateTo = date("Y-m-d H:i:s");
         $requirementOld->save();
 
-        $requirementNew = Requirement::find($request->versionToChange);
+        $requirementNew = RequirementHistory::find($request->versionToChange);
         $requirementNew->ActiveDateTo = null;
         $requirementNew->save();
 
@@ -305,14 +289,11 @@ class RequirementsController extends Controller
      */
     public function removeVersion(Request $request, $id)
     {
-        $requirement = Requirement::find($request->versionToChangeRemove);
+        $requirement = RequirementHistory::find($request->versionToChangeRemove);
         $requirement->delete();
 
         return redirect("requirements/detail/$id")->with('statusSuccess', "Version was deleted");
 
     }
-
-
-
 
 }

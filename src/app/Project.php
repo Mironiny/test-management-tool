@@ -27,7 +27,7 @@ class Project extends Model
     */
     public function requirements()
     {
-        return $this->hasMany('App\RequirementOverview', 'SUT_id');
+        return $this->hasMany('App\Requirement', 'SUT_id');
     }
 
     /**

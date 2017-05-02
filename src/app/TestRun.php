@@ -32,7 +32,7 @@ class TestRun extends Model
      */
     public function testCases()
     {
-        return $this->belongsToMany('App\TestCase', 'TestRun_has_TestCase', 'TestRun_id', 'TestCase_id')->withPivot('Author', 'Status', 'Note', 'ExecutionDuration', 'LastUpdate');
+        return $this->belongsToMany('App\TestCaseHistory', 'TestRun_has_TestCase', 'TestRun_id', 'TestCase_id')->withPivot('Author', 'Status', 'Note', 'ExecutionDuration', 'LastUpdate');
     }
 
 }

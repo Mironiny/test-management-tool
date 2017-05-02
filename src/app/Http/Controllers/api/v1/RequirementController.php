@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Project;
+use App\RequirementHistory;
 use App\Requirement;
-use App\RequirementOverview;
 
 class RequirementController extends Controller
 {
@@ -32,7 +32,7 @@ class RequirementController extends Controller
         if (!$project instanceof Project) {
             return $project;
         }
-        $requirementOverview = RequirementOverview::where('SUT_id', $projectId)->get();
+        $requirementOverview = Requirement::where('SUT_id', $projectId)->get();
         $requirements_ = collect();
         foreach ($requirementOverview as $overview) {
             $requirements_->push($overview->testRequrements()->whereNull('ActiveDateTo')->select('TestRequirement_id', 'Name','CoverageCriteria', 'RequirementDescription')
@@ -43,8 +43,8 @@ class RequirementController extends Controller
             $requirement['SUT_id'] = $projectId;
             if ($requirement->testCases() != null) {
                 $testcase = $requirement->testCases()
-                                        ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                                        ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                        ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCaseHistory.TestCaseOverview_id')
+                                        ->select('TestCaseHistory.TestCase_id', 'TestCaseOverview.Name')
                                         ->get();
                 $requirement['TestCase'] = $testcase;
             }
@@ -80,11 +80,11 @@ class RequirementController extends Controller
             return response()->json(['error' => "Requirement name error"], 400);
         }
 
-        $requirementOverview = new RequirementOverview;
+        $requirementOverview = new Requirement;
         $requirementOverview->SUT_id =(int) $projectId;
         $requirementOverview->save();
 
-        $requirement = new Requirement;
+        $requirement = new RequirementHistory;
         $requirement->Name =  $request->input('Name');
         $requirement->TestRequirementOverview_id = (int) $requirementOverview->TestRequirementOverview_id;
         $requirement->CoverageCriteria = $request->input('CoverageCriteria');
@@ -108,7 +108,7 @@ class RequirementController extends Controller
         if (!$project instanceof Project) {
             return $project;
         }
-        $requirementOverview = RequirementOverview::where('SUT_id', $projectId)->first();
+        $requirementOverview = Requirement::where('SUT_id', $projectId)->first();
         $requirement = $requirementOverview->testRequrements()->whereNull('ActiveDateTo')->select('TestRequirement_id', 'Name','CoverageCriteria', 'RequirementDescription')
                                     ->first();
         // $requirement = Requirement::where('TestRequirement_id', $requirementId)
@@ -119,8 +119,8 @@ class RequirementController extends Controller
         }
         $requirement['SUT_id'] = (int) $projectId;
         $requirement['TestCase'] = $requirement->testCases()
-                                                ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                                                ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                                ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCaseHistory.TestCaseOverview_id')
+                                                ->select('TestCaseHistory.TestCase_id', 'TestCase.Name')
                                                 ->get();
 
         return response()->json($requirement);
@@ -150,7 +150,7 @@ class RequirementController extends Controller
         if (!$project instanceof Project) {
             return $project;
         }
-        $requirementOverview = RequirementOverview::find($requirementId);
+        $requirementOverview = Requirement::find($requirementId);
         if ($requirementOverview == null) {
             return response()->json(['error' => "Requirement not find"], 400);
         }
@@ -160,7 +160,7 @@ class RequirementController extends Controller
         $requirement->ActiveDateTo = date("Y-m-d H:i:s");
         $requirement->save();
 
-        $requirementNew = new Requirement;
+        $requirementNew = new RequirementHistory;
         $requirementNew->TestRequirementOverview_id = $requirementId;
         if ($request->input('Name') != null) {
             $requirementNew->Name = $request->input('Name');
@@ -172,7 +172,6 @@ class RequirementController extends Controller
         $requirementNew->RequirementDescription = $request->input('RequirementDescription');
         $requirementNew->save();
         $requirementNew['SUT_id'] = (int) $projectId;
-
         return response()->json($requirementNew, 201);
     }
 
@@ -188,7 +187,7 @@ class RequirementController extends Controller
         if (!$project instanceof Project) {
             return $project;
         }
-        $requirement = Requirement::find($requirementId);
+        $requirement = RequirementHistory::find($requirementId);
         if ($requirement == null) {
             return response()->json(['error' => "Requirement not find"], 400);
         }

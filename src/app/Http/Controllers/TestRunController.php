@@ -9,8 +9,8 @@ use App\Project;
 use App\TestSet;
 use App\TestRun;
 use App\TestSuite;
+use App\TestCaseHistory;
 use App\TestCase;
-use App\TestCaseOverview;
 use App\Enums\TestRunStatus;
 use App\Enums\TestCaseStatus;
 use Charts;
@@ -107,7 +107,7 @@ class TestRunController extends Controller
         // Adding to database
         if ($request->testcases != null) {
             foreach ($request->testcases as $testCase ) {
-                $testCaseOverview = TestCaseOverview::find($testCase);
+                $testCaseOverview = TestCase::find($testCase);
                 $testCase = $testCaseOverview
                             ->testCases()
                             ->whereNull('ActiveDateTo')
@@ -165,8 +165,8 @@ class TestRunController extends Controller
         }
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
         $testCases = $set->testCases()
-                          ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                          ->orderBy('TestCaseOverview.TestCaseOverview_id')
+                          ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                          ->orderBy('TestCase.TestCaseOverview_id')
                           ->get();
         return view('runs/testSetTestCases')
                 ->with('set', $set)
@@ -319,9 +319,9 @@ class TestRunController extends Controller
 
         // Get testcases ordered by Suite and Overview id
         $testCases = $run->testCases()
-                        ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                        ->orderBy('TestCaseOverview.TestSuite_id')
-                        ->orderBy('TestCaseOverview.TestCaseOverview_id')
+                        ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                        ->orderBy('TestCase.TestSuite_id')
+                        ->orderBy('TestCase.TestCaseOverview_id')
                         ->get();
 
         // Get only suites of assigned testcases
@@ -387,11 +387,11 @@ class TestRunController extends Controller
         // Move to the the next test
         if (isset($request->move)) {
             $testCases = $run->testCases()
-                            ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                            ->orderBy('TestCaseOverview.TestSuite_id')
+                            ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                            ->orderBy('TestCase.TestSuite_id')
                             ->orderBy('TestCase.TestCaseOverview_id')->get();
 
-            $currentCases = TestCase::find($testCaseId);
+            $currentCases = TestCaseHistory::find($testCaseId);
 
             $currentPosition = 0;
             foreach ($testCases as $testCase) {

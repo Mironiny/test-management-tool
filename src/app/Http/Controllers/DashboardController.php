@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Project;
+use App\RequirementHistory;
 use App\Requirement;
-use App\RequirementOverview;
-use App\TestCase;
+use App\TestCaseHistory;
 use App\TestSet;
 use Charts;
 use App\Enums\TestRunStatus;
@@ -140,7 +140,7 @@ class DashboardController extends Controller
             return view('dashboards/dashboard');
         }
 
-        $requirementsOverview = RequirementOverview::where('SUT_id', $selectedProject)
+        $requirementsOverview = Requirement::where('SUT_id', $selectedProject)
                                                     ->orderBy('ActiveDateFrom', 'asc')
                                                     ->get();
 

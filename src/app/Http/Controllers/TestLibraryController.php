@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\TestCaseHistory;
 use App\TestCase;
-use App\TestCaseOverview;
 use App\TestSuite;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,7 +49,7 @@ class TestLibraryController extends Controller
     public function filterByTestSuite(Request $request, $id)
     {
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        $testCases = TestCaseOverview::where('TestSuite_id', $id)
+        $testCases = TestCase::where('TestSuite_id', $id)
                                     ->whereNull('ActiveDateTo')
                                     ->get();
 
@@ -91,7 +91,7 @@ class TestLibraryController extends Controller
     public function renderTestCaseDetail(Request $request, $id)
     {
         $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        $testCaseOverview = TestCaseOverview::find($id);
+        $testCaseOverview = TestCase::find($id);
         $testCase = $testCaseOverview
                     ->testCases()
                     ->whereNull('ActiveDateTo')
@@ -132,12 +132,12 @@ class TestLibraryController extends Controller
         }
 
         for ($i = 1; $i <= $testCaseCount; $i++) {
-            $testCaseOverview = new TestCaseOverview;
+            $testCaseOverview = new TestCase;
             $testCaseOverview->TestSuite_id = $request["testSuite$i"];
             $testCaseOverview->Name = $request["name$i"];
             $testCaseOverview->save();
 
-            $testCase = new TestCase;
+            $testCase = new TestCaseHistory;
             $testCase->TestCaseOverview_id = $testCaseOverview->TestCaseOverview_id;
             $testCase->Version_id = 1;
             $testCase->TestCaseDescription = $request["description$i"];
@@ -169,7 +169,7 @@ class TestLibraryController extends Controller
             'description' => 'max:1023'
         ]);
 
-        $testCaseOverview = TestCaseOverview::find($id);
+        $testCaseOverview = TestCase::find($id);
         $testCaseDetail = $testCaseOverview
                     ->testCases()
                     ->whereNull('ActiveDateTo')
@@ -188,7 +188,7 @@ class TestLibraryController extends Controller
         $testCaseDetail->ActiveDateTo = date("Y-m-d H:i:s");
         $testCaseDetail->save();
 
-        $testCaseNew = new TestCase;
+        $testCaseNew = new TestCaseHistory;
         $testCaseNew->Version_id = $testCaseOverview->testCases()->count() + 1;
         $testCaseNew->TestCaseOverview_id = $id;
         $testCaseNew->TestCaseDescription = $request->description;
@@ -209,7 +209,7 @@ class TestLibraryController extends Controller
      */
     public function deleteTestCase(Request $request, $id)
     {
-        $testCaseOverview = TestCaseOverview::find($id);
+        $testCaseOverview = TestCase::find($id);
         $testCaseOverview->ActiveDateTo = date("Y-m-d H:i:s");
         $testCaseOverview->save();
 
@@ -295,7 +295,7 @@ class TestLibraryController extends Controller
      */
     public function changeVersion(Request $request, $id)
     {
-        $testCaseOverview = testCaseOverview::find($id);
+        $testCaseOverview = TestCase::find($id);
         $testCaseOld = $testCaseOverview->testCases()
                                             ->whereNull('ActiveDateTo')
                                             ->first();
@@ -303,7 +303,7 @@ class TestLibraryController extends Controller
         $testCaseOld->ActiveDateTo = date("Y-m-d H:i:s");
         $testCaseOld->save();
 
-        $testCaseNew = TestCase::find($request->versionToChange);
+        $testCaseNew = TestCaseHistory::find($request->versionToChange);
         $testCaseNew->ActiveDateTo = null;
         $testCaseNew->save();
 

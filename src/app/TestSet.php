@@ -35,7 +35,7 @@ class TestSet extends Model
      */
     public function testCases()
     {
-        return $this->belongsToMany('App\TestCase', 'TestCase_has_TestSet', 'TestsSet_id', 'TestCase_id');
+        return $this->belongsToMany('App\TestCaseHistory', 'TestCase_has_TestSet', 'TestsSet_id', 'TestCase_id');
     }
 
 }

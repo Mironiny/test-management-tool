@@ -7,10 +7,10 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Auth;
 use App\Project;
-use App\Requirement;
+use App\RequirementHistory;
 use App\TestSet;
+use App\TestCaseHistory;
 use App\TestCase;
-use App\TestCaseOverview;
 use App\TestRun;
 use App\Enums\TestRunStatus;
 use App\Enums\TestCaseStatus;
@@ -51,15 +51,15 @@ class TestRunController extends Controller
                                 ->get();
         foreach ($testRuns as $testRun) {
             $testRun['TestCase'] = $testRun->testCases()
-                                            ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                                            ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                            ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCaseHistory.TestCaseOverview_id')
+                                            ->select('TestCaseHistory.TestCase_id', 'TestCase.Name')
                                             ->get();
             $testCases =  $testRun->testCases()
-                                    ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                                    ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                    ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCaseHistory.TestCaseOverview_id')
+                                    ->select('TestCaseHistory.TestCase_id', 'TestCase.Name')
                                     ->get();
             foreach ($testCases as $testCase) {
-                $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
+                $testCase['Status'] = $testRun->testCases()->where('TestCaseHistory.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
             }
             $testRun['TestCase'] = $testCases;
         }
@@ -112,11 +112,11 @@ class TestRunController extends Controller
         }
 
         $testCases =  $testRun->testCases()
-                                ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                               ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                               ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCaseHistory.TestCaseOverview_id')
+                               ->select('TestCaseHistory.TestCase_id', 'TestCase.Name')
                                ->get();
         foreach ($testCases as $testCase) {
-            $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
+            $testCase['Status'] = $testRun->testCases()->where('TestCaseHistory.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
         }
         $testRun['TestCase'] = $testCases;
 
@@ -148,15 +148,15 @@ class TestRunController extends Controller
         return response()->json($testRun);
 
         $testRun['TestCase'] = $testRun->testCases()
-                                        ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                                        ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                        ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCaseHistory.TestCaseOverview_id')
+                                        ->select('TestCaseHistory.TestCase_id', 'TestCase.Name')
                                         ->get();
         $testCases =  $testRun->testCases()
-                        ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                        ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                        ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCaseHistory.TestCaseOverview_id')
+                        ->select('TestCaseHistory.TestCase_id', 'TestCase.Name')
                         ->get();
         foreach ($testCases as $testCase) {
-            $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
+            $testCase['Status'] = $testRun->testCases()->where('TestCaseHistory.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
         }
         $testRun['TestCase'] = $testCases;
 
@@ -208,8 +208,8 @@ class TestRunController extends Controller
         }
 
         $testCases =  $testRun->testCases()
-                               ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                               ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCaseHistory.TestCaseOverview_id')
+                               ->select('TestCaseHistory.TestCase_id', 'TestCase.Name')
                                ->get();
         foreach ($testCases as $testCase) {
             $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
@@ -273,7 +273,7 @@ class TestRunController extends Controller
             return response()->json(['error' => "TestRun Not exist"], 400);
         }
 
-        $testCaseO = TestCaseOverview::find($testCaseId);
+        $testCaseO = TestCase::find($testCaseId);
         if ($testCaseO == null) {
             return response()->json(['error' => "TestCase Not exist"], 400);
         }
@@ -290,11 +290,11 @@ class TestRunController extends Controller
             $testRun->testCases()->updateExistingPivot($testCaseId, ['LastUpdate' => date("Y-m-d H:i:s")]);
 
             $testCases =  $testRun->testCases()
-                                    ->join('TestCaseOverview', 'TestCaseOverview.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                                    ->select('TestCase.TestCase_id', 'TestCaseOverview.Name')
+                                    ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
+                                    ->select('TestCaseHistory.TestCase_id', 'TestCase.Name')
                                     ->get();
             foreach ($testCases as $testCase) {
-                $testCase['Status'] = $testRun->testCases()->where('TestCase.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
+                $testCase['Status'] = $testRun->testCases()->where('TestCaseHistory.TestCase_id', $testCase->TestCase_id)->first()->pivot->Status;
             }
             $testRun['TestCase'] = $testCases;
 

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Requirement extends Model
+class RequirementHistory extends Model
 {
     /**
      * Define a table colum ActiveDateFrom and LastUpdate for automatic handle..
@@ -15,19 +15,19 @@ class Requirement extends Model
     /**
      * Define a table to map a model.
      */
-    protected $table = 'TestRequirement';
+    protected $table = 'TestRequirementHistory';
 
     /**
      * Define primary key of table.
      */
-    protected $primaryKey = 'TestRequirementOverview_id';
+    protected $primaryKey = 'TestRequirement_id';
 
     /**
      * Return assigned testCases.
      */
-    public function testRequrements()
+    public function testCases()
     {
-        return $this->hasMany('App\RequirementHistory', 'TestRequirementOverview_id');
+        return $this->belongsToMany('App\TestCaseHistory', 'TestRequirement_has_TestCase', 'TestRequirement_id', 'TestCase_id');
     }
 
 }

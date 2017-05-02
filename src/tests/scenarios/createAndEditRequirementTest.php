@@ -21,10 +21,10 @@ class createAndEditRequirementTest extends TestCase
             self::$testSuite = factory(App\TestSuite::class, 2)
                                 ->create()
                                 ->each(function ($u) {
-                                    $u->testCases()->save(factory(App\TestCaseOverview::class)->create());
+                                    $u->testCases()->save(factory(App\TestCase::class)->create());
                                 });
             self::$user = factory(App\User::class)->create();
-            self::$tests =  factory(App\TestCase::class, 2)->create();
+            self::$tests =  factory(App\TestCaseHistory::class, 2)->create();
         }
 
     }
@@ -74,7 +74,7 @@ class createAndEditRequirementTest extends TestCase
              ->type('requirementDescription', 'description')
              ->press('submit');
 
-             $this->seeInDatabase('TestRequirement', [
+             $this->seeInDatabase('TestRequirementHistory', [
                      'Name' => 'newRequirement',
                      'RequirementDescription' => 'requirementDescription'
                  ]);
@@ -97,7 +97,7 @@ class createAndEditRequirementTest extends TestCase
              ->type('requirementDescriptionNew', 'description')
              ->press('submit');
 
-             $this->dontSeeInDatabase('TestRequirement', [
+             $this->dontSeeInDatabase('TestRequirementHistory', [
                      'RequirementDescription' => 'requirementDescriptionNew'
                  ]);
 
@@ -134,7 +134,7 @@ class createAndEditRequirementTest extends TestCase
              ->type('requirementDescriptionEdited', 'description')
              ->press('submit');
 
-        $this->seeInDatabase('TestRequirement', [
+        $this->seeInDatabase('TestRequirementHistory', [
             'Name' => 'newRequirement',
             'RequirementDescription' => 'requirementDescriptionEdited'
         ]);

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\api\v1;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\TestCaseHistory;
 use App\TestCase;
-use App\TestCaseOverview;
 use App\TestSuite;
 
 class TestCaseController extends Controller
@@ -28,11 +28,11 @@ class TestCaseController extends Controller
      */
     public function index()
     {
-        $testCases = TestCase::whereNull('ActiveDateTo')->get();
+        $testCases = TestCaseHistory::whereNull('ActiveDateTo')->get();
         foreach ($testCases as $testCase) {
             $testCaseOverview = $testCase->testCaseOverview->get();
-            $testCase['TestCase_id'] = TestCaseOverview::find($testCase->TestCaseOverview_id)->TestCaseOverview_id;
-            $testCase['Name'] = TestCaseOverview::find($testCase->TestCaseOverview_id)->Name;
+            $testCase['TestCase_id'] = TestCase::find($testCase->TestCaseOverview_id)->TestCaseOverview_id;
+            $testCase['Name'] = TestCase::find($testCase->TestCaseOverview_id)->Name;
             $testCase['TestSuite_id'] = $testCase->testCaseOverview->TestSuite_id;
         }
         $data = Commons::filterTestCase($testCases);
@@ -70,12 +70,12 @@ class TestCaseController extends Controller
             return response()->json(['error' => "Test case name error"], 400);
         }
 
-        $testCaseOverview = new TestCaseOverview;
+        $testCaseOverview = new TestCase;
         $testCaseOverview->TestSuite_id = $request->input('TestSuite_id');
         $testCaseOverview->Name =  $request->input('Name');
         $testCaseOverview->save();
 
-        $testCase = new TestCase;
+        $testCase = new TestCaseHistory;
         $testCase->TestCaseOverview_id = $testCaseOverview->TestCaseOverview_id;
         $testCase->Version_id =  1;
         $testCase->IsManual =  $request->input('IsManual');
@@ -106,7 +106,7 @@ class TestCaseController extends Controller
      */
     public function show($id)
     {
-        $testCaseOverview = TestCaseOverview::find($id);
+        $testCaseOverview = TestCase::find($id);
         if ($testCaseOverview != null) {
             $testCase = $testCaseOverview->testCases()->whereNull('ActiveDateTo')->first();
             $testCase['Name'] = $testCaseOverview->Name;
@@ -140,7 +140,7 @@ class TestCaseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $testCaseOverview = TestCaseOverview::find($id);
+        $testCaseOverview = TestCase::find($id);
         if ($testCaseOverview == null) {
             return response()->json(['error' => "TestCase not found"], 404);
         }
@@ -151,7 +151,7 @@ class TestCaseController extends Controller
         $testCase->ActiveDateTo = date("Y-m-d H:i:s");
         $testCase->save();
 
-        $newTestCase = new TestCase;
+        $newTestCase = new TestCaseHistory;
         $newTestCase->TestCaseOverview_id = $id;
         $newTestCase->IsManual =  $request->input('IsManual');
         $newTestCase->TestCasePrefixes =  $request->input('TestCasePrefixes');
@@ -179,7 +179,7 @@ class TestCaseController extends Controller
      */
     public function destroy($id)
     {
-        $testcase = TestCase::find($id);
+        $testcase = TestCaseHistory::find($id);
         if ($testcase == null) {
             return response()->json(['error' => "Testcase not found"], 404);
         }

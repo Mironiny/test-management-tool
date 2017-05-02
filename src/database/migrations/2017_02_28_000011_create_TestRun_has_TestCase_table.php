@@ -31,7 +31,7 @@ class CreateTestrunHasTestcaseTable extends Migration
                 ->onUpdate('no action');
 
             $table->foreign('TestCase_id', 'fk_TestRun_has_TestCase_TestCase1_idx')
-                ->references('TestCase_id')->on('TestCase')
+                ->references('TestCase_id')->on('TestCaseHistory')
                 ->onDelete('no action')
                 ->onUpdate('no action');
         });

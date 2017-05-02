@@ -23,12 +23,12 @@ class CreateTestrequirementHasTestcaseTable extends Migration
             $table->primary(['TestRequirement_id', 'TestCase_id'], 'primarykey');
 
             $table->foreign('TestRequirement_id', 'fk_TestRequirement_has_TestCase_TestRequirement1_idx')
-                ->references('TestRequirement_id')->on('TestRequirement')
+                ->references('TestRequirement_id')->on('TestRequirementHistory')
                 ->onDelete('no action')
                 ->onUpdate('no action');
 
             $table->foreign('TestCase_id', 'fk_TestRequirement_has_TestCase_TestCase1_idx')
-                ->references('TestCase_id')->on('TestCase')
+                ->references('TestCase_id')->on('TestCaseHistory')
                 ->onDelete('no action')
                 ->onUpdate('no action');
         });

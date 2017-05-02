@@ -42,7 +42,7 @@ class testCaseTest extends TestCase
                 'TestCaseDescription' => 'SomeDescription'
             ]);
 
-        $this->seeInDatabase('TestCase', [
+        $this->seeInDatabase('TestCaseHistory', [
             'TestCase_id' => 1
         ]);
 
@@ -99,7 +99,7 @@ class testCaseTest extends TestCase
                 'Name' => 'TestCase1'
             ]);
 
-        $this->seeInDatabase('TestCase', [
+        $this->seeInDatabase('TestCaseHistory', [
             'TestCase_id' => 1,
             'TestCaseDescription' => 'Dessc'
         ]);

@@ -22,7 +22,7 @@ class CreateTestcaseHasTestsetTable extends Migration
             $table->primary(['TestCase_id', 'TestsSet_id'], 'primarykey');
 
             $table->foreign('TestCase_id', 'fk_Test Case_has_Test Run_Test Case1_idx')
-                ->references('TestCase_id')->on('TestCase')
+                ->references('TestCase_id')->on('TestCaseHistory')
                 ->onDelete('no action')
                 ->onUpdate('no action');
 

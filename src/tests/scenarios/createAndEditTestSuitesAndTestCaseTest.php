@@ -114,7 +114,7 @@ class createAndEditTestSuitesAndTestCaseTest extends TestCase
              ->select('1', 'testSuite1')
              ->press('submit');
 
-        $this->seeInDatabase('TestCaseOverview', [
+        $this->seeInDatabase('TestCase', [
                 'Name' => 'TestCase1',
                 'TestSuite_id' => '1'
             ]);
@@ -142,7 +142,7 @@ class createAndEditTestSuitesAndTestCaseTest extends TestCase
              ->type('someSuffixes','suffixes1')
              ->press('submit');
 
-        $this->seeInDatabase('TestCase', [
+        $this->seeInDatabase('TestCaseHistory', [
                 'TestCaseDescription' => 'someDecription',
                 'TestCasePrefixes' => 'somePrefixes',
                 'TestSteps' => 'someSteps',
@@ -171,7 +171,7 @@ class createAndEditTestSuitesAndTestCaseTest extends TestCase
              ->seePageIs('/library/testcase/create');
 
 
-        $this->dontSeeInDatabase('TestCase', [
+        $this->dontSeeInDatabase('TestCaseHistory', [
                 'TestCaseDescription' => 'someRandomDecription',
                 'TestCasePrefixes' => 'someRandomPrefixes'
          ]);
@@ -214,7 +214,7 @@ class createAndEditTestSuitesAndTestCaseTest extends TestCase
               ->type('someNewSuffixes','suffixes')
               ->press('submit');
 
-         $this->seeInDatabase('TestCase', [
+         $this->seeInDatabase('TestCaseHistory', [
                  'TestCaseDescription' => 'someNewDecription',
                  'TestCasePrefixes' => 'someNewPrefixes',
                  'TestSteps' => 'someNewSteps',
