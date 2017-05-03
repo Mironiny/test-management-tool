@@ -110,8 +110,8 @@ class RequirementsController extends Controller
                                                 ->first();
             $coverTestCases = RequirementHistory::find($requirementDetail->TestRequirement_id)
                                             ->testCases()
-                                            ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCase.TestCaseOverview_id')
-                                            ->orderBy('TestCase.TestCaseOverview_id')
+                                            ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCaseHistory.TestCaseOverview_id')
+                                            ->orderBy('TestCaseHistory.TestCaseOverview_id')
                                             ->get();
 
             $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
