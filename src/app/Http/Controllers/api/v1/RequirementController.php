@@ -44,7 +44,7 @@ class RequirementController extends Controller
             if ($requirement->testCases() != null) {
                 $testcase = $requirement->testCases()
                                         ->join('TestCase', 'TestCase.TestCaseOverview_id', '=', 'TestCaseHistory.TestCaseOverview_id')
-                                        ->select('TestCaseHistory.TestCase_id', 'TestCaseOverview.Name')
+                                        ->select('TestCaseHistory.TestCase_id', 'TestCase.Name')
                                         ->get();
                 $requirement['TestCase'] = $testcase;
             }

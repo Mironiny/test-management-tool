@@ -100,7 +100,7 @@ class testCaseTest extends TestCase
             ]);
 
         $this->seeInDatabase('TestCaseHistory', [
-            'TestCase_id' => 1,
+            'TestCase_id' => 2,
             'TestCaseDescription' => 'Dessc'
         ]);
 

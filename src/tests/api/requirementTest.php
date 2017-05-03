@@ -131,16 +131,11 @@ class requirementTest extends TestCase
             ]);
 
         $this->seeInDatabase('TestRequirementHistory', [
-            'TestRequirement_id' => 1,
+            'TestRequirement_id' => 2,
             'Name' => 'EvenBetterSuperRequirement',
             'RequirementDescription' => 'EvenMoreSuperDescription'
         ]);
 
-        $this->dontSeeInDatabase('TestRequirement', [
-            'TestRequirement_id' => 1,
-            'Name' => 'SuperRequirement',
-            'RequirementDescription' => 'SuperDescription'
-        ]);
     }
 
     /**
