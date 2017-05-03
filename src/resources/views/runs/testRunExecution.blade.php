@@ -31,8 +31,9 @@
     </br>
     </br>
 
-        <form class="form-horizontal" action="{{ url("sets_runs/run/execution/$testRun->TestRun_id/testcase/$selectedTestCase->TestCase_id")}}" method="POST">
-            {{ csrf_field() }}
+    <form id="caseForm" class="form-horizontal caseForm" action="{{ url("sets_runs/run/execution/$testRun->TestRun_id/testcase/$selectedTestCase->TestCase_id")}}" method="POST">
+
+    {{ csrf_field() }}
             <div class="form-group">
                 <label class="control-label col-sm-2" for="name">Test case name:</label>
                 <div class="col-sm-6">
@@ -133,9 +134,16 @@
                 </div>
             </div>
 
+
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-2">
                     <button type="submit" name="move" class="btn btn-primary {{ $testRun->Status == App\Enums\TestRunStatus::RUNNING ? '' : 'disabled'}}">Save and move to next</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-2">
+                    <a class="btn btn-danger" onclick="removeAreYouSure('{{ $testRun->TestSet_id}}')" role="button">Discard changes</a>
                 </div>
             </div>
 
@@ -192,6 +200,13 @@
         function collapse() {
             $('.list > .ll ul').css('display', 'none');
             $('.list > .ll  > a > span').attr('class', 'glyphicon glyphicon-plus');
+        }
+        // Discart button should not ask like "are you sure"
+        function removeAreYouSure(setId) {
+            $('.caseForm').attr('class', 'form-horizontal');
+
+            window.location.replace("{{ url("sets_runs/set/detail/$testRun->TestSet_id") }}");
+
         }
 
     </script>
