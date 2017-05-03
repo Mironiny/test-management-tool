@@ -3,8 +3,8 @@
 
 import http.client
 
-host = "localhost:8000"
-api_token = "gQyX1Bvz8qUjXOzAVNeH8T72gt7RN8TWaqLiI5TskzxlqpYfbGwYMfZ7j57c"
+host = "t-m-tt.herokuapp.com"
+api_token = "zsN3UI9FGjLwfpyZK849Fy3tK4mBCh3B1GcSQzvGTHwUXLQFHMUREAwzqSTF"
 
 # Connection
 conn = http.client.HTTPConnection(host)

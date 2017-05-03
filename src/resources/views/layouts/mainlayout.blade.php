@@ -99,7 +99,7 @@
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="navbar-header">
                 <img class="navbar-brand" src="/img/testos-logo.png" style="padding: 5px 5px;">
-                <a class="navbar-brand" href="#">Testos</a>
+                <a class="navbar-brand" href="{{ url('/') }}">Testos</a>
             </div>
 
             <!-- Top Navigation: Left Menu -->
