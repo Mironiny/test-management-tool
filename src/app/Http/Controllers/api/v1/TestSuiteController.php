@@ -8,18 +8,21 @@ use App\Http\Controllers\Controller;
 use App\TestSuite;
 use App\TestCaseHistory;
 use App\Http\Controllers\api\v1\Commons;
+use App\Services\TestLibraryService;
 
 class TestSuiteController extends Controller
 {
+    protected $libraryService;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(TestLibraryService $testSuiteService)
     {
         $this->middleware('auth:api');
+        $this->libraryService = $testSuiteService;
     }
 
     /**
@@ -29,7 +32,7 @@ class TestSuiteController extends Controller
      */
     public function index()
     {
-        $data = $this->filterTestSuite(TestSuite::whereNull('ActiveDateTo')->get());
+        $data = $this->filterTestSuite($this->libraryService->getActiveSuites());
 
         return response()->json($data);
     }
@@ -58,7 +61,7 @@ class TestSuiteController extends Controller
         }
 
         $testSuite = new TestSuite;
-        $testSuite->Name = $request->input('Name');
+        $testSuite->Name = $request->Name;
         $testSuite->TestSuiteGoals = $request->input('TestSuiteGoals');
         $testSuite->TestSuiteVersion = $request->input('TestSuiteVersion');
         $testSuite->TestSuiteDocumentation = $request->input('TestSuiteDocumentation');
@@ -75,7 +78,7 @@ class TestSuiteController extends Controller
      */
     public function show($id)
     {
-        $data = $this->filterTestSuite(TestSuite::whereNull('ActiveDateTo')->where('TestSuite_id', $id)->get());
+        $data = $this->filterTestSuite($this->libraryService->getSuiteById($id));
 
         return response()->json($data);
     }

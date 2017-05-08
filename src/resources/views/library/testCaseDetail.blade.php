@@ -36,7 +36,7 @@
         <div class="form-group">
             <label class="control-label col-sm-2" for="name"><span class="text-danger">*</span>Test case name:</label>
             <div class="col-sm-6">
-                <input type="text" class="form-control" id="name" disabled="disabled" name='name' maxlength="45" value="{{ $testCaseOverview->Name }}" required autofocus>
+                <input type="text" class="form-control" id="name" disabled="disabled" name='name' maxlength="45" value="{{ $testCase->Name }}" required autofocus>
             </div>
         </div>
         <div class="form-group">

@@ -214,7 +214,7 @@ class createTestSetAndRunTest extends TestCase
     {
         $this->actingAs(self::$user)
              ->visit('/sets_runs/run/execution/1/overview')
-             ->see(self::$testSuite[0]->testCases()->where('testCaseOverview_id', 1)->first()->Name);
+             ->see(self::$testSuite[0]->testCases()->where('TestCaseOverview_id', 1)->first()->Name);
     }
 
     /**

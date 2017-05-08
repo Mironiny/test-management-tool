@@ -7,18 +7,21 @@ use App\TestCaseHistory;
 use App\TestCase;
 use App\TestSuite;
 use Illuminate\Support\Facades\Auth;
+use App\Services\TestLibraryService;
 
 class TestLibraryController extends Controller
 {
+    protected $libraryService;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(TestLibraryService $testSuiteService)
     {
         $this->middleware('auth');
         $this->middleware('projects');
+        $this->libraryService = $testSuiteService;
     }
 
     /**
@@ -28,12 +31,8 @@ class TestLibraryController extends Controller
      */
     public function index(Request $request)
     {
-        $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        $testCases = collect();
-        foreach ($testSuites as $testSuite) {
-            $colection = $testSuite->testCases()->whereNull('ActiveDateTo')->get();
-            $testCases = $testCases->merge($colection);
-        }
+        $testSuites = $this->libraryService->getActiveSuites();
+        $testCases = $this->libraryService->getActiveTestCases();
 
         return view('library/libraryIndex')
                 ->with('testSuites', $testSuites)
@@ -69,7 +68,7 @@ class TestLibraryController extends Controller
      */
     public function createTestCaseForm($selectedSuite = null)
     {
-        $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
+        $testSuites = $this->libraryService->getActiveSuites();
 
         if ($selectedSuite == null) {
             return view('library/createTestCase')
@@ -90,24 +89,12 @@ class TestLibraryController extends Controller
      */
     public function renderTestCaseDetail(Request $request, $id)
     {
-        $testSuites = TestSuite::whereNull('ActiveDateTo')->get();
-        $testCaseOverview = TestCase::find($id);
-        $testCase = $testCaseOverview
-                    ->testCases()
-                    ->whereNull('ActiveDateTo')
-                    ->first();
-
-        $testCaseHistory = $testCaseOverview->testCases()
-                                            ->orderBy('ActiveDateFrom', 'DESC')
-                                            ->get();
-        // if (sizeof($testCases) < $id) {
-        //     return redirect('library')->with('statusFailure', trans('library.testCaseNotExists'));
-        // }
-        // $testCase = $testCases[$id - 1];
+        $testSuites = $this->libraryService->getActiveSuites();
+        $testCase = $this->libraryService->getBaseTestCaseById($id);
+        $testCaseHistory = $this->libraryService->getCurrentTestCaseById($id);
 
         return view('library/testCaseDetail')
                 ->with('testSuites', $testSuites)
-                ->with('testCaseOverview', $testCaseOverview)
                 ->with('testCaseHistory', $testCaseHistory)
                 ->with('testCase', $testCase);
 
@@ -171,9 +158,9 @@ class TestLibraryController extends Controller
 
         $testCaseOverview = TestCase::find($id);
         $testCaseDetail = $testCaseOverview
-                    ->testCases()
-                    ->whereNull('ActiveDateTo')
-                    ->first();
+            ->testCases()
+            ->whereNull('ActiveDateTo')
+            ->first();
 
         // Check if there is a change
         if ($testCaseDetail->TestCaseDescription == $request->description &&
@@ -200,6 +187,7 @@ class TestLibraryController extends Controller
         $testCaseNew->save();
 
         return redirect("library/testcase/detail/$id")->with('statusSuccess', trans('library.successEditedTestCase'));
+
     }
 
     /**
