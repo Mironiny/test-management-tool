@@ -1,23 +1,14 @@
-## Název
-Informační systém pro správu testů - Test management tool
+## Name
+Information system for test management - Test management tool
 
 ### Live demo
-http://tmt.testos.org (změny přenešeny cca 1x týdně)
+http://tmt.testos.org
 
-Vstup do systému:
+System enter:
 
 email: admin@admin.com
 
 pass: 123456
-
-## Popis
-Bakalářská práce zabývající se analýzou, specifikací, návrhem a částečnou implementací informačního systému pro správu testů.
-
-## Specifikace
-Viz doc/Dokument specifikace požadavků.pdf
-
-## Implementace
-Pro implementaci byla zvolená platforma php a aplikační framework Laravel 5.3.
 
 ### Adresářová struktura
 https://laravel.com/docs/5.3/structure
